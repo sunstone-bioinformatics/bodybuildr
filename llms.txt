@@ -1,0 +1,11 @@
+# bodybuildr
+
+Bodybuildr R Package: Create flexible row-wise infographics using R
+
+# Package index
+
+## All functions
+
+- [`hello()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/hello.md)
+  : Hello, World!
+
