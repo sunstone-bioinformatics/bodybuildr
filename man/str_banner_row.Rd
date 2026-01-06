@@ -7,8 +7,11 @@
 str_banner_row(
   image_path,
   title = "Project Title",
-  subtitle = "Concise one-liner",
-  ...
+  subtitle = "Concise one-liner about the project",
+  layout_style = bannerLayoutStyle(),
+  text_style = list(title = textStyle(color = "white", size = 18, face = "bold", family =
+    "sans"), subtitle = textStyle(color = "white", size = 11, face = "plain", family =
+    "sans"))
 )
 }
 \arguments{
@@ -16,7 +19,9 @@ str_banner_row(
 
 \item{title, subtitle}{Text content.}
 
-\item{...}{Additional parameters for sizing and styling.}
+\item{layout_style}{A list from [bannerLayoutStyle()] controlling geometry and colors.}
+
+\item{text_style}{A list with `title` and `subtitle` entries produced by [textStyle()].}
 }
 \value{
 A `gtable` representing the banner.

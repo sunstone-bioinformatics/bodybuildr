@@ -1,9 +1,49 @@
 # Text and gradient helpers ------------------------------------------------
 # Scaffolding only; implementations will be filled in.
 
-#' Wrapped text box anchored top-left
+#' Construct a styled text box item
 #'
-#' Renders wrapped text within a padded, rounded box inside a given viewport.
+#' Creates a text box payload that can be passed into layout functions (e.g., `str_n_panel_row`)
+#' with its own text and box styles.
+#'
+#' @param label Character text to render.
+#' @param text_style A `gpar` from [textStyle()].
+#' @param box_style A list from [boxStyle()].
+#' @param bg Optional column background color override.
+#' @param pad_x,pad_y Optional column padding overrides as `grid::unit` (non-negative).
+#' @return An object of class `"bbdr_text_box"` to use as an item in layout rows.
+#' @export
+text_box <- function(
+    label,
+    text_style = textStyle(),
+    box_style  = boxStyle(),
+    bg         = NULL,
+    pad_x      = NULL,
+    pad_y      = NULL
+) {
+  if (is.null(label)) label <- ""
+  if (!inherits(text_style, "gpar")) stop("`text_style` must be a grid::gpar (use textStyle()).", call. = FALSE)
+  if (!is.list(box_style)) stop("`box_style` must be a list (use boxStyle()).", call. = FALSE)
+  if (!is.null(pad_x)) pad_x <- .as_unit_nonneg(pad_x, "pad_x")
+  if (!is.null(pad_y)) pad_y <- .as_unit_nonneg(pad_y, "pad_y")
+  structure(
+    list(
+      label = label,
+      text_style = text_style,
+      box_style = box_style,
+      bg = bg,
+      pad_x = pad_x,
+      pad_y = pad_y
+    ),
+    class = "bbdr_text_box"
+  )
+}
+
+#' Internal: wrapped text box anchored top-left
+#'
+#' Internal helper used by layout row builders to render wrapped text inside a padded, rounded box.
+#' Users should construct text content via [text_box()] or pass character vectors to layout functions;
+#' this helper is not part of the public API.
 #'
 #' @param label Character vector to render.
 #' @param inner_vp A `grid::viewport` defining the available space.
@@ -15,7 +55,7 @@
 #' @param box_margin Outer margin as `grid::unit`.
 #' @param text_pad Inner padding as `grid::unit`.
 #' @return A grob representing the wrapped text box.
-#' @export
+#' @keywords internal
 wrap_text_top_left <- function(
     label,
     inner_vp,
@@ -124,9 +164,11 @@ wrap_text_top_left <- function(
     box_r           = grid::unit(10, "pt"),
     box_border_col  = NA,
     box_border_lwd  = 1,
-    text_gp         = grid::gpar(col = "white", fontsize = 16, fontfamily = "Noto Sans", fontface = "bold"),
+    text_gp         = grid::gpar(col = "white", fontsize = 16, fontfamily = "sans", fontface = "bold"),
     text_pad        = grid::unit(c(10, 14, 10, 14), "pt"),
-    box_margin      = grid::unit(c(6, 6, 6, 6), "pt")
+    box_margin      = grid::unit(c(6, 6, 6, 6), "pt"),
+    text_hjust      = "left",
+    margin_fill     = NA
 ) {
   if (is.null(label)) label <- ""
   if (length(label) > 1) label <- paste(label, collapse = "\n")
@@ -141,27 +183,55 @@ wrap_text_top_left <- function(
 
   fill <- .gradient_fill(cell_bg_cols, cell_bg_stops, cell_bg_dir)
 
+  border_col <- box_border_col
+  border_lwd <- box_border_lwd
+  if (is.null(border_col) || is.na(border_col)) {
+    border_col <- fill
+    border_lwd <- 0
+  }
+
   bg_roundrect <- grid::roundrectGrob(
     x = x, y = y, width = w, height = h,
     just = c("left","top"),
     r = box_r,
-    gp = grid::gpar(fill = fill, col = box_border_col, lwd = box_border_lwd)
+    gp = grid::gpar(fill = fill, col = border_col, lwd = border_lwd)
   )
+
+  hjust_val <- switch(text_hjust, left = 0, center = 0.5, right = 1, 0)
+  content_vp <- grid::viewport(
+    x = x, y = y,
+    width = w, height = h,
+    just = c("left","top"),
+    clip = "on"
+  )
+
+  margin_bg <- NULL
+  if (!is.null(margin_fill) && !is.na(margin_fill)) {
+    margin_bg <- grid::rectGrob(
+      x = grid::unit(0.5, "npc"), y = grid::unit(0.5, "npc"),
+      width = grid::unit(1, "npc"), height = grid::unit(1, "npc"),
+      just = c("center","center"),
+      gp = grid::gpar(fill = margin_fill, col = NA)
+    )
+  }
 
   txt <- gridtext::textbox_grob(
     label,
-    x = x, y = y,
-    width  = w,
-    height = h,
-    hjust = 0, vjust = 1,
+    x = grid::unit(hjust_val, "npc"),
+    y = grid::unit(1, "npc"),
+    width  = grid::unit(1, "npc"),
+    height = grid::unit(1, "npc"),
+    hjust = hjust_val, vjust = 1,
+    halign = hjust_val,
     gp = text_gp,
     padding = text_pad,
     margin  = grid::unit(c(0,0,0,0), "pt"),
     r = grid::unit(0, "pt"),
-    box_gp = grid::gpar(col = NA, fill = NA)
+    box_gp = grid::gpar(col = NA, fill = NA),
+    vp = content_vp
   )
 
-  grid::grobTree(bg_roundrect, txt)
+  grid::grobTree(margin_bg, bg_roundrect, txt)
 }
 
 #' Internal: gradient fill helper

@@ -6,17 +6,22 @@
 #' Accepts ggplot objects, grobs, image paths, or character vectors and renders them
 #' into equal-width columns with configurable padding, gaps, and lanes.
 #'
-#' @param items A list of items (ggplot/grob/image path/character/NULL).
+#' **Inputs**
+#' - `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings; otherwise the defaults below apply.
+#' - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.
+#'
+#' **Layout + styling**
+#' - `column_style`: list from [columnLayoutStyle()] (padding, gaps, margins, backgrounds).
+#' - `text_style`: default text style (`textStyle()`), used for character items.
+#' - `box_style`: default box style (`boxStyle()`), used for character/fallback items.
+#' - `image_scale`: `"fit"` (preserve aspect) or `"fill"`.
+#' - `full_bleed_left` / `full_bleed_right`: allow first/last column to extend into outer lanes.
+#' - `debug_boxes`: overlay guides.
+#'
 #' @param row_height Optional nominal height (`grid::unit`); actual height is set when adding to a canvas.
-#' @param column_bg Background colors for each column (recycled).
-#' @param column_pad_x,column_pad_y Inner padding for each column.
-#' @param column_gap Gap between columns.
-#' @param column_gap_bg Background colors for gaps.
-#' @param outer_margin,outer_margin_bg Left/right margin lanes and their fill.
-#' @param bottom_margin,bottom_margin_bg Bottom margin lane and fill.
+#' @param column_style A list from [columnLayoutStyle()] controlling padding/gaps/margins/backgrounds (non-negative units).
 #' @param text_style Default text style (`textStyle()`), used for character items.
 #' @param box_style Default box style (`boxStyle()`), used for character/fallback items.
-#' @param column_styles Optional list per column with overrides: `bg`, `pad_x`, `pad_y`, `text_style`, `box_style`.
 #' @param image_scale How to place images: `"fit"` (preserve aspect) or `"fill"`.
 #' @param full_bleed_left,full_bleed_right Allow first/last column to extend into outer lanes.
 #' @param debug_boxes Draw debug outlines.
@@ -30,15 +35,7 @@
 str_n_panel_row <- function(
     items,
     row_height        = grid::unit(2.0, "in"),
-    column_bg         = "white",
-    column_pad_x      = grid::unit(8,  "pt"),
-    column_pad_y      = grid::unit(8,  "pt"),
-    column_gap        = grid::unit(10, "pt"),
-    column_gap_bg     = NA,
-    outer_margin      = grid::unit(0, "pt"),
-    outer_margin_bg   = NA,
-    bottom_margin     = grid::unit(10, "pt"),
-    bottom_margin_bg  = NA,
+    column_style      = columnLayoutStyle(),
     text_style        = textStyle(),
     box_style         = boxStyle(
       radius      = grid::unit(8, "pt"),
@@ -48,7 +45,6 @@ str_n_panel_row <- function(
       margin      = grid::unit(c(6, 6, 6, 6), "pt"),
       padding     = grid::unit(c(6, 8, 6, 8), "pt")
     ),
-    column_styles     = NULL,
     image_scale       = c("fit", "fill"),
     full_bleed_left   = FALSE,
     full_bleed_right  = FALSE,
@@ -58,8 +54,19 @@ str_n_panel_row <- function(
   if (!is.list(items)) items <- as.list(items)
   n <- length(items); if (n < 1) stop("`items` must have length >= 1")
 
+  # merge column style overrides
+  if (is.list(column_style)) {
+    defaults <- columnLayoutStyle()
+    defaults[names(column_style)] <- column_style
+    column_style <- defaults
+  } else {
+    column_style <- columnLayoutStyle()
+  }
+
   # normalize lengths
+  column_bg <- column_style$column_bg
   if (length(column_bg) == 1) column_bg <- rep(column_bg, n) else column_bg <- rep_len(column_bg, n)
+  column_gap_bg <- column_style$column_gap_bg
   if (is.null(column_gap_bg)) column_gap_bg <- NA
   if (n > 1) {
     if (length(column_gap_bg) == 1) column_gap_bg <- rep(column_gap_bg, n - 1)
@@ -69,32 +76,29 @@ str_n_panel_row <- function(
   }
 
   # validate units non-negative
-  column_pad_x   <- .as_unit_nonneg(column_pad_x, "column_pad_x")
-  column_pad_y   <- .as_unit_nonneg(column_pad_y, "column_pad_y")
-  column_gap     <- .as_unit_nonneg(column_gap, "column_gap")
-  outer_margin   <- .as_unit_nonneg(outer_margin, "outer_margin")
-  bottom_margin  <- .as_unit_nonneg(bottom_margin, "bottom_margin")
+  column_pad_x   <- .as_unit_nonneg(column_style$column_pad_x, "column_pad_x")
+  column_pad_y   <- .as_unit_nonneg(column_style$column_pad_y, "column_pad_y")
+  column_gap     <- .as_unit_nonneg(column_style$column_gap, "column_gap")
+  outer_margin   <- .as_unit_nonneg(column_style$outer_margin, "outer_margin")
+  bottom_margin  <- .as_unit_nonneg(column_style$bottom_margin, "bottom_margin")
   row_height     <- .as_unit_nonneg(row_height, "row_height")
 
   # helper to merge per-column overrides
-  merge_styles <- function(idx) {
-    override <- if (is.list(column_styles) && length(column_styles) >= idx) column_styles[[idx]] else NULL
+  merge_styles <- function(idx, item) {
+    override <- if (inherits(item, "bbdr_text_box")) item else NULL
     list(
       bg         = if (!is.null(override$bg)) override$bg else column_bg[idx],
-      pad_x      = if (!is.null(override$pad_x)) .as_unit_nonneg(override$pad_x, paste0("column_styles[[", idx, "]]$pad_x")) else column_pad_x,
-      pad_y      = if (!is.null(override$pad_y)) .as_unit_nonneg(override$pad_y, paste0("column_styles[[", idx, "]]$pad_y")) else column_pad_y,
+      pad_x      = if (!is.null(override$pad_x)) override$pad_x else column_pad_x,
+      pad_y      = if (!is.null(override$pad_y)) override$pad_y else column_pad_y,
       text_style = if (!is.null(override$text_style) && inherits(override$text_style, "gpar")) override$text_style else text_style,
-      box_style  = if (!is.null(override$box_style) && is.list(override$box_style)) {
-        defaults <- box_style
-        defaults[names(override$box_style)] <- override$box_style
-        defaults
-      } else box_style
+      box_style  = if (!is.null(override$box_style) && is.list(override$box_style)) override$box_style else box_style,
+      label      = if (!is.null(override$label)) override$label else NULL
     )
   }
 
   # cell builder
   .cell_from_item <- function(obj, style, dbg = FALSE) {
-    bg <- grid::rectGrob(gp = grid::gpar(fill = style$bg, col = NA))
+    bg <- grid::rectGrob(gp = grid::gpar(fill = style$bg, col = style$bg))
     inner_vp <- grid::viewport(
       x = style$pad_x, y = grid::unit(0.5, "npc"),
       just = c("left","center"),
@@ -151,6 +155,25 @@ str_n_panel_row <- function(
       }
       return(grid::grobTree(bg, blue_box, grid::gTree(children = grid::gList(img_g), vp = inner_vp)))
     }
+    # text_box wrapper
+    if (inherits(obj, "bbdr_text_box")) {
+      lbl <- obj$label
+      style$text_style <- obj$text_style
+      style$box_style  <- obj$box_style
+      if (!is.null(obj$bg))    style$bg <- obj$bg
+      if (!is.null(obj$pad_x)) style$pad_x <- obj$pad_x
+      if (!is.null(obj$pad_y)) style$pad_y <- obj$pad_y
+      box <- wrap_text_top_left(
+        lbl, inner_vp, gp = style$text_style,
+        box_r = style$box_style$radius,
+        box_border_col = style$box_style$border_color,
+        box_border_lwd = style$box_style$border_lwd,
+        box_fill = style$box_style$fill,
+        box_margin = style$box_style$margin,
+        text_pad = style$box_style$padding
+      )
+      return(grid::grobTree(bg, blue_box, box))
+    }
     # character -> rounded TEXT BOX
     if (is.character(obj)) {
       box <- wrap_text_top_left(
@@ -192,10 +215,10 @@ str_n_panel_row <- function(
   gt <- gtable::gtable(widths = widths, heights = grid::unit.c(grid::unit(1, "null"), bottom_margin))
 
   # outer lanes background
-  if (!is.null(outer_margin_bg) && !is.na(outer_margin_bg)) {
-    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = outer_margin_bg, col = NA)),
+  if (!is.null(column_style$outer_margin_bg) && !is.na(column_style$outer_margin_bg)) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = column_style$outer_margin_bg, col = column_style$outer_margin_bg)),
                           t = 1, l = 1, b = 2, r = 1, z = 0, clip = "on")
-    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = outer_margin_bg, col = NA)),
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = column_style$outer_margin_bg, col = column_style$outer_margin_bg)),
                           t = 1, l = (2*n + 1), b = 2, r = (2*n + 1), z = 0, clip = "on")
   }
   # gap backgrounds (content row only)
@@ -203,13 +226,13 @@ str_n_panel_row <- function(
     gap_col <- 2*i + 1
     gap_fill <- column_gap_bg[i]
     if (!is.null(gap_fill) && !is.na(gap_fill)) {
-      gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = gap_fill, col = NA)),
+      gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = gap_fill, col = gap_fill)),
                             t = 1, l = gap_col, b = 1, r = gap_col, z = 0, clip = "on")
     }
   }
   # bottom margin bg across interior only
-  if (!is.null(bottom_margin_bg) && !is.na(bottom_margin_bg) && (2*n) >= 2) {
-    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = bottom_margin_bg, col = NA)),
+  if (!is.null(column_style$bottom_margin_bg) && !is.na(column_style$bottom_margin_bg) && (2*n) >= 2) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = column_style$bottom_margin_bg, col = column_style$bottom_margin_bg)),
                           t = 2, l = 2, b = 2, r = (2*n), z = 0, clip = "on")
   }
 
@@ -219,7 +242,7 @@ str_n_panel_row <- function(
     r_idx <- 2*i
     if (i == 1 && isTRUE(full_bleed_left))  l_idx <- 1
     if (i == n && isTRUE(full_bleed_right)) r_idx <- 2*n + 1
-    st <- merge_styles(i)
+    st <- merge_styles(i, items[[i]])
     cell <- .cell_from_item(items[[i]], st, dbg = debug_boxes)
     gt <- gtable::gtable_add_grob(gt, cell, t = 1, l = l_idx, r = r_idx, z = 1, clip = "on")
   }
@@ -252,11 +275,85 @@ str_three_panel_row <- function(A_item = NULL, B_item = NULL, C_item = NULL, ...
 #' Renders a full-width subtitle band with optional gradient fill and lanes.
 #'
 #' @param label Subtitle text.
-#' @param ... Additional parameters for sizing and styling.
+#' @param layout_style A list from [subtitleLayoutStyle()] for lanes/gradient/background.
+#' @param box_style Box styling from [boxStyle()] (radius, border, fill, margin, padding, margin_fill).
+#' @param text_style Text styling from [textStyle()].
+#' Note: Lanes are controlled by `layout_style` (outer/bottom margins). The immediate gap around the box is controlled by `box_style$margin`/`margin_fill`. Leave the box margin at zero for a single-layer band, or set it (plus `margin_fill`) for a double-layer/3D effect.
 #' @return A `gtable` representing the row.
 #' @export
-str_subtitle_row <- function(label, ...) {
-  stop("TODO: implement str_subtitle_row")
+str_subtitle_row <- function(
+    label,
+    layout_style = subtitleLayoutStyle(),
+    box_style    = boxStyle(
+      radius       = grid::unit(10, "pt"),
+      border_color = NA,
+      border_lwd   = 1,
+      fill         = NA,
+      margin       = grid::unit(c(6, 10, 10, 6), "pt"),
+      padding      = grid::unit(c(10, 16, 10, 16), "pt")
+    ),
+    text_style  = textStyle(color = "white", size = 16, face = "bold", family = "sans")
+) {
+  # merge user overrides for layout_style
+  if (is.list(layout_style)) {
+    defaults <- subtitleLayoutStyle()
+    defaults[names(layout_style)] <- layout_style
+    layout_style <- defaults
+  } else {
+    layout_style <- subtitleLayoutStyle()
+  }
+
+  # validate units
+  row_h         <- .as_unit_nonneg(layout_style$row_height, "row_height")
+  outer_margin  <- .as_unit_nonneg(layout_style$outer_margin, "outer_margin")
+  bottom_margin <- .as_unit_nonneg(layout_style$bottom_margin, "bottom_margin")
+  box_r         <- .as_unit_nonneg(box_style$radius, "box_r")
+  # text_pad/box_margin can be length 4; validate components are non-negative
+  check_vec_unit <- function(u, name) {
+    if (!inherits(u, "unit")) stop("`", name, "` must be a grid::unit.", call. = FALSE)
+    vals <- as.numeric(grid::convertUnit(u, "pt", valueOnly = TRUE))
+    if (any(is.na(vals))) stop("`", name, "` cannot contain NA.", call. = FALSE)
+    if (any(vals < 0)) stop("`", name, "` must be non-negative.", call. = FALSE)
+    u
+  }
+  text_pad   <- check_vec_unit(box_style$padding, "text_pad")
+  box_margin <- check_vec_unit(box_style$margin, "box_margin")
+
+  widths  <- grid::unit.c(outer_margin, grid::unit(1, "null"), outer_margin)
+  heights <- grid::unit.c(grid::unit(1, "null"), bottom_margin)
+  gt <- gtable::gtable(widths = widths, heights = heights)
+
+  # paint side lanes
+  if (!is.null(layout_style$outer_margin_bg) && !is.na(layout_style$outer_margin_bg)) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$outer_margin_bg, col = layout_style$outer_margin_bg)),
+                          t = 1, l = 1, b = 2, r = 1, z = 0, clip = "on")
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$outer_margin_bg, col = layout_style$outer_margin_bg)),
+                          t = 1, l = 3, b = 2, r = 3, z = 0, clip = "on")
+  }
+  # paint bottom lane
+  if (!is.null(layout_style$bottom_margin_bg) && !is.na(layout_style$bottom_margin_bg) && as.numeric(grid::convertHeight(bottom_margin, "pt")) > 0) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$bottom_margin_bg, col = layout_style$bottom_margin_bg)),
+                          t = 2, l = 2, b = 2, r = 2, z = 0, clip = "on")
+  }
+
+  # content cell
+  content <- .subtitle_cell(
+    label         = label,
+    cell_bg_cols  = layout_style$cell_bg_cols,
+    cell_bg_stops = layout_style$cell_bg_stops,
+    cell_bg_dir   = layout_style$cell_bg_dir,
+    text_hjust    = layout_style$text_hjust,
+    box_r         = box_r,
+    box_border_col= box_style$border_color,
+    box_border_lwd= box_style$border_lwd,
+    text_gp       = text_style,
+    text_pad      = text_pad,
+    box_margin    = box_margin,
+    margin_fill   = box_style$margin_fill
+  )
+
+  gt <- gtable::gtable_add_grob(gt, content, t = 1, l = 2, z = 1, clip = "on")
+  gt
 }
 
 #' Two-column banner with logo and text

@@ -2,20 +2,21 @@
 % Please edit documentation in R/text.R
 \name{wrap_text_top_left}
 \alias{wrap_text_top_left}
-\title{Wrapped text box anchored top-left}
+\title{Internal: wrapped text box anchored top-left}
 \usage{
 wrap_text_top_left(
   label,
   inner_vp,
-  gp = gpar(col = "#111111", fontsize = 11, fontface = "plain", fontfamily = "sans"),
+  gp = grid::gpar(col = "#111111", fontsize = 11, fontface = "plain", fontfamily =
+    "sans"),
   preserve_newlines = TRUE,
   prefer_gridtext = TRUE,
-  box_r = unit(6, "pt"),
+  box_r = grid::unit(6, "pt"),
   box_border_col = "#CBD5E1",
   box_border_lwd = 1,
   box_fill = NA,
-  box_margin = unit(c(6, 6, 6, 6), "pt"),
-  text_pad = unit(c(4, 6, 4, 6), "pt")
+  box_margin = grid::unit(c(6, 6, 6, 6), "pt"),
+  text_pad = grid::unit(c(4, 6, 4, 6), "pt")
 )
 }
 \arguments{
@@ -41,5 +42,8 @@ wrap_text_top_left(
 A grob representing the wrapped text box.
 }
 \description{
-Renders wrapped text within a padded, rounded box inside a given viewport.
+Internal helper used by layout row builders to render wrapped text inside a padded, rounded box.
+Users should construct text content via [text_box()] or pass character vectors to layout functions;
+this helper is not part of the public API.
 }
+\keyword{internal}
