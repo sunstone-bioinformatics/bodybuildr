@@ -48,3 +48,18 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 docs
+PACKAGE_PLAN.md
+structure/README.md
+structure/str_banner.R
+structure/str_n_panel_row.R
+structure/str_subtitle_row.R
+structure/str_three_panel_row.R
+utils/canvas_add_row.R
+utils/draw_canvas_top.R
+utils/export_pdf_top.R
+utils/gradient_fill.R
+utils/gt_save_png_inches.R
+utils/new_canvas.R
+utils/subtitle_cell.R
+utils/to_in.R
+utils/use_noto_sans.R
