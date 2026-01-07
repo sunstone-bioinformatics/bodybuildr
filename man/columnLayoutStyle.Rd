@@ -36,3 +36,8 @@ A list of column layout parameters.
 Collects geometry and color defaults for `str_n_panel_row`.
 All unit arguments must be non-negative.
 }
+\details{
+Margin layers:
+- `outer_margin`/`bottom_margin` and their backgrounds control the row lanes relative to the page/canvas.
+- Box margins/padding are controlled separately via `box_style` (or `text_box`) in `str_n_panel_row()`.
+}
