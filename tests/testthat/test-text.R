@@ -12,5 +12,8 @@ test_that(".subtitle_cell returns a grob", {
 test_that(".gradient_fill returns a gradient or color", {
   cols <- c("#000000", "#ffffff")
   gf <- .gradient_fill(cols)
-  expect_true(is.character(gf) || inherits(gf, "linearGradient"))
+  expect_true(
+    is.character(gf) ||
+      inherits(gf, c("GridPattern", "GridLinearGradient", "linearGradient"))
+  )
 })
