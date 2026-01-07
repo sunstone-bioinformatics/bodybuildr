@@ -261,13 +261,199 @@ str_n_panel_row <- function(
 #' Three-panel row layout (A | B over C)
 #'
 #' Places a tall left panel next to two stacked right panels, with padding and lane options.
+#' Use [text_box()] for per-panel text styling; other items can be ggplot/grob/image paths.
 #'
-#' @param A_item,B_item,C_item Items to render (ggplot/grob/image path/character/NULL).
-#' @param ... Additional parameters for sizing, spacing, and styling.
+#' @param A_item,B_item,C_item Items to render (ggplot/grob/image path/character/NULL or `text_box()`).
+#' @param layout_style A list from [threePanelLayoutStyle()] controlling geometry, padding, and backgrounds.
+#' @param text_style Default text style (`textStyle()`), used for character items.
+#' @param box_style Default box style (`boxStyle()`), used for character/fallback items.
+#' @param image_scale How to place images: `"fit"` (preserve aspect) or `"fill"`.
+#' @param reverse Logical; if `TRUE`, A is on the right and B/C are on the left.
+#' @param debug_boxes Draw debug outlines.
+#' Note: Lanes (outer/bottom margins) come from `layout_style`. The immediate gap around text boxes is controlled by `box_style$margin` or `text_box()`; set it to zero for a single-layer look.
 #' @return A `gtable` representing the row.
 #' @export
-str_three_panel_row <- function(A_item = NULL, B_item = NULL, C_item = NULL, ...) {
-  stop("TODO: implement str_three_panel_row")
+#' @importFrom grid unit rectGrob gpar viewport rasterGrob gTree gList nullGrob textGrob grobHeight unit.c
+#' @importFrom gtable gtable gtable_add_grob
+#' @importFrom tools file_ext
+#' @importFrom png readPNG
+#' @importFrom jpeg readJPEG
+str_three_panel_row <- function(
+    A_item = NULL,
+    B_item = NULL,
+    C_item = NULL,
+    layout_style = threePanelLayoutStyle(),
+    text_style = textStyle(),
+    box_style = boxStyle(
+      radius      = grid::unit(8, "pt"),
+      border_color= "#D1D5DB",
+      border_lwd  = 1,
+      fill        = NA,
+      margin      = grid::unit(c(6, 6, 6, 6), "pt"),
+      padding     = grid::unit(c(10, 10, 10, 10), "pt")
+    ),
+    image_scale = c("fit", "fill"),
+    reverse = FALSE,
+    debug_boxes = FALSE
+) {
+  image_scale <- match.arg(image_scale)
+  if (!is.logical(reverse) || length(reverse) != 1 || is.na(reverse)) {
+    stop("`reverse` must be a single TRUE/FALSE value.", call. = FALSE)
+  }
+
+  # merge layout style overrides
+  if (is.list(layout_style)) {
+    defaults <- threePanelLayoutStyle()
+    defaults[names(layout_style)] <- layout_style
+    layout_style <- defaults
+  } else {
+    layout_style <- threePanelLayoutStyle()
+  }
+  layout_style <- do.call(threePanelLayoutStyle, layout_style)
+
+  A_width      <- layout_style$A_width
+  right_split  <- layout_style$right_split
+  hgap         <- layout_style$hgap
+  vgap         <- layout_style$vgap
+  outer_margin <- layout_style$outer_margin
+  bottom_margin<- layout_style$bottom_margin
+
+  # panel style builder
+  panel_style <- function(panel, item) {
+    bg <- layout_style[[paste0(panel, "_bg")]]
+    pad_x <- layout_style[[paste0(panel, "_pad_x")]]
+    pad_y <- layout_style[[paste0(panel, "_pad_y")]]
+    if (inherits(item, "bbdr_text_box")) {
+      if (!is.null(item$bg)) bg <- item$bg
+      if (!is.null(item$pad_x)) pad_x <- item$pad_x
+      if (!is.null(item$pad_y)) pad_y <- item$pad_y
+    }
+    list(
+      bg = bg,
+      pad_x = pad_x,
+      pad_y = pad_y,
+      text_style = if (inherits(item, "bbdr_text_box")) item$text_style else text_style,
+      box_style  = if (inherits(item, "bbdr_text_box")) item$box_style else box_style,
+      label = if (inherits(item, "bbdr_text_box")) item$label else NULL
+    )
+  }
+
+  .panel_from_item <- function(obj, style, dbg = FALSE) {
+    bg <- grid::rectGrob(gp = grid::gpar(fill = style$bg, col = style$bg))
+    inner_vp <- grid::viewport(
+      x = 0.5, y = 0.5, just = c("center","center"),
+      width  = grid::unit(1, "npc") - 2*style$pad_x,
+      height = grid::unit(1, "npc") - 2*style$pad_y,
+      clip   = "on"
+    )
+    blue_box <- if (isTRUE(dbg)) {
+      grid::rectGrob(vp = inner_vp, gp = grid::gpar(fill = NA, col = "#1E3A8A", lty = 2, lwd = 1))
+    } else grid::nullGrob()
+
+    if (inherits(obj, "ggplot")) {
+      if (!requireNamespace("ggplot2", quietly = TRUE)) stop("A ggplot object was supplied, but 'ggplot2' is not available.")
+      gtbl <- ggplot2::ggplotGrob(obj)
+      return(grid::grobTree(bg, blue_box, grid::gTree(children = grid::gList(gtbl), vp = inner_vp)))
+    }
+    if (inherits(obj, c("grob", "gTree", "gtable"))) {
+      return(grid::grobTree(bg, blue_box, grid::gTree(children = grid::gList(obj), vp = inner_vp)))
+    }
+    is_file <- is.character(obj) && length(obj) == 1 && file.exists(obj)
+    if (is_file) {
+      ext <- tolower(tools::file_ext(obj))
+      img <- if (ext == "png") png::readPNG(obj) else if (ext %in% c("jpg","jpeg")) jpeg::readJPEG(obj) else NULL
+      if (is.null(img)) {
+        txt <- wrap_text_top_left(
+          paste0("Unsupported image: ", basename(obj)), inner_vp, gp = style$text_style,
+          box_r = style$box_style$radius, box_border_col = style$box_style$border_color,
+          box_border_lwd = style$box_style$border_lwd, box_fill = style$box_style$fill,
+          box_margin = style$box_style$margin, text_pad = style$box_style$padding
+        )
+        return(grid::grobTree(bg, blue_box, txt))
+      }
+      if (image_scale == "fit") {
+        hpx <- dim(img)[1]; wpx <- dim(img)[2]; aspect <- wpx / hpx
+        if (aspect >= 1) { w_unit <- grid::unit(1, "npc"); h_unit <- grid::unit(1/aspect, "npc")
+        } else            { w_unit <- grid::unit(aspect, "npc"); h_unit <- grid::unit(1, "npc") }
+        img_g <- grid::rasterGrob(img, x = 0.5, y = 0.5, just = c("center","center"),
+                            width = w_unit, height = h_unit, interpolate = TRUE)
+      } else {
+        img_g <- grid::rasterGrob(img, x = 0.5, y = 0.5, just = c("center","center"),
+                            width = grid::unit(1, "npc"), height = grid::unit(1, "npc"),
+                            interpolate = TRUE)
+      }
+      return(grid::grobTree(bg, blue_box, grid::gTree(children = grid::gList(img_g), vp = inner_vp)))
+    }
+    if (inherits(obj, "bbdr_text_box")) {
+      txt <- wrap_text_top_left(
+        obj$label, inner_vp, gp = style$text_style,
+        box_r = style$box_style$radius, box_border_col = style$box_style$border_color,
+        box_border_lwd = style$box_style$border_lwd, box_fill = style$box_style$fill,
+        box_margin = style$box_style$margin, text_pad = style$box_style$padding
+      )
+      return(grid::grobTree(bg, blue_box, txt))
+    }
+    if (is.character(obj)) {
+      txt <- wrap_text_top_left(
+        obj, inner_vp, gp = style$text_style,
+        box_r = style$box_style$radius, box_border_col = style$box_style$border_color,
+        box_border_lwd = style$box_style$border_lwd, box_fill = style$box_style$fill,
+        box_margin = style$box_style$margin, text_pad = style$box_style$padding
+      )
+      return(grid::grobTree(bg, blue_box, txt))
+    }
+    if (is.null(obj)) return(grid::grobTree(bg, blue_box))
+    txt <- wrap_text_top_left(
+      paste0(obj), inner_vp, gp = style$text_style,
+      box_r = style$box_style$radius, box_border_col = style$box_style$border_color,
+      box_border_lwd = style$box_style$border_lwd, box_fill = style$box_style$fill,
+      box_margin = style$box_style$margin, text_pad = style$box_style$padding
+    )
+    grid::grobTree(bg, blue_box, txt)
+  }
+
+  if (isTRUE(reverse)) {
+    widths <- grid::unit.c(outer_margin, grid::unit(1, "null"), hgap, A_width, outer_margin)
+    A_col <- 4
+    right_col <- 2
+  } else {
+    widths <- grid::unit.c(outer_margin, A_width, hgap, grid::unit(1, "null"), outer_margin)
+    A_col <- 2
+    right_col <- 4
+  }
+  heights <- grid::unit.c(grid::unit(right_split, "null"), vgap, grid::unit(1 - right_split, "null"), bottom_margin)
+  gt <- gtable::gtable(widths = widths, heights = heights)
+
+  # outer lanes background across all rows
+  if (!is.null(layout_style$outer_margin_bg) && !is.na(layout_style$outer_margin_bg)) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$outer_margin_bg, col = layout_style$outer_margin_bg)),
+                          t = 1, l = 1, b = 4, r = 1, z = 0, clip = "on")
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$outer_margin_bg, col = layout_style$outer_margin_bg)),
+                          t = 1, l = 5, b = 4, r = 5, z = 0, clip = "on")
+  }
+  # inner gap backgrounds
+  if (!is.null(layout_style$hgap_bg) && !is.na(layout_style$hgap_bg)) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$hgap_bg, col = layout_style$hgap_bg)),
+                          t = 1, l = 3, b = 3, r = 3, z = 0, clip = "on")
+  }
+  if (!is.null(layout_style$vgap_bg) && !is.na(layout_style$vgap_bg)) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$vgap_bg, col = layout_style$vgap_bg)),
+                          t = 2, l = right_col, b = 2, r = right_col, z = 0, clip = "on")
+  }
+  # bottom margin background across interior (cols 2..4)
+  if (!is.null(layout_style$bottom_margin_bg) && !is.na(layout_style$bottom_margin_bg)) {
+    gt <- gtable::gtable_add_grob(gt, grid::rectGrob(gp = grid::gpar(fill = layout_style$bottom_margin_bg, col = layout_style$bottom_margin_bg)),
+                          t = 4, l = 2, b = 4, r = 4, z = 0, clip = "on")
+  }
+
+  A_panel <- .panel_from_item(A_item, panel_style("A", A_item), dbg = debug_boxes)
+  B_panel <- .panel_from_item(B_item, panel_style("B", B_item), dbg = debug_boxes)
+  C_panel <- .panel_from_item(C_item, panel_style("C", C_item), dbg = debug_boxes)
+
+  gt <- gtable::gtable_add_grob(gt, A_panel, t = 1, l = A_col, b = 3, r = A_col, z = 1, clip = "on")
+  gt <- gtable::gtable_add_grob(gt, B_panel, t = 1, l = right_col, z = 1, clip = "on")
+  gt <- gtable::gtable_add_grob(gt, C_panel, t = 3, l = right_col, z = 1, clip = "on")
+  gt
 }
 
 #' Subtitle row layout

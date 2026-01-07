@@ -130,6 +130,63 @@ right_row <- str_subtitle_row(
 )
 ```
 
+## Three-Panel Row Example
+
+```r
+three_style <- threePanelLayoutStyle(
+  A_bg = "#F8FAFC",
+  B_bg = "#ECFDF5",
+  C_bg = "#FFF7ED",
+  hgap = unit(8, "pt"),
+  vgap = unit(8, "pt"),
+  outer_margin = unit(6, "pt"),
+  bottom_margin = unit(6, "pt")
+)
+
+three_row <- str_three_panel_row(
+  A_item = text_box(
+    "Left panel text",
+    text_style = textStyle(color = "#1F2937", size = 12, face = "bold"),
+    box_style = boxStyle(
+      radius = unit(6, "pt"),
+      border_color = "#0EA5E9",
+      border_lwd = 1,
+      fill = "#E0F2FE",
+      margin = unit(0, "pt"),
+      padding = unit(c(6, 10, 6, 10), "pt")
+    ),
+    bg = "#F8FAFC"
+  ),
+  B_item = text_box(
+    "Top-right text",
+    text_style = textStyle(color = "#14532D", size = 11),
+    box_style = boxStyle(
+      radius = unit(4, "pt"),
+      border_color = "#22C55E",
+      border_lwd = 1,
+      fill = "#DCFCE7",
+      margin = unit(0, "pt"),
+      padding = unit(c(6, 10, 6, 10), "pt")
+    ),
+    bg = "#ECFDF5"
+  ),
+  C_item = text_box(
+    "Bottom-right text",
+    text_style = textStyle(color = "#7C2D12", size = 11),
+    box_style = boxStyle(
+      radius = unit(4, "pt"),
+      border_color = "#F97316",
+      border_lwd = 1,
+      fill = "#FFEDD5",
+      margin = unit(0, "pt"),
+      padding = unit(c(6, 10, 6, 10), "pt")
+    ),
+    bg = "#FFF7ED"
+  ),
+  layout_style = three_style
+)
+```
+
 Combine rows on a canvas and export (set `eval = FALSE` if you do not want to generate the file during checks):
 
 ```r
@@ -138,13 +195,14 @@ canvas <- canvas_add_row(canvas, lane_only_row, lane_only_layout$row_height)
 canvas <- canvas_add_row(canvas, layered_row, layered_layout$row_height)
 canvas <- canvas_add_row(canvas, center_row, center_layout$row_height)
 canvas <- canvas_add_row(canvas, right_row, right_layout$row_height)
+canvas <- canvas_add_row(canvas, three_row, three_style$row_height)
 
 # Export
 export_pdf(
   canvas,
   file = "vignette-subtitle-margins.pdf",
   width = unit(8.5, "in"),
-  height = unit(4.5, "in")
+  height = unit(7.5, "in")
 )
 ```
 

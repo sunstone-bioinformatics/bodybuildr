@@ -133,6 +133,10 @@ bannerLayoutStyle <- function(
 #' Collects geometry and color defaults for `str_n_panel_row`.
 #' All unit arguments must be non-negative.
 #'
+#' Margin layers:
+#' - `outer_margin`/`bottom_margin` and their backgrounds control the row lanes relative to the page/canvas.
+#' - Box margins/padding are controlled separately via `box_style` (or `text_box`) in `str_n_panel_row()`.
+#'
 #' @param column_bg Background color(s) for columns (recycled).
 #' @param column_pad_x,column_pad_y Inner padding for columns as `grid::unit`.
 #' @param column_gap Gap between columns as `grid::unit`.
@@ -168,6 +172,89 @@ columnLayoutStyle <- function(
     outer_margin_bg  = outer_margin_bg,
     bottom_margin    = bottom_margin,
     bottom_margin_bg = bottom_margin_bg
+  )
+}
+
+#' Define three-panel row layout defaults
+#'
+#' Collects geometry and colors for `str_three_panel_row`.
+#' All unit arguments must be non-negative. `right_split` must be in (0, 1).
+#'
+#' Margin layers:
+#' - `outer_margin`/`bottom_margin` and their backgrounds control the row lanes relative to the page/canvas.
+#' - Box margins/padding are controlled separately via `box_style` or `text_box()` inside `str_three_panel_row()`.
+#'
+#' @param row_height Total row height as `grid::unit` (for reference when adding to canvas).
+#' @param A_width Width of the left panel as `grid::unit`.
+#' @param right_split Proportion of the right column allocated to the top panel.
+#' @param hgap,vgap Gaps between panels as `grid::unit`.
+#' @param hgap_bg,vgap_bg Background fills for the horizontal/vertical gaps.
+#' @param outer_margin,outer_margin_bg Left/right margin lanes and fill.
+#' @param bottom_margin,bottom_margin_bg Bottom margin lane and fill.
+#' @param A_bg,B_bg,C_bg Panel backgrounds.
+#' @param A_pad_x,A_pad_y,B_pad_x,B_pad_y,C_pad_x,C_pad_y Panel padding.
+#' @return A list of three-panel layout parameters.
+#' @export
+#' @importFrom grid unit
+threePanelLayoutStyle <- function(
+    row_height    = grid::unit(5, "in"),
+    A_width       = grid::unit(3.2, "in"),
+    right_split   = 0.55,
+    hgap          = grid::unit(10, "pt"),
+    vgap          = grid::unit(10, "pt"),
+    hgap_bg       = NA,
+    vgap_bg       = NA,
+    outer_margin  = grid::unit(0, "pt"),
+    outer_margin_bg = NA,
+    bottom_margin = grid::unit(10, "pt"),
+    bottom_margin_bg = NA,
+    A_bg          = "white",
+    B_bg          = "white",
+    C_bg          = "white",
+    A_pad_x       = grid::unit(8, "pt"),
+    A_pad_y       = grid::unit(8, "pt"),
+    B_pad_x       = grid::unit(8, "pt"),
+    B_pad_y       = grid::unit(8, "pt"),
+    C_pad_x       = grid::unit(8, "pt"),
+    C_pad_y       = grid::unit(8, "pt")
+) {
+  row_height    <- .as_unit_nonneg(row_height, "row_height")
+  A_width       <- .as_unit_nonneg(A_width, "A_width")
+  hgap          <- .as_unit_nonneg(hgap, "hgap")
+  vgap          <- .as_unit_nonneg(vgap, "vgap")
+  outer_margin  <- .as_unit_nonneg(outer_margin, "outer_margin")
+  bottom_margin <- .as_unit_nonneg(bottom_margin, "bottom_margin")
+  A_pad_x       <- .as_unit_nonneg(A_pad_x, "A_pad_x")
+  A_pad_y       <- .as_unit_nonneg(A_pad_y, "A_pad_y")
+  B_pad_x       <- .as_unit_nonneg(B_pad_x, "B_pad_x")
+  B_pad_y       <- .as_unit_nonneg(B_pad_y, "B_pad_y")
+  C_pad_x       <- .as_unit_nonneg(C_pad_x, "C_pad_x")
+  C_pad_y       <- .as_unit_nonneg(C_pad_y, "C_pad_y")
+  if (!is.numeric(right_split) || length(right_split) != 1 || is.na(right_split) ||
+      right_split <= 0 || right_split >= 1) {
+    stop("`right_split` must be a number between 0 and 1.", call. = FALSE)
+  }
+  list(
+    row_height    = row_height,
+    A_width       = A_width,
+    right_split   = right_split,
+    hgap          = hgap,
+    vgap          = vgap,
+    hgap_bg       = hgap_bg,
+    vgap_bg       = vgap_bg,
+    outer_margin  = outer_margin,
+    outer_margin_bg = outer_margin_bg,
+    bottom_margin = bottom_margin,
+    bottom_margin_bg = bottom_margin_bg,
+    A_bg          = A_bg,
+    B_bg          = B_bg,
+    C_bg          = C_bg,
+    A_pad_x       = A_pad_x,
+    A_pad_y       = A_pad_y,
+    B_pad_x       = B_pad_x,
+    B_pad_y       = B_pad_y,
+    C_pad_x       = C_pad_x,
+    C_pad_y       = C_pad_y
   )
 }
 
