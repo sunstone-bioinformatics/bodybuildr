@@ -1,8 +1,9 @@
 pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
-articles: {}
-last_built: 2025-11-15T01:51Z
+articles:
+  margins-and-layers: margins-and-layers.html
+last_built: 2026-01-07T16:08Z
 urls:
   reference: https://sunstone-bioinformatics.github.io/bodybuildr/reference
   article: https://sunstone-bioinformatics.github.io/bodybuildr/articles

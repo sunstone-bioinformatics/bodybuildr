@@ -1,9 +1,29 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/404.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/LICENSE-text.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/articles/index.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/articles/margins-and-layers.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/authors.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/index.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/hello.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/bannerLayoutStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/boxStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/canvas_add_row.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/columnLayoutStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-gradient_fill.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-subtitle_cell.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/draw_canvas_top.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/index.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_banner_row.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_n_panel_row.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_subtitle_row.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_three_panel_row.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitleLayoutStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/textStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/threePanelLayoutStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/to_in.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/wrap_text_top_left.html</loc></url>
 </urlset>
 
