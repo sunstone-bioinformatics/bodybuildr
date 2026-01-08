@@ -5,13 +5,16 @@
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/articles/margins-and-layers.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/authors.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/index.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/bannerLayoutStyle.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/boxStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_layout_style.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/canvas_add_row.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/columnLayoutStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/column_layout_style.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-as_unit_nonneg.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-draw_canvas_top.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-gradient_fill.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-subtitle_cell.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/draw_canvas_top.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-to_in.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/dot-wrap_text_top_left.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/index.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.html</loc></url>
@@ -19,11 +22,9 @@
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_n_panel_row.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_subtitle_row.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_three_panel_row.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitleLayoutStyle.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/textStyle.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.html</loc></url>
 <url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/threePanelLayoutStyle.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/to_in.html</loc></url>
-<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/wrap_text_top_left.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.html</loc></url>
+<url><loc>https://sunstone-bioinformatics.github.io/bodybuildr/reference/three_panel_layout_style.html</loc></url>
 </urlset>
 

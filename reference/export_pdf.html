@@ -44,23 +44,23 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">export_pdf</span><span class="op">(</span></span>
 <span>  <span class="va">grob</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"infographic_layout.pdf"</span>,</span>
-<span>  width <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">8.5</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  height <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">11</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_top <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_right <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_bottom <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_left <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span></span>
+<span>  width <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">8.5</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">11</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_top <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_right <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_bottom <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_left <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">export_pdf_top</span><span class="op">(</span></span>
 <span>  <span class="va">grob</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"infographic_layout.pdf"</span>,</span>
-<span>  width <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">8.5</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  height <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">11</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_top <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_right <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_bottom <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  margin_left <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span></span>
+<span>  width <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">8.5</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">11</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_top <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_right <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_bottom <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  margin_left <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0</span>, <span class="st">"in"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 

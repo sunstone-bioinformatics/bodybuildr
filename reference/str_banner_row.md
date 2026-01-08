@@ -10,10 +10,8 @@ str_banner_row(
   image_path,
   title = "Project Title",
   subtitle = "Concise one-liner about the project",
-  layout_style = bannerLayoutStyle(),
-  text_style = list(title = textStyle(color = "white", size = 18, face = "bold", family =
-    "sans"), subtitle = textStyle(color = "white", size = 11, face = "plain", family =
-    "sans"))
+  layout_style = banner_layout_style(),
+  text_style = NULL
 )
 ```
 
@@ -29,12 +27,12 @@ str_banner_row(
 
 - layout_style:
 
-  A list from \[bannerLayoutStyle()\] controlling geometry and colors.
+  A list from \[banner_layout_style()\] controlling geometry and colors.
 
 - text_style:
 
   A list with \`title\` and \`subtitle\` entries produced by
-  \[textStyle()\].
+  \[text_style()\].
 
 ## Value
 

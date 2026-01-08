@@ -78,12 +78,12 @@
 <ul>
 <li>
 <strong>Lanes (outer margins)</strong> come from layout styles such
-as <code><a href="../reference/subtitleLayoutStyle.html">subtitleLayoutStyle()</a></code> or
-<code><a href="../reference/columnLayoutStyle.html">columnLayoutStyle()</a></code>. These set the space between the
+as <code><a href="../reference/subtitle_layout_style.html">subtitle_layout_style()</a></code> or
+<code><a href="../reference/column_layout_style.html">column_layout_style()</a></code>. These set the space between the
 content band and the page (good for gutters, shadows, or background
 bands).</li>
 <li>
-<strong>Box margin</strong> comes from <code><a href="../reference/boxStyle.html">boxStyle()</a></code>. It
+<strong>Box margin</strong> comes from <code><a href="../reference/box_style.html">box_style()</a></code>. It
 is the gap immediately around the box itself. Set
 <code>margin = 0</code> for a single-layer band, or provide
 <code>margin</code> + <code>margin_fill</code> to create a second
@@ -97,7 +97,7 @@ layered/3D looks.</p>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lane-only: no box margin, fill matches lanes</span></span>
-<span><span class="va">lane_only_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitleLayoutStyle.html">subtitleLayoutStyle</a></span><span class="op">(</span></span>
+<span><span class="va">lane_only_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitle_layout_style.html">subtitle_layout_style</a></span><span class="op">(</span></span>
 <span>  row_height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
 <span>  outer_margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>  outer_margin_bg <span class="op">=</span> <span class="st">"#0EA5E9"</span>,</span>
@@ -109,8 +109,8 @@ layered/3D looks.</p>
 <span><span class="va">lane_only_row</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/str_subtitle_row.html">str_subtitle_row</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="st">"Lane-only band"</span>,</span>
 <span>  layout_style <span class="op">=</span> <span class="va">lane_only_layout</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, size <span class="op">=</span> <span class="fl">14</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
-<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, size <span class="op">=</span> <span class="fl">14</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>    radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    border_color <span class="op">=</span> <span class="va">lane_only_layout</span><span class="op">$</span><span class="va">outer_margin_bg</span>,</span>
 <span>    border_lwd <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -121,7 +121,7 @@ layered/3D looks.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Layered: box margin + margin_fill for a second colored band</span></span>
-<span><span class="va">layered_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitleLayoutStyle.html">subtitleLayoutStyle</a></span><span class="op">(</span></span>
+<span><span class="va">layered_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitle_layout_style.html">subtitle_layout_style</a></span><span class="op">(</span></span>
 <span>  row_height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
 <span>  outer_margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">10</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>  outer_margin_bg <span class="op">=</span> <span class="st">"#F97316"</span>,</span>
@@ -133,8 +133,8 @@ layered/3D looks.</p>
 <span><span class="va">layered_row</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/str_subtitle_row.html">str_subtitle_row</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="st">"Layered band"</span>,</span>
 <span>  layout_style <span class="op">=</span> <span class="va">layered_layout</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
-<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>    radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    border_color <span class="op">=</span> <span class="st">"#F97316"</span>,</span>
 <span>    border_lwd <span class="op">=</span> <span class="fl">0.8</span>,</span>
@@ -146,7 +146,7 @@ layered/3D looks.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Centered text, lane + margin fill</span></span>
-<span><span class="va">center_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitleLayoutStyle.html">subtitleLayoutStyle</a></span><span class="op">(</span></span>
+<span><span class="va">center_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitle_layout_style.html">subtitle_layout_style</a></span><span class="op">(</span></span>
 <span>  row_height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
 <span>  outer_margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">10</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>  outer_margin_bg <span class="op">=</span> <span class="st">"#22C55E"</span>,</span>
@@ -159,8 +159,8 @@ layered/3D looks.</p>
 <span><span class="va">center_row</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/str_subtitle_row.html">str_subtitle_row</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="st">"Centered subtitle"</span>,</span>
 <span>  layout_style <span class="op">=</span> <span class="va">center_layout</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#064E3B"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
-<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#064E3B"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>    radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    border_color <span class="op">=</span> <span class="st">"#22C55E"</span>,</span>
 <span>    border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -172,7 +172,7 @@ layered/3D looks.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Right-aligned text, zero box margin</span></span>
-<span><span class="va">right_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitleLayoutStyle.html">subtitleLayoutStyle</a></span><span class="op">(</span></span>
+<span><span class="va">right_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subtitle_layout_style.html">subtitle_layout_style</a></span><span class="op">(</span></span>
 <span>  row_height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
 <span>  outer_margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>  outer_margin_bg <span class="op">=</span> <span class="st">"#A855F7"</span>,</span>
@@ -185,8 +185,8 @@ layered/3D looks.</p>
 <span><span class="va">right_row</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/str_subtitle_row.html">str_subtitle_row</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="st">"Right aligned subtitle"</span>,</span>
 <span>  layout_style <span class="op">=</span> <span class="va">right_layout</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#4A044E"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
-<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>  text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#4A044E"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>    radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    border_color <span class="op">=</span> <span class="st">"#A855F7"</span>,</span>
 <span>    border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -201,7 +201,7 @@ layered/3D looks.</p>
 <h2 id="three-panel-row-example">Three-Panel Row Example<a class="anchor" aria-label="anchor" href="#three-panel-row-example"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">three_style</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/threePanelLayoutStyle.html">threePanelLayoutStyle</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">three_style</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/three_panel_layout_style.html">three_panel_layout_style</a></span><span class="op">(</span></span>
 <span>  A_bg <span class="op">=</span> <span class="st">"#F8FAFC"</span>,</span>
 <span>  B_bg <span class="op">=</span> <span class="st">"#ECFDF5"</span>,</span>
 <span>  C_bg <span class="op">=</span> <span class="st">"#FFF7ED"</span>,</span>
@@ -214,8 +214,8 @@ layered/3D looks.</p>
 <span><span class="va">three_row</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/str_three_panel_row.html">str_three_panel_row</a></span><span class="op">(</span></span>
 <span>  A_item <span class="op">=</span> <span class="fu"><a href="../reference/text_box.html">text_box</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Left panel text"</span>,</span>
-<span>    text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#1F2937"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
-<span>    box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>    text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#1F2937"</span>, size <span class="op">=</span> <span class="fl">12</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>    box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>      radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>      border_color <span class="op">=</span> <span class="st">"#0EA5E9"</span>,</span>
 <span>      border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -227,8 +227,8 @@ layered/3D looks.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  B_item <span class="op">=</span> <span class="fu"><a href="../reference/text_box.html">text_box</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Top-right text"</span>,</span>
-<span>    text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#14532D"</span>, size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span>,</span>
-<span>    box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>    text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#14532D"</span>, size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span>,</span>
+<span>    box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>      radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">4</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>      border_color <span class="op">=</span> <span class="st">"#22C55E"</span>,</span>
 <span>      border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -240,8 +240,8 @@ layered/3D looks.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  C_item <span class="op">=</span> <span class="fu"><a href="../reference/text_box.html">text_box</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Bottom-right text"</span>,</span>
-<span>    text_style <span class="op">=</span> <span class="fu"><a href="../reference/textStyle.html">textStyle</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#7C2D12"</span>, size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span>,</span>
-<span>    box_style <span class="op">=</span> <span class="fu"><a href="../reference/boxStyle.html">boxStyle</a></span><span class="op">(</span></span>
+<span>    text_style <span class="op">=</span> <span class="fu"><a href="../reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#7C2D12"</span>, size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span>,</span>
+<span>    box_style <span class="op">=</span> <span class="fu"><a href="../reference/box_style.html">box_style</a></span><span class="op">(</span></span>
 <span>      radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">4</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>      border_color <span class="op">=</span> <span class="st">"#F97316"</span>,</span>
 <span>      border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>

@@ -46,8 +46,8 @@ with its own text and box styles.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">text_box</span><span class="op">(</span></span>
 <span>  <span class="va">label</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="fu"><a href="textStyle.html">textStyle</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  box_style <span class="op">=</span> <span class="fu"><a href="boxStyle.html">boxStyle</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  text_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bg <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pad_x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pad_y <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -63,11 +63,11 @@ with its own text and box styles.</p>
 
 
 <dt id="arg-text-style">text_style<a class="anchor" aria-label="anchor" href="#arg-text-style"></a></dt>
-<dd><p>A `gpar` from [textStyle()].</p></dd>
+<dd><p>A `gpar` from [text_style()].</p></dd>
 
 
 <dt id="arg-box-style">box_style<a class="anchor" aria-label="anchor" href="#arg-box-style"></a></dt>
-<dd><p>A list from [boxStyle()].</p></dd>
+<dd><p>A list from [box_style()].</p></dd>
 
 
 <dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>

@@ -46,12 +46,10 @@ into equal-width columns with configurable padding, gaps, and lanes.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">str_n_panel_row</span><span class="op">(</span></span>
 <span>  <span class="va">items</span>,</span>
-<span>  row_height <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  column_style <span class="op">=</span> <span class="fu"><a href="columnLayoutStyle.html">columnLayoutStyle</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="fu"><a href="textStyle.html">textStyle</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  box_style <span class="op">=</span> <span class="fu"><a href="boxStyle.html">boxStyle</a></span><span class="op">(</span>radius <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"pt"</span><span class="op">)</span>, border_color <span class="op">=</span> <span class="st">"#D1D5DB"</span>, border_lwd</span>
-<span>    <span class="op">=</span> <span class="fl">1</span>, fill <span class="op">=</span> <span class="cn">NA</span>, margin <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">6</span><span class="op">)</span>, <span class="st">"pt"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>,</span>
-<span>    <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">8</span><span class="op">)</span>, <span class="st">"pt"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  row_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">2</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  column_style <span class="op">=</span> <span class="fu"><a href="column_layout_style.html">column_layout_style</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  text_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  image_scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"fill"</span><span class="op">)</span>,</span>
 <span>  full_bleed_left <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  full_bleed_right <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -68,15 +66,15 @@ into equal-width columns with configurable padding, gaps, and lanes.</p>
 
 
 <dt id="arg-column-style">column_style<a class="anchor" aria-label="anchor" href="#arg-column-style"></a></dt>
-<dd><p>A list from [columnLayoutStyle()] controlling padding/gaps/margins/backgrounds (non-negative units).</p></dd>
+<dd><p>A list from [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).</p></dd>
 
 
 <dt id="arg-text-style">text_style<a class="anchor" aria-label="anchor" href="#arg-text-style"></a></dt>
-<dd><p>Default text style (`textStyle()`), used for character items.</p></dd>
+<dd><p>Default text style (`text_style()`), used for character items.</p></dd>
 
 
 <dt id="arg-box-style">box_style<a class="anchor" aria-label="anchor" href="#arg-box-style"></a></dt>
-<dd><p>Default box style (`boxStyle()`), used for character/fallback items.</p></dd>
+<dd><p>Default box style (`box_style()`), used for character/fallback items.</p></dd>
 
 
 <dt id="arg-image-scale">image_scale<a class="anchor" aria-label="anchor" href="#arg-image-scale"></a></dt>
@@ -101,9 +99,9 @@ into equal-width columns with configurable padding, gaps, and lanes.</p>
 - `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings; otherwise the defaults below apply.
 - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.</p>
 <p>**Layout + styling**
-- `column_style`: list from [columnLayoutStyle()] (padding, gaps, margins, backgrounds).
-- `text_style`: default text style (`textStyle()`), used for character items.
-- `box_style`: default box style (`boxStyle()`), used for character/fallback items.
+- `column_style`: list from [column_layout_style()] (padding, gaps, margins, backgrounds).
+- `text_style`: default text style (`text_style()`), used for character items.
+- `box_style`: default box style (`box_style()`), used for character/fallback items.
 - `image_scale`: `"fit"` (preserve aspect) or `"fill"`.
 - `full_bleed_left` / `full_bleed_right`: allow first/last column to extend into outer lanes.
 - `debug_boxes`: overlay guides.</p>

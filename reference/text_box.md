@@ -8,8 +8,8 @@ Creates a text box payload that can be passed into layout functions
 ``` r
 text_box(
   label,
-  text_style = textStyle(),
-  box_style = boxStyle(),
+  text_style = NULL,
+  box_style = NULL,
   bg = NULL,
   pad_x = NULL,
   pad_y = NULL
@@ -24,11 +24,11 @@ text_box(
 
 - text_style:
 
-  A \`gpar\` from \[textStyle()\].
+  A \`gpar\` from \[text_style()\].
 
 - box_style:
 
-  A list from \[boxStyle()\].
+  A list from \[box_style()\].
 
 - bg:
 

@@ -14,13 +14,13 @@ library(grid)
 ## Two Layers to Know
 
 - **Lanes (outer margins)** come from layout styles such as
-  [`subtitleLayoutStyle()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitleLayoutStyle.md)
+  [`subtitle_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.md)
   or
-  [`columnLayoutStyle()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/columnLayoutStyle.md).
+  [`column_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/column_layout_style.md).
   These set the space between the content band and the page (good for
   gutters, shadows, or background bands).
 - **Box margin** comes from
-  [`boxStyle()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/boxStyle.md).
+  [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md).
   It is the gap immediately around the box itself. Set `margin = 0` for
   a single-layer band, or provide `margin` + `margin_fill` to create a
   second colored band inside the lane.
@@ -32,7 +32,7 @@ layered/3D looks.
 
 ``` r
 # Lane-only: no box margin, fill matches lanes
-lane_only_layout <- subtitleLayoutStyle(
+lane_only_layout <- subtitle_layout_style(
   row_height = unit(1, "in"),
   outer_margin = unit(0, "pt"),
   outer_margin_bg = "#0EA5E9",
@@ -44,8 +44,8 @@ lane_only_layout <- subtitleLayoutStyle(
 lane_only_row <- str_subtitle_row(
   label = "Lane-only band",
   layout_style = lane_only_layout,
-  text_style = textStyle(color = "white", size = 14, face = "bold"),
-  box_style = boxStyle(
+  text_style = text_style(color = "white", size = 14, face = "bold"),
+  box_style = box_style(
     radius = unit(8, "pt"),
     border_color = lane_only_layout$outer_margin_bg,
     border_lwd = 0.5,
@@ -56,7 +56,7 @@ lane_only_row <- str_subtitle_row(
 )
 
 # Layered: box margin + margin_fill for a second colored band
-layered_layout <- subtitleLayoutStyle(
+layered_layout <- subtitle_layout_style(
   row_height = unit(0.8, "in"),
   outer_margin = unit(10, "pt"),
   outer_margin_bg = "#F97316",
@@ -68,8 +68,8 @@ layered_layout <- subtitleLayoutStyle(
 layered_row <- str_subtitle_row(
   label = "Layered band",
   layout_style = layered_layout,
-  text_style = textStyle(color = "black", size = 12, face = "plain"),
-  box_style = boxStyle(
+  text_style = text_style(color = "black", size = 12, face = "plain"),
+  box_style = box_style(
     radius = unit(6, "pt"),
     border_color = "#F97316",
     border_lwd = 0.8,
@@ -81,7 +81,7 @@ layered_row <- str_subtitle_row(
 )
 
 # Centered text, lane + margin fill
-center_layout <- subtitleLayoutStyle(
+center_layout <- subtitle_layout_style(
   row_height = unit(0.8, "in"),
   outer_margin = unit(10, "pt"),
   outer_margin_bg = "#22C55E",
@@ -94,8 +94,8 @@ center_layout <- subtitleLayoutStyle(
 center_row <- str_subtitle_row(
   label = "Centered subtitle",
   layout_style = center_layout,
-  text_style = textStyle(color = "#064E3B", size = 12, face = "bold"),
-  box_style = boxStyle(
+  text_style = text_style(color = "#064E3B", size = 12, face = "bold"),
+  box_style = box_style(
     radius = unit(6, "pt"),
     border_color = "#22C55E",
     border_lwd = 1,
@@ -107,7 +107,7 @@ center_row <- str_subtitle_row(
 )
 
 # Right-aligned text, zero box margin
-right_layout <- subtitleLayoutStyle(
+right_layout <- subtitle_layout_style(
   row_height = unit(0.8, "in"),
   outer_margin = unit(8, "pt"),
   outer_margin_bg = "#A855F7",
@@ -120,8 +120,8 @@ right_layout <- subtitleLayoutStyle(
 right_row <- str_subtitle_row(
   label = "Right aligned subtitle",
   layout_style = right_layout,
-  text_style = textStyle(color = "#4A044E", size = 12, face = "plain"),
-  box_style = boxStyle(
+  text_style = text_style(color = "#4A044E", size = 12, face = "plain"),
+  box_style = box_style(
     radius = unit(2, "pt"),
     border_color = "#A855F7",
     border_lwd = 1,
@@ -136,7 +136,7 @@ right_row <- str_subtitle_row(
 ## Three-Panel Row Example
 
 ``` r
-three_style <- threePanelLayoutStyle(
+three_style <- three_panel_layout_style(
   A_bg = "#F8FAFC",
   B_bg = "#ECFDF5",
   C_bg = "#FFF7ED",
@@ -149,8 +149,8 @@ three_style <- threePanelLayoutStyle(
 three_row <- str_three_panel_row(
   A_item = text_box(
     "Left panel text",
-    text_style = textStyle(color = "#1F2937", size = 12, face = "bold"),
-    box_style = boxStyle(
+    text_style = text_style(color = "#1F2937", size = 12, face = "bold"),
+    box_style = box_style(
       radius = unit(6, "pt"),
       border_color = "#0EA5E9",
       border_lwd = 1,
@@ -162,8 +162,8 @@ three_row <- str_three_panel_row(
   ),
   B_item = text_box(
     "Top-right text",
-    text_style = textStyle(color = "#14532D", size = 11),
-    box_style = boxStyle(
+    text_style = text_style(color = "#14532D", size = 11),
+    box_style = box_style(
       radius = unit(4, "pt"),
       border_color = "#22C55E",
       border_lwd = 1,
@@ -175,8 +175,8 @@ three_row <- str_three_panel_row(
   ),
   C_item = text_box(
     "Bottom-right text",
-    text_style = textStyle(color = "#7C2D12", size = 11),
-    box_style = boxStyle(
+    text_style = text_style(color = "#7C2D12", size = 11),
+    box_style = box_style(
       radius = unit(4, "pt"),
       border_color = "#F97316",
       border_lwd = 1,

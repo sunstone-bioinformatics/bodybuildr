@@ -9,12 +9,10 @@ and lanes.
 ``` r
 str_n_panel_row(
   items,
-  row_height = grid::unit(2, "in"),
-  column_style = columnLayoutStyle(),
-  text_style = textStyle(),
-  box_style = boxStyle(radius = grid::unit(8, "pt"), border_color = "#D1D5DB", border_lwd
-    = 1, fill = NA, margin = grid::unit(c(6, 6, 6, 6), "pt"), padding = grid::unit(c(6,
-    8, 6, 8), "pt")),
+  row_height = unit(2, "in"),
+  column_style = column_layout_style(),
+  text_style = NULL,
+  box_style = NULL,
   image_scale = c("fit", "fill"),
   full_bleed_left = FALSE,
   full_bleed_right = FALSE,
@@ -31,16 +29,17 @@ str_n_panel_row(
 
 - column_style:
 
-  A list from \[columnLayoutStyle()\] controlling
+  A list from \[column_layout_style()\] controlling
   padding/gaps/margins/backgrounds (non-negative units).
 
 - text_style:
 
-  Default text style (\`textStyle()\`), used for character items.
+  Default text style (\`text_style()\`), used for character items.
 
 - box_style:
 
-  Default box style (\`boxStyle()\`), used for character/fallback items.
+  Default box style (\`box_style()\`), used for character/fallback
+  items.
 
 - image_scale:
 
@@ -67,10 +66,10 @@ own text/box/background settings; otherwise the defaults below apply. -
 when adding to a canvas.
 
 \*\*Layout + styling\*\* - \`column_style\`: list from
-\[columnLayoutStyle()\] (padding, gaps, margins, backgrounds). -
-\`text_style\`: default text style (\`textStyle()\`), used for character
-items. - \`box_style\`: default box style (\`boxStyle()\`), used for
-character/fallback items. - \`image_scale\`: \`"fit"\` (preserve aspect)
-or \`"fill"\`. - \`full_bleed_left\` / \`full_bleed_right\`: allow
-first/last column to extend into outer lanes. - \`debug_boxes\`: overlay
-guides.
+\[column_layout_style()\] (padding, gaps, margins, backgrounds). -
+\`text_style\`: default text style (\`text_style()\`), used for
+character items. - \`box_style\`: default box style (\`box_style()\`),
+used for character/fallback items. - \`image_scale\`: \`"fit"\`
+(preserve aspect) or \`"fill"\`. - \`full_bleed_left\` /
+\`full_bleed_right\`: allow first/last column to extend into outer
+lanes. - \`debug_boxes\`: overlay guides.
