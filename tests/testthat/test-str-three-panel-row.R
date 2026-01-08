@@ -2,8 +2,8 @@ test_that("str_three_panel_row renders three text boxes", {
   row <- str_three_panel_row(
     A_item = text_box(
       "Left panel text",
-      text_style = textStyle(color = "#1F2937", size = 12, face = "bold"),
-      box_style = boxStyle(
+      text_style = text_style(color = "#1F2937", size = 12, face = "bold"),
+      box_style = box_style(
         radius = grid::unit(6, "pt"),
         border_color = "#0EA5E9",
         border_lwd = 1,
@@ -15,8 +15,8 @@ test_that("str_three_panel_row renders three text boxes", {
     ),
     B_item = text_box(
       "Top-right text",
-      text_style = textStyle(color = "#14532D", size = 11),
-      box_style = boxStyle(
+      text_style = text_style(color = "#14532D", size = 11),
+      box_style = box_style(
         radius = grid::unit(4, "pt"),
         border_color = "#22C55E",
         border_lwd = 1,
@@ -28,8 +28,8 @@ test_that("str_three_panel_row renders three text boxes", {
     ),
     C_item = text_box(
       "Bottom-right text",
-      text_style = textStyle(color = "#7C2D12", size = 11),
-      box_style = boxStyle(
+      text_style = text_style(color = "#7C2D12", size = 11),
+      box_style = box_style(
         radius = grid::unit(4, "pt"),
         border_color = "#F97316",
         border_lwd = 1,
@@ -39,7 +39,7 @@ test_that("str_three_panel_row renders three text boxes", {
       ),
       bg = "#FFF7ED"
     ),
-    layout_style = threePanelLayoutStyle(
+    layout_style = three_panel_layout_style(
       A_bg = "#ffffffff",
       B_bg = "#ffffffff",
       C_bg = "#ffffffff",
@@ -52,10 +52,10 @@ test_that("str_three_panel_row renders three text boxes", {
 
 test_that("str_three_panel_row supports reverse layout", {
   row <- str_three_panel_row(
-    A_item = text_box("Right panel", text_style = textStyle(color = "#111827", size = 12)),
-    B_item = text_box("Left top", text_style = textStyle(color = "#111827", size = 11)),
-    C_item = text_box("Left bottom", text_style = textStyle(color = "#111827", size = 11)),
-    layout_style = threePanelLayoutStyle(
+    A_item = text_box("Right panel", text_style = text_style(color = "#111827", size = 12)),
+    B_item = text_box("Left top", text_style = text_style(color = "#111827", size = 11)),
+    C_item = text_box("Left bottom", text_style = text_style(color = "#111827", size = 11)),
+    layout_style = three_panel_layout_style(
       A_bg = "#ffffff",
       B_bg = "#ffffff",
       C_bg = "#ffffff",
@@ -78,8 +78,8 @@ test_that("str_three_panel_row exports mixed content to PDF", {
     B_item = plot_obj,
     C_item = text_box(
       "Notes on the right panel",
-      text_style = textStyle(color = "#111827", size = 11),
-      box_style = boxStyle(
+      text_style = text_style(color = "#111827", size = 11),
+      box_style = box_style(
         radius = grid::unit(6, "pt"),
         border_color = "#D1D5DB",
         border_lwd = 1,
@@ -89,7 +89,7 @@ test_that("str_three_panel_row exports mixed content to PDF", {
       ),
       bg = "#FFFFFF"
     ),
-    layout_style = threePanelLayoutStyle(
+    layout_style = three_panel_layout_style(
       A_bg = "#FFFFFF",
       B_bg = "#FFFFFF",
       C_bg = "#FFFFFF",
@@ -101,10 +101,10 @@ test_that("str_three_panel_row exports mixed content to PDF", {
   )
 
   row_text <- str_three_panel_row(
-    A_item = text_box("A panel",box_style = boxStyle(fill="#316ab9ff",padding = grid::unit(c(10,15,20,10), "pt")),  text_style = textStyle(color = "#1F2937", size = 12)),
-    B_item = text_box("B panel", text_style = textStyle(color = "#1F2937", size = 12)),
-    C_item = text_box("C panel", text_style = textStyle(color = "#1F2937", size = 12)),
-    layout_style = threePanelLayoutStyle(
+    A_item = text_box("A panel",box_style = box_style(fill="#316ab9ff",padding = grid::unit(c(10,15,20,10), "pt")),  text_style = text_style(color = "#1F2937", size = 12)),
+    B_item = text_box("B panel", text_style = text_style(color = "#1F2937", size = 12)),
+    C_item = text_box("C panel", text_style = text_style(color = "#1F2937", size = 12)),
+    layout_style = three_panel_layout_style(
       A_bg = "#ffffffff",
       B_bg = "#ffffffff",
       C_bg = "#ffffffff",
@@ -114,10 +114,10 @@ test_that("str_three_panel_row exports mixed content to PDF", {
   )
 
   row_reverse <- str_three_panel_row(
-    A_item = text_box("Right A", text_style = textStyle(color = "#0f172a", size = 12)),
-    B_item = text_box("Left B", text_style = textStyle(color = "#0f172a", size = 12)),
-    C_item = text_box("Left C", text_style = textStyle(color = "#0f172a", size = 12)),
-    layout_style = threePanelLayoutStyle(
+    A_item = text_box("Right A", text_style = text_style(color = "#0f172a", size = 12)),
+    B_item = text_box("Left B", text_style = text_style(color = "#0b47d4ff", size = 12)),
+    C_item = text_box("Left C", text_style = text_style(color = "#0f172a", size = 12)),
+    layout_style = three_panel_layout_style(
       A_bg = "#ffffff",
       B_bg = "#ffffff",
       C_bg = "#ffffff",

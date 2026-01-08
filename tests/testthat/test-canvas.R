@@ -28,7 +28,7 @@ test_that("draw_canvas_top accepts margins without error", {
   row <- make_test_grob()
   h <- grid::unit(0.5, "in")
   cnv <- canvas_add_row(cnv, row, h)
-  expect_no_error(draw_canvas_top(cnv,
+  expect_no_error(bodybuildr:::.draw_canvas_top(cnv,
     margin_top = grid::unit(0.1, "in"),
     margin_left = grid::unit(0.1, "in"),
     margin_right= grid::unit(0.2, "in"),
@@ -42,7 +42,7 @@ test_that("draw_canvas_top errors on negative margins", {
   h <- grid::unit(0.5, "in")
   cnv <- canvas_add_row(cnv, row, h)
   expect_error(
-    draw_canvas_top(cnv, margin_left = grid::unit(-0.1, "in")),
+    bodybuildr:::.draw_canvas_top(cnv, margin_left = grid::unit(-0.1, "in")),
     "`margin_left` must be non-negative"
   )
 })
@@ -86,5 +86,5 @@ test_that("export_pdf errors on negative sizes", {
 
 test_that("to_in converts units to numeric inches", {
   u <- grid::unit(72, "pt")
-  expect_equal(to_in(u), 1, tolerance = 0.01)
+  expect_equal(bodybuildr:::.to_in(u), 1, tolerance = 0.01)
 })

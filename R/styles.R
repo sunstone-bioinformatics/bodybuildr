@@ -13,14 +13,14 @@
 #' @return A `grid::gpar` object.
 #' @export
 #' @importFrom grid gpar
-textStyle <- function(color = "#111111",
+text_style <- function(color = "#111111",
                       size = 11,
                       face = "plain",
                       family = "sans") {
   if (length(size) != 1 || is.na(size) || size < 0) {
     stop("`size` must be length-1, non-negative.", call. = FALSE)
   }
-  grid::gpar(col = color, fontsize = size, fontface = face, fontfamily = family)
+  gpar(col = color, fontsize = size, fontface = face, fontfamily = family)
 }
 
 #' Define a box style
@@ -31,7 +31,7 @@ textStyle <- function(color = "#111111",
 #'
 #' Margin layers:
 #' - Box margin (`margin`, `margin_fill`) creates an inner gap around the box itself. Leave at zero for a single-layer look, or set `margin`/`margin_fill` for a double-layer/3D effect.
-#' - Row/column lanes come from layout styles (e.g., [columnLayoutStyle()], [subtitleLayoutStyle()]); they sit outside the box entirely.
+#' - Row/column lanes come from layout styles (e.g., [column_layout_style()], [subtitle_layout_style()]); they sit outside the box entirely.
 #'
 #' @param radius Corner radius as `grid::unit`.
 #' @param border_color Border color.
@@ -43,20 +43,20 @@ textStyle <- function(color = "#111111",
 #' @return A list with box styling parameters.
 #' @export
 #' @importFrom grid unit convertUnit
-boxStyle <- function(radius     = grid::unit(8, "pt"),
+box_style <- function(radius     = unit(8, "pt"),
                      border_color = "#D1D5DB",
                      border_lwd = 1,
                      fill       = NA,
-                     margin     = grid::unit(c(0, 0, 0, 0), "pt"),
+                     margin     = unit(c(0, 0, 0, 0), "pt"),
                      margin_fill= NA,
-                     padding    = grid::unit(c(0, 0, 0, 0), "pt")) {
+                     padding    = unit(c(0, 0, 0, 0), "pt")) {
   if (length(border_lwd) != 1 || is.na(border_lwd) || border_lwd < 0) {
     stop("`border_lwd` must be length-1, non-negative.", call. = FALSE)
   }
   normalize_unit_vec <- function(u, name) {
-    if (is.numeric(u)) u <- grid::unit(u, "pt")
-    if (!inherits(u, "unit")) stop("`", name, "` must be a grid::unit or numeric.", call. = FALSE)
-    vals <- as.numeric(grid::convertUnit(u, "pt", valueOnly = TRUE))
+    if (is.numeric(u)) u <- unit(u, "pt")
+    if (!inherits(u, "unit")) stop("`", name, "` must be a unit or numeric.", call. = FALSE)
+    vals <- as.numeric(convertUnit(u, "pt", valueOnly = TRUE))
     if (any(is.na(vals))) stop("`", name, "` cannot contain NA.", call. = FALSE)
     if (any(vals < 0)) stop("`", name, "` must be non-negative.", call. = FALSE)
     u
@@ -93,17 +93,17 @@ boxStyle <- function(radius     = grid::unit(8, "pt"),
 #' @return A list of layout parameters.
 #' @export
 #' @importFrom grid unit
-bannerLayoutStyle <- function(
-    banner_height      = grid::unit(1.6, "in"),
-    logo_panel_width   = grid::unit(1.8, "in"),
-    logo_pad_x         = grid::unit(0.12, "in"),
-    logo_pad_y         = grid::unit(0.15, "in"),
+banner_layout_style <- function(
+    banner_height      = unit(1.6, "in"),
+    logo_panel_width   = unit(1.8, "in"),
+    logo_pad_x         = unit(0.12, "in"),
+    logo_pad_y         = unit(0.15, "in"),
     banner_bg          = "#2f6cab",
     logo_panel_bg      = "#173052",
-    text_left_pad      = grid::unit(12, "pt"),
-    text_block_top_pad = grid::unit(10, "pt"),
-    title_vshift       = grid::unit(0, "pt"),
-    subtitle_gap       = grid::unit(6, "pt")
+    text_left_pad      = unit(12, "pt"),
+    text_block_top_pad = unit(10, "pt"),
+    title_vshift       = unit(0, "pt"),
+    subtitle_gap       = unit(6, "pt")
 ) {
   banner_height      <- .as_unit_nonneg(banner_height, "banner_height")
   logo_panel_width   <- .as_unit_nonneg(logo_panel_width, "logo_panel_width")
@@ -146,15 +146,15 @@ bannerLayoutStyle <- function(
 #' @return A list of column layout parameters.
 #' @export
 #' @importFrom grid unit
-columnLayoutStyle <- function(
+column_layout_style <- function(
     column_bg        = "white",
-    column_pad_x     = grid::unit(8,  "pt"),
-    column_pad_y     = grid::unit(8,  "pt"),
-    column_gap       = grid::unit(10, "pt"),
+    column_pad_x     = unit(8,  "pt"),
+    column_pad_y     = unit(8,  "pt"),
+    column_gap       = unit(10, "pt"),
     column_gap_bg    = NA,
-    outer_margin     = grid::unit(0, "pt"),
+    outer_margin     = unit(0, "pt"),
     outer_margin_bg  = NA,
-    bottom_margin    = grid::unit(10, "pt"),
+    bottom_margin    = unit(10, "pt"),
     bottom_margin_bg = NA
 ) {
   column_pad_x    <- .as_unit_nonneg(column_pad_x, "column_pad_x")
@@ -196,27 +196,27 @@ columnLayoutStyle <- function(
 #' @return A list of three-panel layout parameters.
 #' @export
 #' @importFrom grid unit
-threePanelLayoutStyle <- function(
-    row_height    = grid::unit(5, "in"),
-    A_width       = grid::unit(3.2, "in"),
+three_panel_layout_style <- function(
+    row_height    = unit(5, "in"),
+    A_width       = unit(3.2, "in"),
     right_split   = 0.55,
-    hgap          = grid::unit(10, "pt"),
-    vgap          = grid::unit(10, "pt"),
+    hgap          = unit(10, "pt"),
+    vgap          = unit(10, "pt"),
     hgap_bg       = NA,
     vgap_bg       = NA,
-    outer_margin  = grid::unit(0, "pt"),
+    outer_margin  = unit(0, "pt"),
     outer_margin_bg = NA,
-    bottom_margin = grid::unit(10, "pt"),
+    bottom_margin = unit(10, "pt"),
     bottom_margin_bg = NA,
     A_bg          = "white",
     B_bg          = "white",
     C_bg          = "white",
-    A_pad_x       = grid::unit(8, "pt"),
-    A_pad_y       = grid::unit(8, "pt"),
-    B_pad_x       = grid::unit(8, "pt"),
-    B_pad_y       = grid::unit(8, "pt"),
-    C_pad_x       = grid::unit(8, "pt"),
-    C_pad_y       = grid::unit(8, "pt")
+    A_pad_x       = unit(8, "pt"),
+    A_pad_y       = unit(8, "pt"),
+    B_pad_x       = unit(8, "pt"),
+    B_pad_y       = unit(8, "pt"),
+    C_pad_x       = unit(8, "pt"),
+    C_pad_y       = unit(8, "pt")
 ) {
   row_height    <- .as_unit_nonneg(row_height, "row_height")
   A_width       <- .as_unit_nonneg(A_width, "A_width")
@@ -273,11 +273,11 @@ threePanelLayoutStyle <- function(
 #' @return A list of subtitle layout parameters.
 #' @export
 #' @importFrom grid unit
-subtitleLayoutStyle <- function(
-    row_height       = grid::unit(0.9, "in"),
-    outer_margin     = grid::unit(15, "pt"),
+subtitle_layout_style <- function(
+    row_height       = unit(0.9, "in"),
+    outer_margin     = unit(15, "pt"),
     outer_margin_bg  = NA,
-    bottom_margin    = grid::unit(0, "pt"),
+    bottom_margin    = unit(0, "pt"),
     bottom_margin_bg = NA,
     cell_bg_cols     = c("#2f6cab", "#173052"),
     cell_bg_stops    = NULL,

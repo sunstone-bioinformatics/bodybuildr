@@ -7,8 +7,8 @@ test_that("str_n_panel_row renders mixed content with per-column styles", {
     plot_obj,
     text_box(
       "Text cell",
-      text_style = textStyle(color = "#7F1D1D", size = 12, face = "bold"),
-      box_style  = boxStyle(
+      text_style = text_style(color = "#7F1D1D", size = 12, face = "bold"),
+      box_style  = box_style(
         radius = grid::unit(10, "pt"),
         border_color = "#B91C1C",
         border_lwd = 1.2,
@@ -22,7 +22,7 @@ test_that("str_n_panel_row renders mixed content with per-column styles", {
 
   gt <- str_n_panel_row(
     items = items,
-    column_style = columnLayoutStyle(
+    column_style = column_layout_style(
       column_bg = c("#ffa200ff", "#FFFFFF", "#f90000ff"),
       column_gap = grid::unit(8, "pt"),
       outer_margin = grid::unit(6, "pt"),
@@ -40,28 +40,28 @@ test_that("str_n_panel_row export pdf with multiple rows", {
 
   row3 <- str_n_panel_row(
     items = list(logo, plot_obj, "Third panel text"),
-    column_style = columnLayoutStyle(
+    column_style = column_layout_style(
       column_bg = c("#425569", "#828992", "#acb64f"),bottom_margin_bg = "#0c74dbff"
     ),
-    text_style = textStyle(color = "#374151")
+    text_style = text_style(color = "#374151")
   )
 
   row2 <- str_n_panel_row(
     items = list(
       text_box(
         "Left text box",
-        text_style = textStyle(color = "#0F172A", size = 11),
-        box_style = boxStyle(fill = "#E0F2FE", radius = grid::unit(12, "pt")),
+        text_style = text_style(color = "#0F172A", size = 11),
+        box_style = box_style(fill = "#E0F2FE", radius = grid::unit(12, "pt")),
         bg = "#ECFEFF"
       ),
       text_box(
         "Right text box",
-        text_style = textStyle(color = "#7F1D1D", size = 12, face = "bold"),
-        box_style = boxStyle(fill = "#FFE4E6", radius = grid::unit(4, "pt")),
+        text_style = text_style(color = "#7F1D1D", size = 12, face = "bold"),
+        box_style = box_style(fill = "#FFE4E6", radius = grid::unit(4, "pt")),
         bg = "#FEF2F2"
       )
     ),
-    column_style = columnLayoutStyle(column_gap = grid::unit(20, "pt"),
+    column_style = column_layout_style(column_gap = grid::unit(20, "pt"),
     column_gap_bg = "#0c74dbff", 
     outer_margin_bg = "#0c74dbff",outer_margin = grid::unit(5, "pt"),
     column_bg = c("#0c74dbff", "#0c74dbff"),

@@ -8,11 +8,9 @@ str_three_panel_row(
   A_item = NULL,
   B_item = NULL,
   C_item = NULL,
-  layout_style = threePanelLayoutStyle(),
-  text_style = textStyle(),
-  box_style = boxStyle(radius = grid::unit(8, "pt"), border_color = "#D1D5DB", border_lwd
-    = 1, fill = NA, margin = grid::unit(c(6, 6, 6, 6), "pt"), padding = grid::unit(c(10,
-    10, 10, 10), "pt")),
+  layout_style = three_panel_layout_style(),
+  text_style = NULL,
+  box_style = NULL,
   image_scale = c("fit", "fill"),
   reverse = FALSE,
   debug_boxes = FALSE
@@ -21,11 +19,11 @@ str_three_panel_row(
 \arguments{
 \item{A_item, B_item, C_item}{Items to render (ggplot/grob/image path/character/NULL or `text_box()`).}
 
-\item{layout_style}{A list from [threePanelLayoutStyle()] controlling geometry, padding, and backgrounds.}
+\item{layout_style}{A list from [three_panel_layout_style()] controlling geometry, padding, and backgrounds.}
 
-\item{text_style}{Default text style (`textStyle()`), used for character items.}
+\item{text_style}{Default text style (`text_style()`), used for character items.}
 
-\item{box_style}{Default box style (`boxStyle()`), used for character/fallback items.}
+\item{box_style}{Default box style (`box_style()`), used for character/fallback items.}
 
 \item{image_scale}{How to place images: `"fit"` (preserve aspect) or `"fill"`.}
 

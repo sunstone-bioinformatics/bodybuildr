@@ -6,8 +6,8 @@
 \usage{
 text_box(
   label,
-  text_style = textStyle(),
-  box_style = boxStyle(),
+  text_style = NULL,
+  box_style = NULL,
   bg = NULL,
   pad_x = NULL,
   pad_y = NULL
@@ -16,9 +16,9 @@ text_box(
 \arguments{
 \item{label}{Character text to render.}
 
-\item{text_style}{A `gpar` from [textStyle()].}
+\item{text_style}{A `gpar` from [text_style()].}
 
-\item{box_style}{A list from [boxStyle()].}
+\item{box_style}{A list from [box_style()].}
 
 \item{bg}{Optional column background color override.}
 

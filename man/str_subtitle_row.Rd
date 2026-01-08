@@ -6,21 +6,19 @@
 \usage{
 str_subtitle_row(
   label,
-  layout_style = subtitleLayoutStyle(),
-  box_style = boxStyle(radius = grid::unit(10, "pt"), border_color = NA, border_lwd = 1,
-    fill = NA, margin = grid::unit(c(6, 10, 10, 6), "pt"), padding = grid::unit(c(10, 16,
-    10, 16), "pt")),
-  text_style = textStyle(color = "white", size = 16, face = "bold", family = "sans")
+  layout_style = subtitle_layout_style(),
+  box_style = NULL,
+  text_style = NULL
 )
 }
 \arguments{
 \item{label}{Subtitle text.}
 
-\item{layout_style}{A list from [subtitleLayoutStyle()] for lanes/gradient/background.}
+\item{layout_style}{A list from [subtitle_layout_style()] for lanes/gradient/background.}
 
-\item{box_style}{Box styling from [boxStyle()] (radius, border, fill, margin, padding, margin_fill).}
+\item{box_style}{Box styling from [box_style()] (radius, border, fill, margin, padding, margin_fill).}
 
-\item{text_style}{Text styling from [textStyle()].
+\item{text_style}{Text styling from [text_style()].
 Note: Lanes are controlled by `layout_style` (outer/bottom margins). The immediate gap around the box is controlled by `box_style$margin`/`margin_fill`. Leave the box margin at zero for a single-layer band, or set it (plus `margin_fill`) for a double-layer/3D effect.}
 }
 \value{

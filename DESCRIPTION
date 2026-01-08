@@ -15,6 +15,15 @@ Encoding: UTF-8
 LazyData: true
 URL: https://sunstone-bioinformatics.github.io/bodybuildr/
 RoxygenNote: 7.3.3
+Imports:
+    ggplot2,
+    grid,
+    grDevices,
+    gridtext,
+    gtable,
+    jpeg,
+    png,
+    tools
 Suggests:
     knitr,
     rmarkdown

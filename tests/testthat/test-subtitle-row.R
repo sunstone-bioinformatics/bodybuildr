@@ -1,17 +1,17 @@
 test_that("str_subtitle_row builds a gtable and exports", {
-  layout1 <- subtitleLayoutStyle(
+  layout1 <- subtitle_layout_style(
     row_height = grid::unit(1, "in"),
     outer_margin = grid::unit(0, "pt"),
     outer_margin_bg = "#0EA5E9",
     bottom_margin = grid::unit(0, "pt"),
     bottom_margin_bg = "#0284C7",
-    cell_bg_cols = c("#0369A1", "#e9990eff")
+    cell_bg_cols = c("#0369A1", "#95e90eff")
   )
   gt <- str_subtitle_row(
     label = "Section title",
     layout_style = layout1,
-    text_style = textStyle(color = "white", size = 14, face = "bold"),
-    box_style = boxStyle(
+    text_style = text_style(color = "white", size = 14, face = "bold"),
+    box_style = box_style(
       radius = grid::unit(8, "pt"),
       border_color = layout1$outer_margin_bg,
       border_lwd = 0.5,
@@ -29,7 +29,7 @@ test_that("str_subtitle_row builds a gtable and exports", {
   if (file.exists(pdf_path)) file.remove(pdf_path)
 
   # second style to exercise gradient + font sizes
-  layout2 <- subtitleLayoutStyle(
+  layout2 <- subtitle_layout_style(
     row_height = grid::unit(0.8, "in"),
     outer_margin = grid::unit(10, "pt"),
     outer_margin_bg = "#F97316",
@@ -40,8 +40,8 @@ test_that("str_subtitle_row builds a gtable and exports", {
   gt2 <- str_subtitle_row(
     label = "Another Subtitle",
     layout_style = layout2,
-    text_style = textStyle(color = "black", size = 12, face = "plain"),
-    box_style = boxStyle(
+    text_style = text_style(color = "black", size = 12, face = "plain"),
+    box_style = box_style(
       radius = grid::unit(6, "pt"),
       border_color = "#F97316",
       border_lwd = 0.2,
@@ -56,7 +56,7 @@ test_that("str_subtitle_row builds a gtable and exports", {
   canvas <- canvas_add_row(canvas, gt, layout1$row_height)
   canvas <- canvas_add_row(canvas, gt2, layout2$row_height)
   # center aligned row
-  layout3 <- subtitleLayoutStyle(
+  layout3 <- subtitle_layout_style(
     row_height = grid::unit(0.8, "in"),
     outer_margin = grid::unit(10, "pt"),
     outer_margin_bg = "#22C55E",
@@ -68,8 +68,8 @@ test_that("str_subtitle_row builds a gtable and exports", {
   gt3 <- str_subtitle_row(
     label = "Centered subtitle",
     layout_style = layout3,
-    text_style = textStyle(color = "#064E3B", size = 12, face = "bold"),
-    box_style = boxStyle(
+    text_style = text_style(color = "#064E3B", size = 12, face = "bold"),
+    box_style = box_style(
       radius = grid::unit(6, "pt"),
       border_color = "#22C55E",
       border_lwd = 1,
@@ -82,7 +82,7 @@ test_that("str_subtitle_row builds a gtable and exports", {
   canvas <- canvas_add_row(canvas, gt3, layout3$row_height)
 
   # right aligned row
-  layout4 <- subtitleLayoutStyle(
+  layout4 <- subtitle_layout_style(
     row_height = grid::unit(0.8, "in"),
     outer_margin = grid::unit(8, "pt"),
     outer_margin_bg = "#A855F7",
@@ -94,8 +94,8 @@ test_that("str_subtitle_row builds a gtable and exports", {
   gt4 <- str_subtitle_row(
     label = "Right aligned subtitle",
     layout_style = layout4,
-    text_style = textStyle(color = "#4A044E", size = 12, face = "plain"),
-    box_style = boxStyle(
+    text_style = text_style(color = "#4A044E", size = 12, face = "plain"),
+    box_style = box_style(
       radius = grid::unit(2, "pt"),
       border_color = "#A855F7",
       border_lwd = 1,
