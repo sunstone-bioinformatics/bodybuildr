@@ -1,7 +1,7 @@
 Package: bodybuildr
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Bodybuildr creates infographics row by row
+Version: 0.1.9 Shredded kangaroo
 Authors@R: c(
     person(
       "Rafael", "Leon",
