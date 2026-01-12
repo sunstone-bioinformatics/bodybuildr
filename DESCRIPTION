@@ -7,7 +7,12 @@ Authors@R: c(
       "Rafael", "Leon",
       email = "rafa.leon190@gmail.com",
       role = c("aut", "cre")
-    ))
+    ),
+    person(
+      "Dan", "Alvarez",
+      email = "d.alvrzx@gmail.com",
+      role = c("cre")
+    )))
 Description: More about what it does (maybe more than one line).
     Continuation lines should be indented.
 License: What license is it under?
