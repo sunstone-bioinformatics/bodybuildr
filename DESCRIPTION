@@ -1,7 +1,7 @@
 Package: bodybuildr
 Type: Package
 Title: Bodybuildr creates infographics row by row
-Version: 0.1.9 Shredded kangaroo
+Version: 0.1.9
 Authors@R: c(
     person(
       "Rafael", "Leon",
@@ -11,8 +11,9 @@ Authors@R: c(
     person(
       "Dan", "Alvarez",
       email = "d.alvrzx@gmail.com",
-      role = c("cre")
+      role = c("aut")
     ))
+Maintainer: Rafael Leon <rafa.leon190@gmail.com>
 Description: More about what it does (maybe more than one line).
     Continuation lines should be indented.
 License: What license is it under?
