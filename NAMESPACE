@@ -1,5 +1,7 @@
+S3method(drawDetails, bbdr_raster_grob)
+S3method(makeContent, bbdr_raster_grob)
 importFrom(ggplot2, ggplotGrob)
-importFrom(grid, convertHeight, convertUnit, convertWidth, gList, gTree, gpar, grobHeight, grobTree, grid.draw, grid.newpage, nullGrob, popViewport, pushViewport, rasterGrob, rectGrob, roundrectGrob, stringWidth, textGrob, unit, unit.c, viewport, vpStack)
+importFrom(grid, convertHeight, convertUnit, convertWidth, drawDetails, gList, gTree, grob, gpar, grobHeight, grobTree, grid.draw, grid.newpage, makeContent, nullGrob, popViewport, pushViewport, rasterGrob, rectGrob, roundrectGrob, stringWidth, textGrob, unit, unit.c, viewport, vpStack)
 importFrom(grDevices, dev.off, pdf)
 importFrom(gridtext, textbox_grob)
 importFrom(gtable, gtable, gtable_add_grob, gtable_add_rows)

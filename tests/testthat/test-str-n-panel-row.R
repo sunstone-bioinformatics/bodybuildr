@@ -87,3 +87,83 @@ test_that("str_n_panel_row export pdf with multiple rows", {
   expect_true(file.exists(pdf_path))
   expect_equal(res, pdf_path)
 })
+
+test_that("str_n_panel_row export pdf with debug boxes enabled", {
+  img <- make_test_png_rect(width = 430, height = 200)
+  row <- str_n_panel_row(
+    items = list(img),
+    column_style = column_layout_style(
+      column_bg = c("red", "red"),
+      column_pad_x = grid::unit(0, "pt"),
+      column_pad_y = grid::unit(0, "pt"),
+      column_gap = grid::unit(0, "pt"),
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt"),
+      outer_margin_bg = "#F1F5F9",
+      bottom_margin_bg = "#F1F5F9",
+      column_gap_bg = "#E2E8F0"
+    ),
+    image_scale = "fit",
+    debug_boxes = TRUE
+  )
+
+  canvas <- new_canvas()
+  canvas <- canvas_add_row(canvas, row, grid::unit(2, "in"))
+
+  out_dir <- normalizePath(file.path("..", "..", "test_files"), mustWork = FALSE)
+  dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+  pdf_path <- file.path(out_dir, "str_n_panel_row_debug.pdf")
+  if (file.exists(pdf_path)) file.remove(pdf_path)
+
+  res <- export_pdf(
+    canvas,
+    file = pdf_path,
+    width = grid::unit(8.5, "in"),
+    height = grid::unit(11, "in"),
+    margin_left = grid::unit(0.0, "in"),
+    margin_right = grid::unit(0.0, "in")
+  )
+  expect_true(file.exists(pdf_path))
+  expect_equal(res, pdf_path)
+})
+
+test_that("str_n_panel_row fit images respect panel aspect ratio", {
+  img <- make_test_png_rect(width = 200, height = 100)
+  row <- str_n_panel_row(
+    items = list(img),
+    column_style = column_layout_style(
+      column_bg = "white",
+      column_pad_x = grid::unit(0, "pt"),
+      column_pad_y = grid::unit(0, "pt"),
+      column_gap = grid::unit(0, "pt"),
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    ),
+    image_scale = "fit"
+  )
+
+  canvas <- new_canvas()
+  canvas <- canvas_add_row(canvas, row, grid::unit(2, "in"))
+
+  tmp <- tempfile(fileext = ".png")
+  grDevices::png(tmp, width = 4, height = 2, units = "in", res = 72)
+  on.exit(unlink(tmp), add = TRUE)
+  on.exit(grDevices::dev.off(), add = TRUE)
+
+  captured <- grid::grid.grabExpr({
+    grid::grid.newpage()
+    bodybuildr:::.draw_canvas_top(
+      canvas,
+      margin_top = grid::unit(0, "in"),
+      margin_right = grid::unit(0, "in"),
+      margin_bottom = grid::unit(0, "in"),
+      margin_left = grid::unit(0, "in")
+    )
+  })
+
+  forced <- grid::grid.force(captured)
+  raster <- find_first_raster_grob(forced)
+  expect_true(inherits(raster, "rastergrob"))
+  expect_equal(as.numeric(raster$width), 1, tolerance = 1e-6)
+  expect_equal(as.numeric(raster$height), 1, tolerance = 1e-6)
+})

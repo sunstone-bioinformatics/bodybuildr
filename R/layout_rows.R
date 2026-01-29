@@ -1,6 +1,59 @@
 # Layout row builders ------------------------------------------------------
 # Scaffolding only; implementations will be filled in.
 
+# Internal: raster grob that respects current viewport aspect on draw
+.bbdr_raster_grob <- function(img, scale = c("fit", "fill")) {
+  scale <- match.arg(scale)
+  grob(img = img, scale = scale, cl = "bbdr_raster_grob")
+}
+
+.bbdr_raster_units <- function(img, scale) {
+  hpx <- dim(img)[1]
+  wpx <- dim(img)[2]
+  img_aspect <- if (is.finite(hpx) && is.finite(wpx) && hpx > 0) wpx / hpx else NA_real_
+
+  vp_w <- tryCatch(convertWidth(unit(1, "npc"), "in", valueOnly = TRUE), error = function(e) NA_real_)
+  vp_h <- tryCatch(convertHeight(unit(1, "npc"), "in", valueOnly = TRUE), error = function(e) NA_real_)
+  vp_aspect <- if (is.finite(vp_w) && is.finite(vp_h) && vp_h > 0) vp_w / vp_h else NA_real_
+
+  if (is.na(img_aspect) || is.na(vp_aspect) || identical(scale, "fill")) {
+    w_unit <- unit(1, "npc")
+    h_unit <- unit(1, "npc")
+  } else if (img_aspect >= vp_aspect) {
+    w_unit <- unit(1, "npc")
+    h_unit <- unit(vp_aspect / img_aspect, "npc")
+  } else {
+    w_unit <- unit(img_aspect / vp_aspect, "npc")
+    h_unit <- unit(1, "npc")
+  }
+  list(width = w_unit, height = h_unit)
+}
+
+makeContent.bbdr_raster_grob <- function(x) {
+  dims <- .bbdr_raster_units(x$img, x$scale)
+  x$children <- gList(rasterGrob(
+    x$img,
+    x = 0.5, y = 0.5,
+    just = c("center", "center"),
+    width = dims$width,
+    height = dims$height,
+    interpolate = TRUE
+  ))
+  x
+}
+
+drawDetails.bbdr_raster_grob <- function(x, recording = TRUE) {
+  dims <- .bbdr_raster_units(x$img, x$scale)
+  grid::grid.raster(
+    x$img,
+    x = 0.5, y = 0.5,
+    just = c("center", "center"),
+    width = dims$width,
+    height = dims$height,
+    interpolate = TRUE
+  )
+}
+
 #' Multi-column row layout (1..n columns)
 #'
 #' Accepts ggplot objects, grobs, image paths, or character vectors and renders them
@@ -150,17 +203,7 @@ str_n_panel_row <- function(
         )
         return(grobTree(bg, blue_box, box))
       }
-      if (image_scale == "fit") {
-        hpx <- dim(img)[1]; wpx <- dim(img)[2]; aspect <- wpx / hpx
-        if (aspect >= 1) { w_unit <- unit(1, "npc"); h_unit <- unit(1/aspect, "npc")
-        } else            { w_unit <- unit(aspect, "npc"); h_unit <- unit(1, "npc") }
-        img_g <- rasterGrob(img, x = 0.5, y = 0.5, just = c("center","center"),
-                            width = w_unit, height = h_unit, interpolate = TRUE)
-      } else {
-        img_g <- rasterGrob(img, x = 0.5, y = 0.5, just = c("center","center"),
-                            width = unit(1, "npc"), height = unit(1, "npc"),
-                            interpolate = TRUE)
-      }
+      img_g <- .bbdr_raster_grob(img, scale = image_scale)
       return(grobTree(bg, blue_box, gTree(children = gList(img_g), vp = inner_vp)))
     }
     # text_box wrapper
@@ -387,17 +430,7 @@ str_three_panel_row <- function(
         )
         return(grobTree(bg, blue_box, txt))
       }
-      if (image_scale == "fit") {
-        hpx <- dim(img)[1]; wpx <- dim(img)[2]; aspect <- wpx / hpx
-        if (aspect >= 1) { w_unit <- unit(1, "npc"); h_unit <- unit(1/aspect, "npc")
-        } else            { w_unit <- unit(aspect, "npc"); h_unit <- unit(1, "npc") }
-        img_g <- rasterGrob(img, x = 0.5, y = 0.5, just = c("center","center"),
-                            width = w_unit, height = h_unit, interpolate = TRUE)
-      } else {
-        img_g <- rasterGrob(img, x = 0.5, y = 0.5, just = c("center","center"),
-                            width = unit(1, "npc"), height = unit(1, "npc"),
-                            interpolate = TRUE)
-      }
+      img_g <- .bbdr_raster_grob(img, scale = image_scale)
       return(grobTree(bg, blue_box, gTree(children = gList(img_g), vp = inner_vp)))
     }
     if (inherits(obj, "bbdr_text_box")) {

@@ -146,3 +146,50 @@ test_that("str_three_panel_row exports mixed content to PDF", {
   expect_true(file.exists(pdf_path))
   expect_equal(res, pdf_path)
 })
+
+test_that("str_three_panel_row fit images respect panel aspect ratio", {
+  img <- make_test_png_rect(width = 200, height = 100)
+  row <- str_three_panel_row(
+    A_item = img,
+    layout_style = three_panel_layout_style(
+      A_width = grid::unit(4, "in"),
+      right_split = 0.5,
+      hgap = grid::unit(0, "pt"),
+      vgap = grid::unit(0, "pt"),
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt"),
+      A_pad_x = grid::unit(0, "pt"),
+      A_pad_y = grid::unit(0, "pt"),
+      B_pad_x = grid::unit(0, "pt"),
+      B_pad_y = grid::unit(0, "pt"),
+      C_pad_x = grid::unit(0, "pt"),
+      C_pad_y = grid::unit(0, "pt")
+    ),
+    image_scale = "fit"
+  )
+
+  canvas <- new_canvas()
+  canvas <- canvas_add_row(canvas, row, grid::unit(2, "in"))
+
+  tmp <- tempfile(fileext = ".png")
+  grDevices::png(tmp, width = 6, height = 2, units = "in", res = 72)
+  on.exit(unlink(tmp), add = TRUE)
+  on.exit(grDevices::dev.off(), add = TRUE)
+
+  captured <- grid::grid.grabExpr({
+    grid::grid.newpage()
+    bodybuildr:::.draw_canvas_top(
+      canvas,
+      margin_top = grid::unit(0, "in"),
+      margin_right = grid::unit(0, "in"),
+      margin_bottom = grid::unit(0, "in"),
+      margin_left = grid::unit(0, "in")
+    )
+  })
+
+  forced <- grid::grid.force(captured)
+  raster <- find_first_raster_grob(forced)
+  expect_true(inherits(raster, "rastergrob"))
+  expect_equal(as.numeric(raster$width), 1, tolerance = 1e-6)
+  expect_equal(as.numeric(raster$height), 1, tolerance = 1e-6)
+})
