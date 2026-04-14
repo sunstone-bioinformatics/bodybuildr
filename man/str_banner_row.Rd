@@ -17,7 +17,7 @@ str_banner_row(
 
 \item{title, subtitle}{Text content.}
 
-\item{layout_style}{A list from [banner_layout_style()] controlling geometry and colors.}
+\item{layout_style}{A list from [layout_style()] or [banner_layout_style()] controlling geometry and colors.}
 
 \item{text_style}{A list with `title` and `subtitle` entries produced by [text_style()].}
 }

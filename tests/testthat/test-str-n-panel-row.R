@@ -22,7 +22,8 @@ test_that("str_n_panel_row renders mixed content with per-column styles", {
 
   gt <- str_n_panel_row(
     items = items,
-    column_style = column_layout_style(
+    layout_style = layout_style(
+      type = "columns",
       column_bg = c("#ffa200ff", "#FFFFFF", "#f90000ff"),
       column_gap = grid::unit(8, "pt"),
       outer_margin = grid::unit(6, "pt"),
@@ -40,7 +41,8 @@ test_that("str_n_panel_row export pdf with multiple rows", {
 
   row3 <- str_n_panel_row(
     items = list(logo, plot_obj, "Third panel text"),
-    column_style = column_layout_style(
+    layout_style = layout_style(
+      type = "columns",
       column_bg = c("#425569", "#828992", "#acb64f"),bottom_margin_bg = "#0c74dbff"
     ),
     text_style = text_style(color = "#374151")
@@ -61,7 +63,7 @@ test_that("str_n_panel_row export pdf with multiple rows", {
         bg = "#FEF2F2"
       )
     ),
-    column_style = column_layout_style(column_gap = grid::unit(20, "pt"),
+    layout_style = layout_style(type = "columns", column_gap = grid::unit(20, "pt"),
     column_gap_bg = "#0c74dbff", 
     outer_margin_bg = "#0c74dbff",outer_margin = grid::unit(5, "pt"),
     column_bg = c("#0c74dbff", "#0c74dbff"),
@@ -92,7 +94,8 @@ test_that("str_n_panel_row export pdf with debug boxes enabled", {
   img <- make_test_png_rect(width = 430, height = 200)
   row <- str_n_panel_row(
     items = list(img),
-    column_style = column_layout_style(
+    layout_style = layout_style(
+      type = "columns",
       column_bg = c("red", "red"),
       column_pad_x = grid::unit(0, "pt"),
       column_pad_y = grid::unit(0, "pt"),
@@ -131,7 +134,8 @@ test_that("str_n_panel_row fit images respect panel aspect ratio", {
   img <- make_test_png_rect(width = 200, height = 100)
   row <- str_n_panel_row(
     items = list(img),
-    column_style = column_layout_style(
+    layout_style = layout_style(
+      type = "columns",
       column_bg = "white",
       column_pad_x = grid::unit(0, "pt"),
       column_pad_y = grid::unit(0, "pt"),
@@ -166,4 +170,60 @@ test_that("str_n_panel_row fit images respect panel aspect ratio", {
   expect_true(inherits(raster, "rastergrob"))
   expect_equal(as.numeric(raster$width), 1, tolerance = 1e-6)
   expect_equal(as.numeric(raster$height), 1, tolerance = 1e-6)
+})
+
+test_that("str_n_panel_row supports deprecated column_style alias", {
+  expect_warning(
+    gt <- str_n_panel_row(
+      items = list("Text"),
+      column_style = column_layout_style(column_gap = grid::unit(4, "pt"))
+    ),
+    "`column_style` is deprecated; use `layout_style` instead."
+  )
+  expect_s3_class(gt, "gtable")
+})
+
+test_that("str_n_panel_row errors when both layout_style and column_style are supplied", {
+  expect_error(
+    str_n_panel_row(
+      items = list("Text"),
+      layout_style = layout_style(type = "columns"),
+      column_style = column_layout_style()
+    ),
+    "Supply only one of `layout_style` or `column_style`."
+  )
+})
+
+test_that("str_n_panel_row supports blank_box as intentional empty layout slot", {
+  skip_if_not_installed("ggplot2")
+  plot_obj <- make_test_plot()
+  if (is.null(plot_obj)) skip("plot fixture unavailable")
+
+  row <- str_n_panel_row(
+    items = list(blank_box(), plot_obj, blank_box()),
+    layout_style = layout_style(
+      type = "columns",
+      column_bg = c("#E5E7EB", "#FFFFFF", "#E5E7EB"),
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    )
+  )
+
+  expect_s3_class(row, "gtable")
+  expect_equal(length(row$grobs), 3)
+})
+
+test_that("str_n_panel_row blank_box differs from text rendering paths", {
+  row <- str_n_panel_row(
+    items = list(blank_box()),
+    layout_style = layout_style(
+      type = "columns",
+      column_bg = "#F3F4F6",
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    )
+  )
+
+  expect_s3_class(row$grobs[[1]], "gTree")
+  expect_false(any(vapply(row$grobs[[1]]$children, inherits, logical(1), "text")))
 })

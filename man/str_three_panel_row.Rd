@@ -17,9 +17,9 @@ str_three_panel_row(
 )
 }
 \arguments{
-\item{A_item, B_item, C_item}{Items to render (ggplot/grob/image path/character/NULL or `text_box()`).}
+\item{A_item, B_item, C_item}{Items to render (ggplot/grob/image path/character/NULL or `text_box()` / `blank_box()`).}
 
-\item{layout_style}{A list from [three_panel_layout_style()] controlling geometry, padding, and backgrounds.}
+\item{layout_style}{A list from [layout_style()] or [three_panel_layout_style()] controlling geometry, padding, and backgrounds.}
 
 \item{text_style}{Default text style (`text_style()`), used for character items.}
 
@@ -37,5 +37,5 @@ A `gtable` representing the row.
 }
 \description{
 Places a tall left panel next to two stacked right panels, with padding and lane options.
-Use [text_box()] for per-panel text styling; other items can be ggplot/grob/image paths.
+Use [text_box()] for per-panel text styling and [blank_box()] for intentional empty slots; other items can be ggplot/grob/image paths.
 }

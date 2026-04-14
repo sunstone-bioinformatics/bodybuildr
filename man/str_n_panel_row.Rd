@@ -7,7 +7,8 @@
 str_n_panel_row(
   items,
   row_height = unit(2, "in"),
-  column_style = column_layout_style(),
+  layout_style = NULL,
+  column_style = NULL,
   text_style = NULL,
   box_style = NULL,
   image_scale = c("fit", "fill"),
@@ -19,7 +20,9 @@ str_n_panel_row(
 \arguments{
 \item{row_height}{Optional nominal height (`grid::unit`); actual height is set when adding to a canvas.}
 
-\item{column_style}{A list from [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).}
+\item{layout_style}{A list from [layout_style()] or [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).}
+
+\item{column_style}{Deprecated alias for `layout_style`.}
 
 \item{text_style}{Default text style (`text_style()`), used for character items.}
 
@@ -40,11 +43,11 @@ into equal-width columns with configurable padding, gaps, and lanes.
 }
 \details{
 **Inputs**
-- `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings; otherwise the defaults below apply.
+- `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings, or [blank_box()] for an intentional empty slot.
 - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.
 
 **Layout + styling**
-- `column_style`: list from [column_layout_style()] (padding, gaps, margins, backgrounds).
+- `layout_style`: list from [layout_style()] or [column_layout_style()] (padding, gaps, margins, backgrounds).
 - `text_style`: default text style (`text_style()`), used for character items.
 - `box_style`: default box style (`box_style()`), used for character/fallback items.
 - `image_scale`: `"fit"` (preserve aspect) or `"fill"`.

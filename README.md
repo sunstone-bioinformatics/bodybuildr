@@ -40,7 +40,8 @@ banner <- str_banner_row(
 # Add a subtitle band
 subtitle <- str_subtitle_row(
   label = "Key Findings",
-  layout_style = subtitle_layout_style(
+  layout_style = layout_style(
+    type = "subtitle",
     outer_margin = grid::unit(10, "pt"),
     bottom_margin = grid::unit(6, "pt")
   ),
@@ -50,18 +51,12 @@ subtitle <- str_subtitle_row(
 # Build a 3-column row with per-panel styling
 row <- str_n_panel_row(
   items = list(
-    "Left panel text",
-    "Middle panel text",
-    text_box(
-      "Right panel text",
-      text_style = text_style(color = "#111827", size = 11),
-      box_style = box_style(
-        fill = "#F9FAFB",
-        padding = grid::unit(c(6, 10, 6, 10), "pt")
-      )
-    )
+    blank_box(),
+    "Centered middle text",
+    blank_box()
   ),
-  column_style = column_layout_style(
+  layout_style = layout_style(
+    type = "columns",
     column_gap = grid::unit(8, "pt"),
     outer_margin = grid::unit(6, "pt"),
     bottom_margin = grid::unit(6, "pt")
@@ -87,8 +82,11 @@ Row builders:
 
 Styling helpers:
 - `text_style()` and `box_style()` to control typography and boxes
-- `column_layout_style()`, `subtitle_layout_style()`, and `three_panel_layout_style()`
-  to control spacing, lanes, and backgrounds
+- `blank_box()` for intentional empty layout slots
+- `layout_style(type = ...)` as the main layout constructor for row spacing, lanes,
+  and backgrounds
+- `banner_layout_style()`, `column_layout_style()`, `subtitle_layout_style()`, and
+  `three_panel_layout_style()` as explicit row-specific aliases
 
 Canvas helpers:
 - `new_canvas()` and `canvas_add_row()` to stack rows

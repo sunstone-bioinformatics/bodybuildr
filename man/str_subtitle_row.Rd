@@ -14,7 +14,7 @@ str_subtitle_row(
 \arguments{
 \item{label}{Subtitle text.}
 
-\item{layout_style}{A list from [subtitle_layout_style()] for lanes/gradient/background.}
+\item{layout_style}{A list from [layout_style()] or [subtitle_layout_style()] for lanes/gradient/background.}
 
 \item{box_style}{Box styling from [box_style()] (radius, border, fill, margin, padding, margin_fill).}
 
