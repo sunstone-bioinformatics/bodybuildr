@@ -9,7 +9,7 @@ into equal-width columns with configurable padding, gaps, and lanes."></head><bo
 
     <a class="navbar-brand me-2" href="../index.html">bodybuildr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,8 @@ into equal-width columns with configurable padding, gaps, and lanes.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">str_n_panel_row</span><span class="op">(</span></span>
 <span>  <span class="va">items</span>,</span>
 <span>  row_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">2</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>  column_style <span class="op">=</span> <span class="fu"><a href="column_layout_style.html">column_layout_style</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  layout_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  column_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  text_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  box_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  image_scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"fill"</span><span class="op">)</span>,</span>
@@ -65,8 +66,12 @@ into equal-width columns with configurable padding, gaps, and lanes.</p>
 <dd><p>Optional nominal height (`grid::unit`); actual height is set when adding to a canvas.</p></dd>
 
 
+<dt id="arg-layout-style">layout_style<a class="anchor" aria-label="anchor" href="#arg-layout-style"></a></dt>
+<dd><p>A list from [layout_style()] or [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).</p></dd>
+
+
 <dt id="arg-column-style">column_style<a class="anchor" aria-label="anchor" href="#arg-column-style"></a></dt>
-<dd><p>A list from [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).</p></dd>
+<dd><p>Deprecated alias for `layout_style`.</p></dd>
 
 
 <dt id="arg-text-style">text_style<a class="anchor" aria-label="anchor" href="#arg-text-style"></a></dt>
@@ -96,10 +101,10 @@ into equal-width columns with configurable padding, gaps, and lanes.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>**Inputs**
-- `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings; otherwise the defaults below apply.
+- `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings, or [blank_box()] for an intentional empty slot.
 - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.</p>
 <p>**Layout + styling**
-- `column_style`: list from [column_layout_style()] (padding, gaps, margins, backgrounds).
+- `layout_style`: list from [layout_style()] or [column_layout_style()] (padding, gaps, margins, backgrounds).
 - `text_style`: default text style (`text_style()`), used for character items.
 - `box_style`: default box style (`box_style()`), used for character/fallback items.
 - `image_scale`: `"fit"` (preserve aspect) or `"fill"`.

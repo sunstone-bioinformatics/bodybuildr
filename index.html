@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">bodybuildr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,8 @@
 <span><span class="co"># Add a subtitle band</span></span>
 <span><span class="va">subtitle</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/str_subtitle_row.html">str_subtitle_row</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="st">"Key Findings"</span>,</span>
-<span>  layout_style <span class="op">=</span> <span class="fu"><a href="reference/subtitle_layout_style.html">subtitle_layout_style</a></span><span class="op">(</span></span>
+<span>  layout_style <span class="op">=</span> <span class="fu"><a href="reference/layout_style.html">layout_style</a></span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"subtitle"</span>,</span>
 <span>    outer_margin <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">10</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    bottom_margin <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"pt"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
@@ -103,18 +104,12 @@
 <span><span class="co"># Build a 3-column row with per-panel styling</span></span>
 <span><span class="va">row</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/str_n_panel_row.html">str_n_panel_row</a></span><span class="op">(</span></span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">"Left panel text"</span>,</span>
-<span>    <span class="st">"Middle panel text"</span>,</span>
-<span>    <span class="fu"><a href="reference/text_box.html">text_box</a></span><span class="op">(</span></span>
-<span>      <span class="st">"Right panel text"</span>,</span>
-<span>      text_style <span class="op">=</span> <span class="fu"><a href="reference/text_style.html">text_style</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#111827"</span>, size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span>,</span>
-<span>      box_style <span class="op">=</span> <span class="fu"><a href="reference/box_style.html">box_style</a></span><span class="op">(</span></span>
-<span>        fill <span class="op">=</span> <span class="st">"#F9FAFB"</span>,</span>
-<span>        padding <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">10</span>, <span class="fl">6</span>, <span class="fl">10</span><span class="op">)</span>, <span class="st">"pt"</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
+<span>    <span class="fu"><a href="reference/blank_box.html">blank_box</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="st">"Centered middle text"</span>,</span>
+<span>    <span class="fu"><a href="reference/blank_box.html">blank_box</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  column_style <span class="op">=</span> <span class="fu"><a href="reference/column_layout_style.html">column_layout_style</a></span><span class="op">(</span></span>
+<span>  layout_style <span class="op">=</span> <span class="fu"><a href="reference/layout_style.html">layout_style</a></span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="st">"columns"</span>,</span>
 <span>    column_gap <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    outer_margin <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"pt"</span><span class="op">)</span>,</span>
 <span>    bottom_margin <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"pt"</span><span class="op">)</span></span>
@@ -134,7 +129,7 @@
 <h2 id="core-building-blocks">Core building blocks<a class="anchor" aria-label="anchor" href="#core-building-blocks"></a>
 </h2>
 <p>Row builders: - <code><a href="reference/str_banner_row.html">str_banner_row()</a></code> for a logo + title/subtitle banner - <code><a href="reference/str_subtitle_row.html">str_subtitle_row()</a></code> for a full-width subtitle band - <code><a href="reference/str_n_panel_row.html">str_n_panel_row()</a></code> for 1..n columns - <code><a href="reference/str_three_panel_row.html">str_three_panel_row()</a></code> for A | (B over C) layouts</p>
-<p>Styling helpers: - <code><a href="reference/text_style.html">text_style()</a></code> and <code><a href="reference/box_style.html">box_style()</a></code> to control typography and boxes - <code><a href="reference/column_layout_style.html">column_layout_style()</a></code>, <code><a href="reference/subtitle_layout_style.html">subtitle_layout_style()</a></code>, and <code><a href="reference/three_panel_layout_style.html">three_panel_layout_style()</a></code> to control spacing, lanes, and backgrounds</p>
+<p>Styling helpers: - <code><a href="reference/text_style.html">text_style()</a></code> and <code><a href="reference/box_style.html">box_style()</a></code> to control typography and boxes - <code><a href="reference/blank_box.html">blank_box()</a></code> for intentional empty layout slots - <code>layout_style(type = ...)</code> as the main layout constructor for row spacing, lanes, and backgrounds - <code><a href="reference/banner_layout_style.html">banner_layout_style()</a></code>, <code><a href="reference/column_layout_style.html">column_layout_style()</a></code>, <code><a href="reference/subtitle_layout_style.html">subtitle_layout_style()</a></code>, and <code><a href="reference/three_panel_layout_style.html">three_panel_layout_style()</a></code> as explicit row-specific aliases</p>
 <p>Canvas helpers: - <code><a href="reference/new_canvas.html">new_canvas()</a></code> and <code><a href="reference/canvas_add_row.html">canvas_add_row()</a></code> to stack rows - <code><a href="reference/export_pdf.html">export_pdf()</a></code> to write a final PDF</p>
 </div>
 <div class="section level2">

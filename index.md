@@ -47,7 +47,8 @@ banner <- str_banner_row(
 # Add a subtitle band
 subtitle <- str_subtitle_row(
   label = "Key Findings",
-  layout_style = subtitle_layout_style(
+  layout_style = layout_style(
+    type = "subtitle",
     outer_margin = grid::unit(10, "pt"),
     bottom_margin = grid::unit(6, "pt")
   ),
@@ -57,18 +58,12 @@ subtitle <- str_subtitle_row(
 # Build a 3-column row with per-panel styling
 row <- str_n_panel_row(
   items = list(
-    "Left panel text",
-    "Middle panel text",
-    text_box(
-      "Right panel text",
-      text_style = text_style(color = "#111827", size = 11),
-      box_style = box_style(
-        fill = "#F9FAFB",
-        padding = grid::unit(c(6, 10, 6, 10), "pt")
-      )
-    )
+    blank_box(),
+    "Centered middle text",
+    blank_box()
   ),
-  column_style = column_layout_style(
+  layout_style = layout_style(
+    type = "columns",
     column_gap = grid::unit(8, "pt"),
     outer_margin = grid::unit(6, "pt"),
     bottom_margin = grid::unit(6, "pt")
@@ -102,11 +97,15 @@ Styling helpers: -
 and
 [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
 to control typography and boxes -
+[`blank_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/blank_box.md)
+for intentional empty layout slots - `layout_style(type = ...)` as the
+main layout constructor for row spacing, lanes, and backgrounds -
+[`banner_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_layout_style.md),
 [`column_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/column_layout_style.md),
 [`subtitle_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.md),
 and
 [`three_panel_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/three_panel_layout_style.md)
-to control spacing, lanes, and backgrounds
+as explicit row-specific aliases
 
 Canvas helpers: -
 [`new_canvas()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.md)

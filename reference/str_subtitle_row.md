@@ -22,7 +22,8 @@ str_subtitle_row(
 
 - layout_style:
 
-  A list from \[subtitle_layout_style()\] for lanes/gradient/background.
+  A list from \[layout_style()\] or \[subtitle_layout_style()\] for
+  lanes/gradient/background.
 
 - box_style:
 

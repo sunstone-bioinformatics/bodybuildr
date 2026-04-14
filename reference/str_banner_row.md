@@ -27,7 +27,8 @@ str_banner_row(
 
 - layout_style:
 
-  A list from \[banner_layout_style()\] controlling geometry and colors.
+  A list from \[layout_style()\] or \[banner_layout_style()\]
+  controlling geometry and colors.
 
 - text_style:
 

@@ -1,8 +1,9 @@
 # Three-panel row layout (A \| B over C)
 
 Places a tall left panel next to two stacked right panels, with padding
-and lane options. Use \[text_box()\] for per-panel text styling; other
-items can be ggplot/grob/image paths.
+and lane options. Use \[text_box()\] for per-panel text styling and
+\[blank_box()\] for intentional empty slots; other items can be
+ggplot/grob/image paths.
 
 ## Usage
 
@@ -25,12 +26,12 @@ str_three_panel_row(
 - A_item, B_item, C_item:
 
   Items to render (ggplot/grob/image path/character/NULL or
-  \`text_box()\`).
+  \`text_box()\` / \`blank_box()\`).
 
 - layout_style:
 
-  A list from \[three_panel_layout_style()\] controlling geometry,
-  padding, and backgrounds.
+  A list from \[layout_style()\] or \[three_panel_layout_style()\]
+  controlling geometry, padding, and backgrounds.
 
 - text_style:
 

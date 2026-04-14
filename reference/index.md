@@ -4,6 +4,8 @@
 
 - [`banner_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_layout_style.md)
   : Define banner layout defaults
+- [`blank_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/blank_box.md)
+  : Construct an intentional empty layout box
 - [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
   : Define a box style
 - [`canvas_add_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/canvas_add_row.md)
@@ -13,6 +15,8 @@
 - [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
   [`export_pdf_top()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
   : Export a canvas to PDF (top-anchored)
+- [`layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/layout_style.md)
+  : Define a row layout style
 - [`new_canvas()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.md)
   : Create a new canvas gtable
 - [`str_banner_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_banner_row.md)
