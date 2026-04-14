@@ -45,6 +45,20 @@ text_box <- function(
   )
 }
 
+#' Construct an intentional empty layout box
+#'
+#' Creates a blank layout payload that can be passed into row layout functions when
+#' you want an explicit empty slot in the composition.
+#'
+#' Unlike `NULL`, which means missing content, `blank_box()` means a deliberate
+#' empty layout element that still participates in row geometry.
+#'
+#' @return An object of class `"bbdr_blank_box"` to use as an item in layout rows.
+#' @export
+blank_box <- function() {
+  structure(list(), class = "bbdr_blank_box")
+}
+
 #' Internal: wrapped text box anchored top-left
 #'
 #' Internal helper used by layout row builders to render wrapped text inside a padded, rounded box.

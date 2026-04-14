@@ -51,16 +51,9 @@ subtitle <- str_subtitle_row(
 # Build a 3-column row with per-panel styling
 row <- str_n_panel_row(
   items = list(
-    "Left panel text",
-    "Middle panel text",
-    text_box(
-      "Right panel text",
-      text_style = text_style(color = "#111827", size = 11),
-      box_style = box_style(
-        fill = "#F9FAFB",
-        padding = grid::unit(c(6, 10, 6, 10), "pt")
-      )
-    )
+    blank_box(),
+    "Centered middle text",
+    blank_box()
   ),
   layout_style = layout_style(
     type = "columns",
@@ -89,6 +82,7 @@ Row builders:
 
 Styling helpers:
 - `text_style()` and `box_style()` to control typography and boxes
+- `blank_box()` for intentional empty layout slots
 - `layout_style(type = ...)` as the main layout constructor for row spacing, lanes,
   and backgrounds
 - `banner_layout_style()`, `column_layout_style()`, `subtitle_layout_style()`, and

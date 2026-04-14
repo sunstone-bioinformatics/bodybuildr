@@ -60,7 +60,7 @@ drawDetails.bbdr_raster_grob <- function(x, recording = TRUE) {
 #' into equal-width columns with configurable padding, gaps, and lanes.
 #'
 #' **Inputs**
-#' - `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings; otherwise the defaults below apply.
+#' - `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings, or [blank_box()] for an intentional empty slot.
 #' - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.
 #'
 #' **Layout + styling**
@@ -234,6 +234,10 @@ str_n_panel_row <- function(
       )
       return(grobTree(bg, blue_box, box))
     }
+    # blank_box -> keep slot + background, no inner content
+    if (inherits(obj, "bbdr_blank_box")) {
+      return(grobTree(bg, blue_box))
+    }
     # character -> rounded TEXT BOX
     if (is.character(obj)) {
       box <- .wrap_text_top_left(
@@ -321,9 +325,9 @@ str_n_panel_row <- function(
 #' Three-panel row layout (A | B over C)
 #'
 #' Places a tall left panel next to two stacked right panels, with padding and lane options.
-#' Use [text_box()] for per-panel text styling; other items can be ggplot/grob/image paths.
+#' Use [text_box()] for per-panel text styling and [blank_box()] for intentional empty slots; other items can be ggplot/grob/image paths.
 #'
-#' @param A_item,B_item,C_item Items to render (ggplot/grob/image path/character/NULL or `text_box()`).
+#' @param A_item,B_item,C_item Items to render (ggplot/grob/image path/character/NULL or `text_box()` / `blank_box()`).
 #' @param layout_style A list from [layout_style()] or [three_panel_layout_style()] controlling geometry, padding, and backgrounds.
 #' @param text_style Default text style (`text_style()`), used for character items.
 #' @param box_style Default box style (`box_style()`), used for character/fallback items.
@@ -450,6 +454,9 @@ str_three_panel_row <- function(
         box_margin = style$box_style$margin, text_pad = style$box_style$padding
       )
       return(grobTree(bg, blue_box, txt))
+    }
+    if (inherits(obj, "bbdr_blank_box")) {
+      return(grobTree(bg, blue_box))
     }
     if (is.character(obj)) {
       txt <- .wrap_text_top_left(
