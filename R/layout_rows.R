@@ -64,7 +64,7 @@ drawDetails.bbdr_raster_grob <- function(x, recording = TRUE) {
 #' - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.
 #'
 #' **Layout + styling**
-#' - `column_style`: list from [column_layout_style()] (padding, gaps, margins, backgrounds).
+#' - `layout_style`: list from [layout_style()] or [column_layout_style()] (padding, gaps, margins, backgrounds).
 #' - `text_style`: default text style (`text_style()`), used for character items.
 #' - `box_style`: default box style (`box_style()`), used for character/fallback items.
 #' - `image_scale`: `"fit"` (preserve aspect) or `"fill"`.
@@ -72,7 +72,8 @@ drawDetails.bbdr_raster_grob <- function(x, recording = TRUE) {
 #' - `debug_boxes`: overlay guides.
 #'
 #' @param row_height Optional nominal height (`grid::unit`); actual height is set when adding to a canvas.
-#' @param column_style A list from [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).
+#' @param layout_style A list from [layout_style()] or [column_layout_style()] controlling padding/gaps/margins/backgrounds (non-negative units).
+#' @param column_style Deprecated alias for `layout_style`.
 #' @param text_style Default text style (`text_style()`), used for character items.
 #' @param box_style Default box style (`box_style()`), used for character/fallback items.
 #' @param image_scale How to place images: `"fit"` (preserve aspect) or `"fill"`.
@@ -89,7 +90,8 @@ drawDetails.bbdr_raster_grob <- function(x, recording = TRUE) {
 str_n_panel_row <- function(
     items,
     row_height        = unit(2.0, "in"),
-    column_style      = column_layout_style(),
+    layout_style      = NULL,
+    column_style      = NULL,
     text_style        = NULL,
     box_style         = NULL,
     image_scale       = c("fit", "fill"),
@@ -101,14 +103,21 @@ str_n_panel_row <- function(
   if (!is.list(items)) items <- as.list(items)
   n <- length(items); if (n < 1) stop("`items` must have length >= 1")
 
-  # merge column style overrides
-  if (is.list(column_style)) {
-    defaults <- column_layout_style()
-    defaults[names(column_style)] <- column_style
-    column_style <- defaults
-  } else {
-    column_style <- column_layout_style()
+  if (!is.null(layout_style) && !is.null(column_style)) {
+    stop("Supply only one of `layout_style` or `column_style`.", call. = FALSE)
   }
+  if (is.null(layout_style) && !is.null(column_style)) {
+    warning(
+      "`column_style` is deprecated; use `layout_style` instead.",
+      call. = FALSE
+    )
+    layout_style <- column_style
+  }
+  if (is.null(layout_style)) layout_style <- column_layout_style()
+  if (!is.list(layout_style)) {
+    stop("`layout_style` must be a layout-style list.", call. = FALSE)
+  }
+  layout_style <- do.call(column_layout_style, layout_style)
 
   if (is.null(text_style)) {
     text_style <- get("text_style", envir = parent.env(environment()))()
@@ -125,9 +134,9 @@ str_n_panel_row <- function(
   }
 
   # normalize lengths
-  column_bg <- column_style$column_bg
+  column_bg <- layout_style$column_bg
   if (length(column_bg) == 1) column_bg <- rep(column_bg, n) else column_bg <- rep_len(column_bg, n)
-  column_gap_bg <- column_style$column_gap_bg
+  column_gap_bg <- layout_style$column_gap_bg
   if (is.null(column_gap_bg)) column_gap_bg <- NA
   if (n > 1) {
     if (length(column_gap_bg) == 1) column_gap_bg <- rep(column_gap_bg, n - 1)
@@ -137,11 +146,11 @@ str_n_panel_row <- function(
   }
 
   # validate units non-negative
-  column_pad_x   <- .as_unit_nonneg(column_style$column_pad_x, "column_pad_x")
-  column_pad_y   <- .as_unit_nonneg(column_style$column_pad_y, "column_pad_y")
-  column_gap     <- .as_unit_nonneg(column_style$column_gap, "column_gap")
-  outer_margin   <- .as_unit_nonneg(column_style$outer_margin, "outer_margin")
-  bottom_margin  <- .as_unit_nonneg(column_style$bottom_margin, "bottom_margin")
+  column_pad_x   <- .as_unit_nonneg(layout_style$column_pad_x, "column_pad_x")
+  column_pad_y   <- .as_unit_nonneg(layout_style$column_pad_y, "column_pad_y")
+  column_gap     <- .as_unit_nonneg(layout_style$column_gap, "column_gap")
+  outer_margin   <- .as_unit_nonneg(layout_style$outer_margin, "outer_margin")
+  bottom_margin  <- .as_unit_nonneg(layout_style$bottom_margin, "bottom_margin")
   row_height     <- .as_unit_nonneg(row_height, "row_height")
 
   # helper to merge per-column overrides
@@ -266,10 +275,10 @@ str_n_panel_row <- function(
   gt <- gtable(widths = widths, heights = unit.c(unit(1, "null"), bottom_margin))
 
   # outer lanes background
-  if (!is.null(column_style$outer_margin_bg) && !is.na(column_style$outer_margin_bg)) {
-    gt <- gtable_add_grob(gt, rectGrob(gp = gpar(fill = column_style$outer_margin_bg, col = column_style$outer_margin_bg)),
+  if (!is.null(layout_style$outer_margin_bg) && !is.na(layout_style$outer_margin_bg)) {
+    gt <- gtable_add_grob(gt, rectGrob(gp = gpar(fill = layout_style$outer_margin_bg, col = layout_style$outer_margin_bg)),
                           t = 1, l = 1, b = 2, r = 1, z = 0, clip = "on")
-    gt <- gtable_add_grob(gt, rectGrob(gp = gpar(fill = column_style$outer_margin_bg, col = column_style$outer_margin_bg)),
+    gt <- gtable_add_grob(gt, rectGrob(gp = gpar(fill = layout_style$outer_margin_bg, col = layout_style$outer_margin_bg)),
                           t = 1, l = (2*n + 1), b = 2, r = (2*n + 1), z = 0, clip = "on")
   }
   # gap backgrounds (content row only)
@@ -282,8 +291,8 @@ str_n_panel_row <- function(
     }
   }
   # bottom margin bg across interior only
-  if (!is.null(column_style$bottom_margin_bg) && !is.na(column_style$bottom_margin_bg) && (2*n) >= 2) {
-    gt <- gtable_add_grob(gt, rectGrob(gp = gpar(fill = column_style$bottom_margin_bg, col = column_style$bottom_margin_bg)),
+  if (!is.null(layout_style$bottom_margin_bg) && !is.na(layout_style$bottom_margin_bg) && (2*n) >= 2) {
+    gt <- gtable_add_grob(gt, rectGrob(gp = gpar(fill = layout_style$bottom_margin_bg, col = layout_style$bottom_margin_bg)),
                           t = 2, l = 2, b = 2, r = (2*n), z = 0, clip = "on")
   }
 
@@ -315,7 +324,7 @@ str_n_panel_row <- function(
 #' Use [text_box()] for per-panel text styling; other items can be ggplot/grob/image paths.
 #'
 #' @param A_item,B_item,C_item Items to render (ggplot/grob/image path/character/NULL or `text_box()`).
-#' @param layout_style A list from [three_panel_layout_style()] controlling geometry, padding, and backgrounds.
+#' @param layout_style A list from [layout_style()] or [three_panel_layout_style()] controlling geometry, padding, and backgrounds.
 #' @param text_style Default text style (`text_style()`), used for character items.
 #' @param box_style Default box style (`box_style()`), used for character/fallback items.
 #' @param image_scale How to place images: `"fit"` (preserve aspect) or `"fill"`.
@@ -510,7 +519,7 @@ str_three_panel_row <- function(
 #' Renders a full-width subtitle band with optional gradient fill and lanes.
 #'
 #' @param label Subtitle text.
-#' @param layout_style A list from [subtitle_layout_style()] for lanes/gradient/background.
+#' @param layout_style A list from [layout_style()] or [subtitle_layout_style()] for lanes/gradient/background.
 #' @param box_style Box styling from [box_style()] (radius, border, fill, margin, padding, margin_fill).
 #' @param text_style Text styling from [text_style()].
 #' Note: Lanes are controlled by `layout_style` (outer/bottom margins). The immediate gap around the box is controlled by `box_style$margin`/`margin_fill`. Leave the box margin at zero for a single-layer band, or set it (plus `margin_fill`) for a double-layer/3D effect.
@@ -608,7 +617,7 @@ str_subtitle_row <- function(
 #'
 #' @param image_path Path to a PNG/JPEG logo.
 #' @param title,subtitle Text content.
-#' @param layout_style A list from [banner_layout_style()] controlling geometry and colors.
+#' @param layout_style A list from [layout_style()] or [banner_layout_style()] controlling geometry and colors.
 #' @param text_style A list with `title` and `subtitle` entries produced by [text_style()].
 #' @return A `gtable` representing the banner.
 #' @export

@@ -1,5 +1,6 @@
 test_that("str_subtitle_row builds a gtable and exports", {
-  layout1 <- subtitle_layout_style(
+  layout1 <- layout_style(
+    type = "subtitle",
     row_height = grid::unit(1, "in"),
     outer_margin = grid::unit(0, "pt"),
     outer_margin_bg = "#0EA5E9",
@@ -29,7 +30,8 @@ test_that("str_subtitle_row builds a gtable and exports", {
   if (file.exists(pdf_path)) file.remove(pdf_path)
 
   # second style to exercise gradient + font sizes
-  layout2 <- subtitle_layout_style(
+  layout2 <- layout_style(
+    type = "subtitle",
     row_height = grid::unit(0.8, "in"),
     outer_margin = grid::unit(10, "pt"),
     outer_margin_bg = "#F97316",
@@ -56,7 +58,8 @@ test_that("str_subtitle_row builds a gtable and exports", {
   canvas <- canvas_add_row(canvas, gt, layout1$row_height)
   canvas <- canvas_add_row(canvas, gt2, layout2$row_height)
   # center aligned row
-  layout3 <- subtitle_layout_style(
+  layout3 <- layout_style(
+    type = "subtitle",
     row_height = grid::unit(0.8, "in"),
     outer_margin = grid::unit(10, "pt"),
     outer_margin_bg = "#22C55E",
@@ -82,7 +85,8 @@ test_that("str_subtitle_row builds a gtable and exports", {
   canvas <- canvas_add_row(canvas, gt3, layout3$row_height)
 
   # right aligned row
-  layout4 <- subtitle_layout_style(
+  layout4 <- layout_style(
+    type = "subtitle",
     row_height = grid::unit(0.8, "in"),
     outer_margin = grid::unit(8, "pt"),
     outer_margin_bg = "#A855F7",

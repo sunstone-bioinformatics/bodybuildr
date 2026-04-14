@@ -19,7 +19,7 @@ str_three_panel_row(
 \arguments{
 \item{A_item, B_item, C_item}{Items to render (ggplot/grob/image path/character/NULL or `text_box()`).}
 
-\item{layout_style}{A list from [three_panel_layout_style()] controlling geometry, padding, and backgrounds.}
+\item{layout_style}{A list from [layout_style()] or [three_panel_layout_style()] controlling geometry, padding, and backgrounds.}
 
 \item{text_style}{Default text style (`text_style()`), used for character items.}
 

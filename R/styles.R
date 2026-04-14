@@ -76,6 +76,48 @@ box_style <- function(radius     = unit(8, "pt"),
   )
 }
 
+#' Define a row layout style
+#'
+#' Public dispatcher for row layout constructors. Use this when you want one
+#' consistent entrypoint across row types while keeping row-specific geometry
+#' validated by the underlying specialized helper.
+#'
+#' Supported `type` values:
+#' - `"banner"`
+#' - `"columns"` / `"column"`
+#' - `"three_panel"` / `"three-panel"` / `"three panel"`
+#' - `"subtitle"`
+#'
+#' @param type Layout family to construct.
+#' @param ... Passed through to the matching specialized layout constructor.
+#' @return A row-specific layout list validated by the matching constructor.
+#' @export
+layout_style <- function(type, ...) {
+  if (missing(type) || length(type) != 1 || is.na(type)) {
+    stop("`type` must be length-1 and non-missing.", call. = FALSE)
+  }
+
+  normalized_type <- gsub("[- ]", "_", tolower(type))
+  constructor <- switch(
+    normalized_type,
+    banner = banner_layout_style,
+    column = column_layout_style,
+    columns = column_layout_style,
+    three_panel = three_panel_layout_style,
+    subtitle = subtitle_layout_style,
+    NULL
+  )
+
+  if (is.null(constructor)) {
+    stop(
+      "`type` must be one of: banner, columns, three_panel, subtitle.",
+      call. = FALSE
+    )
+  }
+
+  do.call(constructor, list(...))
+}
+
 #' Define banner layout defaults
 #'
 #' Collects geometry and color defaults for the banner row.

@@ -23,7 +23,7 @@ test_that("banner_layout_style builds defaults and rejects negatives", {
 
 test_that("str_banner_row builds a gtable with styles", {
   logo <- make_test_png()
-  ls <- banner_layout_style(banner_height = grid::unit(2, "in"))
+  ls <- layout_style(type = "banner", banner_height = grid::unit(2, "in"))
   gt <- str_banner_row(
     image_path = logo,
     title = "Title",
