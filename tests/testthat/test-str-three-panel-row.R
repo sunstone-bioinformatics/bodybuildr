@@ -39,7 +39,8 @@ test_that("str_three_panel_row renders three text boxes", {
       ),
       bg = "#FFF7ED"
     ),
-    layout_style = three_panel_layout_style(
+    layout_style = layout_style(
+      type = "three_panel",
       A_bg = "#ffffffff",
       B_bg = "#ffffffff",
       C_bg = "#ffffffff",
@@ -55,7 +56,8 @@ test_that("str_three_panel_row supports reverse layout", {
     A_item = text_box("Right panel", text_style = text_style(color = "#111827", size = 12)),
     B_item = text_box("Left top", text_style = text_style(color = "#111827", size = 11)),
     C_item = text_box("Left bottom", text_style = text_style(color = "#111827", size = 11)),
-    layout_style = three_panel_layout_style(
+    layout_style = layout_style(
+      type = "three_panel",
       A_bg = "#ffffff",
       B_bg = "#ffffff",
       C_bg = "#ffffff",
@@ -89,7 +91,8 @@ test_that("str_three_panel_row exports mixed content to PDF", {
       ),
       bg = "#FFFFFF"
     ),
-    layout_style = three_panel_layout_style(
+    layout_style = layout_style(
+      type = "three_panel",
       A_bg = "#FFFFFF",
       B_bg = "#FFFFFF",
       C_bg = "#FFFFFF",
@@ -104,7 +107,8 @@ test_that("str_three_panel_row exports mixed content to PDF", {
     A_item = text_box("A panel",box_style = box_style(fill="#316ab9ff",padding = grid::unit(c(10,15,20,10), "pt")),  text_style = text_style(color = "#1F2937", size = 12)),
     B_item = text_box("B panel", text_style = text_style(color = "#1F2937", size = 12)),
     C_item = text_box("C panel", text_style = text_style(color = "#1F2937", size = 12)),
-    layout_style = three_panel_layout_style(
+    layout_style = layout_style(
+      type = "three_panel",
       A_bg = "#ffffffff",
       B_bg = "#ffffffff",
       C_bg = "#ffffffff",
@@ -117,7 +121,8 @@ test_that("str_three_panel_row exports mixed content to PDF", {
     A_item = text_box("Right A", text_style = text_style(color = "#0f172a", size = 12)),
     B_item = text_box("Left B", text_style = text_style(color = "#0b47d4ff", size = 12)),
     C_item = text_box("Left C", text_style = text_style(color = "#0f172a", size = 12)),
-    layout_style = three_panel_layout_style(
+    layout_style = layout_style(
+      type = "three_panel",
       A_bg = "#ffffff",
       B_bg = "#ffffff",
       C_bg = "#ffffff",
@@ -151,7 +156,8 @@ test_that("str_three_panel_row fit images respect panel aspect ratio", {
   img <- make_test_png_rect(width = 200, height = 100)
   row <- str_three_panel_row(
     A_item = img,
-    layout_style = three_panel_layout_style(
+    layout_style = layout_style(
+      type = "three_panel",
       A_width = grid::unit(4, "in"),
       right_split = 0.5,
       hgap = grid::unit(0, "pt"),
