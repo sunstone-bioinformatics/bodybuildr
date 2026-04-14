@@ -4,6 +4,14 @@ test_that(".wrap_text_top_left returns a grob", {
   expect_s3_class(g, "grob")
 })
 
+test_that("blank_box returns a dedicated blank layout object", {
+  b <- blank_box()
+  expect_s3_class(b, "bbdr_blank_box")
+  expect_false("label" %in% names(b))
+  expect_false("text_style" %in% names(b))
+  expect_false("box_style" %in% names(b))
+})
+
 test_that(".subtitle_cell returns a grob", {
   g <- bodybuildr:::.subtitle_cell("Subtitle")
   expect_s3_class(g, "grob")

@@ -199,3 +199,39 @@ test_that("str_three_panel_row fit images respect panel aspect ratio", {
   expect_equal(as.numeric(raster$width), 1, tolerance = 1e-6)
   expect_equal(as.numeric(raster$height), 1, tolerance = 1e-6)
 })
+
+test_that("str_three_panel_row supports blank_box panels", {
+  row <- str_three_panel_row(
+    A_item = blank_box(),
+    B_item = text_box("Center"),
+    C_item = blank_box(),
+    layout_style = layout_style(
+      type = "three_panel",
+      A_bg = "#E5E7EB",
+      B_bg = "#FFFFFF",
+      C_bg = "#E5E7EB",
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    )
+  )
+
+  expect_s3_class(row, "gtable")
+  expect_equal(length(row$grobs), 3)
+})
+
+test_that("str_three_panel_row blank_box does not use text-box rendering", {
+  row <- str_three_panel_row(
+    A_item = blank_box(),
+    layout_style = layout_style(
+      type = "three_panel",
+      A_bg = "#F3F4F6",
+      B_bg = "#FFFFFF",
+      C_bg = "#FFFFFF",
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    )
+  )
+
+  expect_s3_class(row$grobs[[1]], "gTree")
+  expect_false(any(vapply(row$grobs[[1]]$children, inherits, logical(1), "text")))
+})

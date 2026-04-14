@@ -43,7 +43,7 @@ into equal-width columns with configurable padding, gaps, and lanes.
 }
 \details{
 **Inputs**
-- `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings; otherwise the defaults below apply.
+- `items`: list of ggplot/grob/image path/character/NULL. Use [text_box()] to give a specific column its own text/box/background settings, or [blank_box()] for an intentional empty slot.
 - `row_height`: nominal height (`grid::unit`); actual height is set when adding to a canvas.
 
 **Layout + styling**

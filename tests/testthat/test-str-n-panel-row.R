@@ -193,3 +193,37 @@ test_that("str_n_panel_row errors when both layout_style and column_style are su
     "Supply only one of `layout_style` or `column_style`."
   )
 })
+
+test_that("str_n_panel_row supports blank_box as intentional empty layout slot", {
+  skip_if_not_installed("ggplot2")
+  plot_obj <- make_test_plot()
+  if (is.null(plot_obj)) skip("plot fixture unavailable")
+
+  row <- str_n_panel_row(
+    items = list(blank_box(), plot_obj, blank_box()),
+    layout_style = layout_style(
+      type = "columns",
+      column_bg = c("#E5E7EB", "#FFFFFF", "#E5E7EB"),
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    )
+  )
+
+  expect_s3_class(row, "gtable")
+  expect_equal(length(row$grobs), 3)
+})
+
+test_that("str_n_panel_row blank_box differs from text rendering paths", {
+  row <- str_n_panel_row(
+    items = list(blank_box()),
+    layout_style = layout_style(
+      type = "columns",
+      column_bg = "#F3F4F6",
+      outer_margin = grid::unit(0, "pt"),
+      bottom_margin = grid::unit(0, "pt")
+    )
+  )
+
+  expect_s3_class(row$grobs[[1]], "gTree")
+  expect_false(any(vapply(row$grobs[[1]]$children, inherits, logical(1), "text")))
+})
