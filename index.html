@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Bodybuildr creates infographics row by row">
-<meta name="description" content="More about what it does (maybe more than one line). Continuation lines should be indented.">
-<meta property="og:description" content="More about what it does (maybe more than one line). Continuation lines should be indented.">
+<meta name="description" content="Build infographic-style PDF layouts in R by composing pages as vertical stacks of rows. Mix text, ggplot2 plots, images, and grobs in the same row. Export to PDF with predictable sizing using grid units.">
+<meta property="og:description" content="Build infographic-style PDF layouts in R by composing pages as vertical stacks of rows. Mix text, ggplot2 plots, images, and grobs in the same row. Export to PDF with predictable sizing using grid units.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">bodybuildr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,6 +62,8 @@
 <ul>
 <li>Compose complex infographics by stacking rows on a canvas.</li>
 <li>Mix text, ggplot2 objects, images, and grobs in the same row.</li>
+<li>Write cell content in plain text, <strong>Markdown</strong>, or <strong>raw HTML</strong>.</li>
+<li>Add native tables with selectable text — text-only or mixed content (plots, images, grobs).</li>
 <li>Control spacing with layout styles (lanes, gaps, margins) and box styles.</li>
 <li>Export to PDF with predictable sizing using grid units.</li>
 </ul>
@@ -128,17 +130,104 @@
 <div class="section level2">
 <h2 id="core-building-blocks">Core building blocks<a class="anchor" aria-label="anchor" href="#core-building-blocks"></a>
 </h2>
-<p>Row builders: - <code><a href="reference/str_banner_row.html">str_banner_row()</a></code> for a logo + title/subtitle banner - <code><a href="reference/str_subtitle_row.html">str_subtitle_row()</a></code> for a full-width subtitle band - <code><a href="reference/str_n_panel_row.html">str_n_panel_row()</a></code> for 1..n columns - <code><a href="reference/str_three_panel_row.html">str_three_panel_row()</a></code> for A | (B over C) layouts</p>
-<p>Styling helpers: - <code><a href="reference/text_style.html">text_style()</a></code> and <code><a href="reference/box_style.html">box_style()</a></code> to control typography and boxes - <code><a href="reference/blank_box.html">blank_box()</a></code> for intentional empty layout slots - <code>layout_style(type = ...)</code> as the main layout constructor for row spacing, lanes, and backgrounds - <code><a href="reference/banner_layout_style.html">banner_layout_style()</a></code>, <code><a href="reference/column_layout_style.html">column_layout_style()</a></code>, <code><a href="reference/subtitle_layout_style.html">subtitle_layout_style()</a></code>, and <code><a href="reference/three_panel_layout_style.html">three_panel_layout_style()</a></code> as explicit row-specific aliases</p>
-<p>Canvas helpers: - <code><a href="reference/new_canvas.html">new_canvas()</a></code> and <code><a href="reference/canvas_add_row.html">canvas_add_row()</a></code> to stack rows - <code><a href="reference/export_pdf.html">export_pdf()</a></code> to write a final PDF</p>
+<p><strong>Row builders:</strong> - <code><a href="reference/str_banner_row.html">str_banner_row()</a></code> — logo + title/subtitle banner - <code><a href="reference/str_subtitle_row.html">str_subtitle_row()</a></code> — full-width subtitle band - <code><a href="reference/str_n_panel_row.html">str_n_panel_row()</a></code> — 1..n equal-width columns - <code><a href="reference/str_three_panel_row.html">str_three_panel_row()</a></code> — asymmetric A | (B over C) layout</p>
+<p><strong>Cell content helpers:</strong> - <code><a href="reference/text_box.html">text_box()</a></code> — plain text with per-cell style overrides - <code>md_text_box()</code> — Markdown text (bold, italic, lists, headings, links) - <code>html_text_box()</code> — raw HTML passed to gridtext (<code>&lt;b&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;span style="..."&gt;</code>, <code>&lt;br/&gt;</code>, <code>&lt;sup&gt;</code>, <code>&lt;sub&gt;</code>) - <code><a href="reference/blank_box.html">blank_box()</a></code> — intentional empty slot that still participates in layout</p>
+<p><strong>Table helpers:</strong> - <code>table_box()</code> — <code>data.frame</code> → native grid table with selectable text; columns fill available width - <code>rich_table_box()</code> — table where each cell can be text, image, ggplot, grob, or <code>NULL</code></p>
+<p><strong>Styling helpers:</strong> - <code><a href="reference/text_style.html">text_style()</a></code> and <code><a href="reference/box_style.html">box_style()</a></code> — typography and box styling - <code>layout_style(type = ...)</code> — row spacing, lanes, and backgrounds - <code><a href="reference/banner_layout_style.html">banner_layout_style()</a></code>, <code><a href="reference/column_layout_style.html">column_layout_style()</a></code>, <code><a href="reference/subtitle_layout_style.html">subtitle_layout_style()</a></code>, <code><a href="reference/three_panel_layout_style.html">three_panel_layout_style()</a></code> — row-specific aliases</p>
+<p><strong>Canvas helpers:</strong> - <code><a href="reference/new_canvas.html">new_canvas()</a></code> and <code><a href="reference/canvas_add_row.html">canvas_add_row()</a></code> — stack rows vertically - <code><a href="reference/export_pdf.html">export_pdf()</a></code> — write final PDF</p>
+</div>
+<div class="section level2">
+<h2 id="rich-text-example">Rich text example<a class="anchor" aria-label="anchor" href="#rich-text-example"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sunstone-bioinformatics.github.io/bodybuildr/">bodybuildr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Markdown cell</span></span>
+<span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu">md_text_box</span><span class="op">(</span></span>
+<span>  <span class="st">"**Key findings:**\n\n- Primary endpoint met (p &lt; 0.001)\n- *n* = 1,204 patients\n- 12-month follow-up"</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="fu"><a href="reference/box_style.html">box_style</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#F0F9FF"</span>, border_color <span class="op">=</span> <span class="st">"#BAE6FD"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># HTML cell with colored spans</span></span>
+<span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">html_text_box</span><span class="op">(</span></span>
+<span>  <span class="st">'Result: &lt;span style="color:#16A34A;"&gt;&lt;b&gt;Met&lt;/b&gt;&lt;/span&gt;&lt;br/&gt;p-value: &lt;b&gt;0.0003&lt;/b&gt;'</span>,</span>
+<span>  box_style <span class="op">=</span> <span class="fu"><a href="reference/box_style.html">box_style</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#F0FDF4"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">canvas</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_canvas.html">new_canvas</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">canvas</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/canvas_add_row.html">canvas_add_row</a></span><span class="op">(</span><span class="va">canvas</span>, <span class="fu"><a href="reference/str_n_panel_row.html">str_n_panel_row</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">findings</span>, <span class="va">status</span><span class="op">)</span><span class="op">)</span>, <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"in"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/export_pdf.html">export_pdf</a></span><span class="op">(</span><span class="va">canvas</span>, file <span class="op">=</span> <span class="st">"output.pdf"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="table-example">Table example<a class="anchor" aria-label="anchor" href="#table-example"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Text-only table (selectable text in PDF)</span></span>
+<span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu">table_box</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"Mean age"</span><span class="op">)</span>, Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1,204"</span>, <span class="st">"52.3"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  header_fill <span class="op">=</span> <span class="st">"#1E3A8A"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Mixed-content table (text + plots + images per cell)</span></span>
+<span><span class="va">rtbl</span> <span class="op">&lt;-</span> <span class="fu">rich_table_box</span><span class="op">(</span></span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="st">"Trend"</span>, <span class="st">"Status"</span><span class="op">)</span>,</span>
+<span>  rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"BRCA1"</span>, <span class="va">my_sparkline_plot</span>, <span class="st">"path/to/green_dot.png"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"TP53"</span>,  <span class="va">another_plot</span>,      <span class="st">"path/to/red_dot.png"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  col_widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  row_height <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="st">"in"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">canvas</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_canvas.html">new_canvas</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">canvas</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/canvas_add_row.html">canvas_add_row</a></span><span class="op">(</span><span class="va">canvas</span>, <span class="fu"><a href="reference/str_n_panel_row.html">str_n_panel_row</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tbl</span>, <span class="va">rtbl</span><span class="op">)</span><span class="op">)</span>, <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">3</span>, <span class="st">"in"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/export_pdf.html">export_pdf</a></span><span class="op">(</span><span class="va">canvas</span>, file <span class="op">=</span> <span class="st">"output.pdf"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
 </h2>
 <ul>
 <li>Uses grid units (<code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit</a></code>) for sizing; keep units consistent.</li>
-<li>ggplot2 support is optional; install it if you want to render plots in rows.</li>
+<li>ggplot2 support is optional; install it to render plots in rows.</li>
+<li>
+<code>table_box()</code> and <code>rich_table_box()</code> require <code>gridExtra</code>; <code>md_text_box()</code> requires <code>commonmark</code>.</li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="cairo-and-pdf-rendering">Cairo and PDF rendering<a class="anchor" aria-label="anchor" href="#cairo-and-pdf-rendering"></a>
+</h2>
+<p><code><a href="reference/export_pdf.html">export_pdf()</a></code> uses <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">cairo_pdf()</a></code> when available for full UTF-8 support (bullet points, accented characters, rich text from <code>md_text_box()</code> and <code>html_text_box()</code>). Without Cairo it falls back to <code><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf()</a></code>, which may substitute some characters.</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="43%">
+<col width="34%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th>Platform</th>
+<th>Status</th>
+<th>Fix</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Windows</td>
+<td>Built into R</td>
+<td>Nothing needed</td>
+</tr>
+<tr class="even">
+<td>Linux</td>
+<td>Usually present</td>
+<td>
+<code>sudo apt install libcairo2-dev</code> then reinstall R</td>
+</tr>
+<tr class="odd">
+<td>macOS</td>
+<td>Requires XQuartz</td>
+<td>Install from <a href="https://www.xquartz.org" class="external-link uri">https://www.xquartz.org</a> and restart R</td>
+</tr>
+</tbody>
+</table>
+<p>Verify Cairo is active: <code>capabilities("cairo")</code> should return <code>TRUE</code>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

@@ -13,6 +13,9 @@ The name is the point: you build the body one row at a time.
 
 - Compose complex infographics by stacking rows on a canvas.
 - Mix text, ggplot2 objects, images, and grobs in the same row.
+- Write cell content in plain text, **Markdown**, or **raw HTML**.
+- Add native tables with selectable text — text-only or mixed content
+  (plots, images, grobs).
 - Control spacing with layout styles (lanes, gaps, margins) and box
   styles.
 - Export to PDF with predictable sizing using grid units.
@@ -82,42 +85,117 @@ export_pdf(canvas, file = "infographic.pdf")
 
 ## Core building blocks
 
-Row builders: -
+**Row builders:** -
 [`str_banner_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_banner_row.md)
-for a logo + title/subtitle banner -
+— logo + title/subtitle banner -
 [`str_subtitle_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_subtitle_row.md)
-for a full-width subtitle band -
+— full-width subtitle band -
 [`str_n_panel_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_n_panel_row.md)
-for 1..n columns -
+— 1..n equal-width columns -
 [`str_three_panel_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_three_panel_row.md)
-for A \| (B over C) layouts
+— asymmetric A \| (B over C) layout
 
-Styling helpers: -
+**Cell content helpers:** -
+[`text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.md)
+— plain text with per-cell style overrides - `md_text_box()` — Markdown
+text (bold, italic, lists, headings, links) - `html_text_box()` — raw
+HTML passed to gridtext (`<b>`, `<em>`, `<span style="...">`, `<br/>`,
+`<sup>`, `<sub>`) -
+[`blank_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/blank_box.md)
+— intentional empty slot that still participates in layout
+
+**Table helpers:** - `table_box()` — `data.frame` → native grid table
+with selectable text; columns fill available width - `rich_table_box()`
+— table where each cell can be text, image, ggplot, grob, or `NULL`
+
+**Styling helpers:** -
 [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
 and
 [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
-to control typography and boxes -
-[`blank_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/blank_box.md)
-for intentional empty layout slots - `layout_style(type = ...)` as the
-main layout constructor for row spacing, lanes, and backgrounds -
+— typography and box styling - `layout_style(type = ...)` — row spacing,
+lanes, and backgrounds -
 [`banner_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_layout_style.md),
 [`column_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/column_layout_style.md),
 [`subtitle_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.md),
-and
 [`three_panel_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/three_panel_layout_style.md)
-as explicit row-specific aliases
+— row-specific aliases
 
-Canvas helpers: -
+**Canvas helpers:** -
 [`new_canvas()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.md)
 and
 [`canvas_add_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/canvas_add_row.md)
-to stack rows -
+— stack rows vertically -
 [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
-to write a final PDF
+— write final PDF
+
+## Rich text example
+
+``` r
+library(bodybuildr)
+
+# Markdown cell
+findings <- md_text_box(
+  "**Key findings:**\n\n- Primary endpoint met (p < 0.001)\n- *n* = 1,204 patients\n- 12-month follow-up",
+  box_style = box_style(fill = "#F0F9FF", border_color = "#BAE6FD")
+)
+
+# HTML cell with colored spans
+status <- html_text_box(
+  'Result: <span style="color:#16A34A;"><b>Met</b></span><br/>p-value: <b>0.0003</b>',
+  box_style = box_style(fill = "#F0FDF4")
+)
+
+canvas <- new_canvas()
+canvas <- canvas_add_row(canvas, str_n_panel_row(list(findings, status)), grid::unit(2, "in"))
+export_pdf(canvas, file = "output.pdf")
+```
+
+## Table example
+
+``` r
+# Text-only table (selectable text in PDF)
+tbl <- table_box(
+  data.frame(Metric = c("n", "Mean age"), Value = c("1,204", "52.3")),
+  header_fill = "#1E3A8A"
+)
+
+# Mixed-content table (text + plots + images per cell)
+rtbl <- rich_table_box(
+  headers = c("Gene", "Trend", "Status"),
+  rows = list(
+    list("BRCA1", my_sparkline_plot, "path/to/green_dot.png"),
+    list("TP53",  another_plot,      "path/to/red_dot.png")
+  ),
+  col_widths = c(2, 3, 1),
+  row_height = grid::unit(0.5, "in")
+)
+
+canvas <- new_canvas()
+canvas <- canvas_add_row(canvas, str_n_panel_row(list(tbl, rtbl)), grid::unit(3, "in"))
+export_pdf(canvas, file = "output.pdf")
+```
 
 ## Notes
 
 - Uses grid units ([`grid::unit`](https://rdrr.io/r/grid/unit.html)) for
   sizing; keep units consistent.
-- ggplot2 support is optional; install it if you want to render plots in
-  rows.
+- ggplot2 support is optional; install it to render plots in rows.
+- `table_box()` and `rich_table_box()` require `gridExtra`;
+  `md_text_box()` requires `commonmark`.
+
+## Cairo and PDF rendering
+
+[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+uses [`cairo_pdf()`](https://rdrr.io/r/grDevices/cairo.html) when
+available for full UTF-8 support (bullet points, accented characters,
+rich text from `md_text_box()` and `html_text_box()`). Without Cairo it
+falls back to [`pdf()`](https://rdrr.io/r/grDevices/pdf.html), which may
+substitute some characters.
+
+| Platform | Status           | Fix                                                  |
+|----------|------------------|------------------------------------------------------|
+| Windows  | Built into R     | Nothing needed                                       |
+| Linux    | Usually present  | `sudo apt install libcairo2-dev` then reinstall R    |
+| macOS    | Requires XQuartz | Install from <https://www.xquartz.org> and restart R |
+
+Verify Cairo is active: `capabilities("cairo")` should return `TRUE`.
