@@ -43,3 +43,14 @@ Invisibly returns the output file path.
 \description{
 Opens a PDF device, draws a grob top-aligned, and closes the device.
 }
+\details{
+`export_pdf()` uses `cairo_pdf()` when Cairo is available, which provides
+full UTF-8 support (bullet points, special characters, etc.). If Cairo is
+unavailable it falls back to `pdf()` with a message.
+
+**Cairo availability by platform:**
+- **Windows:** bundled with R — no action needed.
+- **Linux:** usually present; install `libcairo2-dev` if missing.
+- **macOS:** requires XQuartz (<https://www.xquartz.org>). After installing,
+  restart R and verify with `capabilities("cairo")`.
+}
