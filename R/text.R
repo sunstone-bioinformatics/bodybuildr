@@ -59,6 +59,145 @@ blank_box <- function() {
   structure(list(), class = "bbdr_blank_box")
 }
 
+#' Construct a Markdown-formatted text box item
+#'
+#' Like [text_box()], but `label` is parsed as Markdown and rendered as rich
+#' HTML via `gridtext`. Supports **bold**, *italic*, `inline code`, line breaks,
+#' and bullet lists. Links render as styled text but are not clickable in PDF.
+#'
+#' Requires the `commonmark` package. If not installed, falls back to plain text.
+#'
+#' @param label Markdown-formatted character string.
+#' @param text_style A `gpar` from [text_style()].
+#' @param box_style A list from [box_style()].
+#' @param bg Optional column background color override.
+#' @param pad_x,pad_y Optional column padding overrides as `grid::unit` (non-negative).
+#' @param link_color Color for hyperlink text. Default `"#2563EB"`.
+#' @return An object of class `"bbdr_md_text_box"` to use as an item in layout rows.
+#' @export
+md_text_box <- function(
+    label,
+    text_style = NULL,
+    box_style  = NULL,
+    bg         = NULL,
+    pad_x      = NULL,
+    pad_y      = NULL,
+    link_color = "#2563EB"
+) {
+  if (is.null(label)) label <- ""
+  if (is.null(text_style)) {
+    text_style <- get("text_style", envir = parent.env(environment()))()
+  }
+  if (is.null(box_style)) {
+    box_style <- get("box_style", envir = parent.env(environment()))()
+  }
+  if (!inherits(text_style, "gpar")) stop("`text_style` must be a gpar (use text_style()).", call. = FALSE)
+  if (!is.list(box_style)) stop("`box_style` must be a list (use box_style()).", call. = FALSE)
+  if (!is.null(pad_x)) pad_x <- .as_unit_nonneg(pad_x, "pad_x")
+  if (!is.null(pad_y)) pad_y <- .as_unit_nonneg(pad_y, "pad_y")
+  structure(
+    list(
+      label      = label,
+      text_style = text_style,
+      box_style  = box_style,
+      bg         = bg,
+      pad_x      = pad_x,
+      pad_y      = pad_y,
+      link_color = link_color
+    ),
+    class = c("bbdr_md_text_box", "bbdr_text_box")
+  )
+}
+
+#' Construct a raw HTML text box item
+#'
+#' Like [text_box()], but `label` is treated as HTML and passed directly to
+#' `gridtext` for rendering. Supports the gridtext HTML subset: `<b>`, `<i>`,
+#' `<em>`, `<strong>`, `<code>`, `<span style="...">`, `<br/>`, `<sup>`, `<sub>`.
+#' Links render as styled text but are not clickable in PDF.
+#'
+#' @param label HTML-formatted character string.
+#' @param text_style A `gpar` from [text_style()].
+#' @param box_style A list from [box_style()].
+#' @param bg Optional column background color override.
+#' @param pad_x,pad_y Optional column padding overrides as `grid::unit` (non-negative).
+#' @return An object of class `"bbdr_html_text_box"` to use as an item in layout rows.
+#' @export
+html_text_box <- function(
+    label,
+    text_style = NULL,
+    box_style  = NULL,
+    bg         = NULL,
+    pad_x      = NULL,
+    pad_y      = NULL
+) {
+  if (is.null(label)) label <- ""
+  if (is.null(text_style)) {
+    text_style <- get("text_style", envir = parent.env(environment()))()
+  }
+  if (is.null(box_style)) {
+    box_style <- get("box_style", envir = parent.env(environment()))()
+  }
+  if (!inherits(text_style, "gpar")) stop("`text_style` must be a gpar (use text_style()).", call. = FALSE)
+  if (!is.list(box_style)) stop("`box_style` must be a list (use box_style()).", call. = FALSE)
+  if (!is.null(pad_x)) pad_x <- .as_unit_nonneg(pad_x, "pad_x")
+  if (!is.null(pad_y)) pad_y <- .as_unit_nonneg(pad_y, "pad_y")
+  structure(
+    list(
+      label      = label,
+      text_style = text_style,
+      box_style  = box_style,
+      bg         = bg,
+      pad_x      = pad_x,
+      pad_y      = pad_y
+    ),
+    class = c("bbdr_html_text_box", "bbdr_text_box")
+  )
+}
+
+#' Internal: convert Markdown to gridtext-compatible HTML
+#'
+#' @keywords internal
+.md_to_html <- function(md, link_color = "#2563EB") {
+  if (!requireNamespace("commonmark", quietly = TRUE)) {
+    warning("Package 'commonmark' needed for Markdown rendering. Showing plain text.", call. = FALSE)
+    return(md)
+  }
+  html <- commonmark::markdown_html(md, smart = TRUE)
+  html <- paste(html, collapse = "")
+
+  # headings → bold line
+  html <- gsub("<h[1-6][^>]*>(.*?)</h[1-6]>", "<b>\\1</b><br/>", html)
+
+  # lists → bullet lines (handle tight lists: <li>text</li> and loose: <li><p>text</p></li>)
+  html <- gsub("<li><p>", "<li>", html)
+  html <- gsub("</p></li>", "</li>", html)
+  html <- gsub("<li>", "&#x2022; ", html)
+  html <- gsub("</li>\n?", "<br/>", html)
+  html <- gsub("</?[uo]l>\n?", "", html)
+
+  # links → colored span (not clickable in PDF)
+  html <- gsub(
+    '<a href="[^"]*">(.*?)</a>',
+    paste0('<span style="color:', link_color, '; text-decoration: underline;">\\1</span>'),
+    html
+  )
+
+  # code blocks → strip tags, keep text (gridtext does not support <code>)
+  html <- gsub("<pre><code[^>]*>", "", html)
+  html <- gsub("</code></pre>", "", html)
+  html <- gsub("</?code>", "", html)
+  html <- gsub("<hr[^>]*/?>", "<br/>", html)
+
+  # paragraphs: closing </p> becomes double break; opening <p> is dropped
+  html <- gsub("</p>\n?", "<br/><br/>", html)
+  html <- gsub("<p>\n?", "", html)
+  # trim trailing breaks
+  html <- gsub("(<br/>\\s*)+$", "", trimws(html))
+
+  trimws(html)
+}
+
 #' Internal: wrapped text box anchored top-left
 #'
 #' Internal helper used by layout row builders to render wrapped text inside a padded, rounded box.

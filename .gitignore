@@ -66,7 +66,7 @@ utils/use_noto_sans.R
 test_files/
 
 # Local agent notes and generated artifacts
-AGENT.md
+CLAUDE.md
 .office-hours-design-draft.md
 .office-hours-blank-box-design-draft.md
 Rplots.pdf
