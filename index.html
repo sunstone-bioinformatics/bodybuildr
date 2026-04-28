@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">bodybuildr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,8 +131,8 @@
 <h2 id="core-building-blocks">Core building blocks<a class="anchor" aria-label="anchor" href="#core-building-blocks"></a>
 </h2>
 <p><strong>Row builders:</strong> - <code><a href="reference/str_banner_row.html">str_banner_row()</a></code> — logo + title/subtitle banner - <code><a href="reference/str_subtitle_row.html">str_subtitle_row()</a></code> — full-width subtitle band - <code><a href="reference/str_n_panel_row.html">str_n_panel_row()</a></code> — 1..n equal-width columns - <code><a href="reference/str_three_panel_row.html">str_three_panel_row()</a></code> — asymmetric A | (B over C) layout</p>
-<p><strong>Cell content helpers:</strong> - <code><a href="reference/text_box.html">text_box()</a></code> — plain text with per-cell style overrides - <code>md_text_box()</code> — Markdown text (bold, italic, lists, headings, links) - <code>html_text_box()</code> — raw HTML passed to gridtext (<code>&lt;b&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;span style="..."&gt;</code>, <code>&lt;br/&gt;</code>, <code>&lt;sup&gt;</code>, <code>&lt;sub&gt;</code>) - <code><a href="reference/blank_box.html">blank_box()</a></code> — intentional empty slot that still participates in layout</p>
-<p><strong>Table helpers:</strong> - <code>table_box()</code> — <code>data.frame</code> → native grid table with selectable text; columns fill available width - <code>rich_table_box()</code> — table where each cell can be text, image, ggplot, grob, or <code>NULL</code></p>
+<p><strong>Cell content helpers:</strong> - <code><a href="reference/text_box.html">text_box()</a></code> — plain text with per-cell style overrides - <code><a href="reference/md_text_box.html">md_text_box()</a></code> — Markdown text (bold, italic, lists, headings, links) - <code><a href="reference/html_text_box.html">html_text_box()</a></code> — raw HTML passed to gridtext (<code>&lt;b&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;span style="..."&gt;</code>, <code>&lt;br/&gt;</code>, <code>&lt;sup&gt;</code>, <code>&lt;sub&gt;</code>) - <code><a href="reference/blank_box.html">blank_box()</a></code> — intentional empty slot that still participates in layout</p>
+<p><strong>Table helpers:</strong> - <code><a href="reference/table_box.html">table_box()</a></code> — <code>data.frame</code> → native grid table with selectable text; columns fill available width - <code><a href="reference/rich_table_box.html">rich_table_box()</a></code> — table where each cell can be text, image, ggplot, grob, or <code>NULL</code></p>
 <p><strong>Styling helpers:</strong> - <code><a href="reference/text_style.html">text_style()</a></code> and <code><a href="reference/box_style.html">box_style()</a></code> — typography and box styling - <code>layout_style(type = ...)</code> — row spacing, lanes, and backgrounds - <code><a href="reference/banner_layout_style.html">banner_layout_style()</a></code>, <code><a href="reference/column_layout_style.html">column_layout_style()</a></code>, <code><a href="reference/subtitle_layout_style.html">subtitle_layout_style()</a></code>, <code><a href="reference/three_panel_layout_style.html">three_panel_layout_style()</a></code> — row-specific aliases</p>
 <p><strong>Canvas helpers:</strong> - <code><a href="reference/new_canvas.html">new_canvas()</a></code> and <code><a href="reference/canvas_add_row.html">canvas_add_row()</a></code> — stack rows vertically - <code><a href="reference/export_pdf.html">export_pdf()</a></code> — write final PDF</p>
 </div>
@@ -143,13 +143,13 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sunstone-bioinformatics.github.io/bodybuildr/">bodybuildr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Markdown cell</span></span>
-<span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu">md_text_box</span><span class="op">(</span></span>
+<span><span class="va">findings</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/md_text_box.html">md_text_box</a></span><span class="op">(</span></span>
 <span>  <span class="st">"**Key findings:**\n\n- Primary endpoint met (p &lt; 0.001)\n- *n* = 1,204 patients\n- 12-month follow-up"</span>,</span>
 <span>  box_style <span class="op">=</span> <span class="fu"><a href="reference/box_style.html">box_style</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#F0F9FF"</span>, border_color <span class="op">=</span> <span class="st">"#BAE6FD"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># HTML cell with colored spans</span></span>
-<span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">html_text_box</span><span class="op">(</span></span>
+<span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/html_text_box.html">html_text_box</a></span><span class="op">(</span></span>
 <span>  <span class="st">'Result: &lt;span style="color:#16A34A;"&gt;&lt;b&gt;Met&lt;/b&gt;&lt;/span&gt;&lt;br/&gt;p-value: &lt;b&gt;0.0003&lt;/b&gt;'</span>,</span>
 <span>  box_style <span class="op">=</span> <span class="fu"><a href="reference/box_style.html">box_style</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#F0FDF4"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -163,13 +163,13 @@
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Text-only table (selectable text in PDF)</span></span>
-<span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu">table_box</span><span class="op">(</span></span>
+<span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/table_box.html">table_box</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"Mean age"</span><span class="op">)</span>, Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1,204"</span>, <span class="st">"52.3"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  header_fill <span class="op">=</span> <span class="st">"#1E3A8A"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Mixed-content table (text + plots + images per cell)</span></span>
-<span><span class="va">rtbl</span> <span class="op">&lt;-</span> <span class="fu">rich_table_box</span><span class="op">(</span></span>
+<span><span class="va">rtbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rich_table_box.html">rich_table_box</a></span><span class="op">(</span></span>
 <span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="st">"Trend"</span>, <span class="st">"Status"</span><span class="op">)</span>,</span>
 <span>  rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"BRCA1"</span>, <span class="va">my_sparkline_plot</span>, <span class="st">"path/to/green_dot.png"</span><span class="op">)</span>,</span>
@@ -190,13 +190,13 @@
 <li>Uses grid units (<code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit</a></code>) for sizing; keep units consistent.</li>
 <li>ggplot2 support is optional; install it to render plots in rows.</li>
 <li>
-<code>table_box()</code> and <code>rich_table_box()</code> require <code>gridExtra</code>; <code>md_text_box()</code> requires <code>commonmark</code>.</li>
+<code><a href="reference/table_box.html">table_box()</a></code> and <code><a href="reference/rich_table_box.html">rich_table_box()</a></code> require <code>gridExtra</code>; <code><a href="reference/md_text_box.html">md_text_box()</a></code> requires <code>commonmark</code>.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="cairo-and-pdf-rendering">Cairo and PDF rendering<a class="anchor" aria-label="anchor" href="#cairo-and-pdf-rendering"></a>
 </h2>
-<p><code><a href="reference/export_pdf.html">export_pdf()</a></code> uses <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">cairo_pdf()</a></code> when available for full UTF-8 support (bullet points, accented characters, rich text from <code>md_text_box()</code> and <code>html_text_box()</code>). Without Cairo it falls back to <code><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf()</a></code>, which may substitute some characters.</p>
+<p><code><a href="reference/export_pdf.html">export_pdf()</a></code> uses <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">cairo_pdf()</a></code> when available for full UTF-8 support (bullet points, accented characters, rich text from <code><a href="reference/md_text_box.html">md_text_box()</a></code> and <code><a href="reference/html_text_box.html">html_text_box()</a></code>). Without Cairo it falls back to <code><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf()</a></code>, which may substitute some characters.</p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="43%">

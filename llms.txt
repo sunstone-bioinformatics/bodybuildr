@@ -97,15 +97,20 @@ export_pdf(canvas, file = "infographic.pdf")
 
 **Cell content helpers:** -
 [`text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.md)
-— plain text with per-cell style overrides - `md_text_box()` — Markdown
-text (bold, italic, lists, headings, links) - `html_text_box()` — raw
-HTML passed to gridtext (`<b>`, `<em>`, `<span style="...">`, `<br/>`,
-`<sup>`, `<sub>`) -
+— plain text with per-cell style overrides -
+[`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
+— Markdown text (bold, italic, lists, headings, links) -
+[`html_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/html_text_box.md)
+— raw HTML passed to gridtext (`<b>`, `<em>`, `<span style="...">`,
+`<br/>`, `<sup>`, `<sub>`) -
 [`blank_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/blank_box.md)
 — intentional empty slot that still participates in layout
 
-**Table helpers:** - `table_box()` — `data.frame` → native grid table
-with selectable text; columns fill available width - `rich_table_box()`
+**Table helpers:** -
+[`table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_box.md)
+— `data.frame` → native grid table with selectable text; columns fill
+available width -
+[`rich_table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/rich_table_box.md)
 — table where each cell can be text, image, ggplot, grob, or `NULL`
 
 **Styling helpers:** -
@@ -180,17 +185,25 @@ export_pdf(canvas, file = "output.pdf")
 - Uses grid units ([`grid::unit`](https://rdrr.io/r/grid/unit.html)) for
   sizing; keep units consistent.
 - ggplot2 support is optional; install it to render plots in rows.
-- `table_box()` and `rich_table_box()` require `gridExtra`;
-  `md_text_box()` requires `commonmark`.
+- [`table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_box.md)
+  and
+  [`rich_table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/rich_table_box.md)
+  require `gridExtra`;
+  [`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
+  requires `commonmark`.
 
 ## Cairo and PDF rendering
 
 [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
 uses [`cairo_pdf()`](https://rdrr.io/r/grDevices/cairo.html) when
 available for full UTF-8 support (bullet points, accented characters,
-rich text from `md_text_box()` and `html_text_box()`). Without Cairo it
-falls back to [`pdf()`](https://rdrr.io/r/grDevices/pdf.html), which may
-substitute some characters.
+rich text from
+[`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
+and
+[`html_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/html_text_box.md)).
+Without Cairo it falls back to
+[`pdf()`](https://rdrr.io/r/grDevices/pdf.html), which may substitute
+some characters.
 
 | Platform | Status           | Fix                                                  |
 |----------|------------------|------------------------------------------------------|
@@ -217,10 +230,16 @@ Verify Cairo is active: `capabilities("cairo")` should return `TRUE`.
 - [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
   [`export_pdf_top()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
   : Export a canvas to PDF (top-anchored)
+- [`html_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/html_text_box.md)
+  : Construct a raw HTML text box item
 - [`layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/layout_style.md)
   : Define a row layout style
+- [`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
+  : Construct a Markdown-formatted text box item
 - [`new_canvas()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.md)
   : Create a new canvas gtable
+- [`rich_table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/rich_table_box.md)
+  : Construct a mixed-content table grob
 - [`str_banner_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_banner_row.md)
   : Two-column banner with logo and text
 - [`str_n_panel_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_n_panel_row.md)
@@ -231,6 +250,8 @@ Verify Cairo is active: `capabilities("cairo")` should return `TRUE`.
   : Three-panel row layout (A \| B over C)
 - [`subtitle_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.md)
   : Define subtitle row layout defaults
+- [`table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_box.md)
+  : Construct a native grid table for use in layout rows
 - [`text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.md)
   : Construct a styled text box item
 - [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)

@@ -9,13 +9,13 @@
 ## Citation
 
 Leon R, Alvarez D (2026). *bodybuildr: Bodybuildr creates infographics
-row by row*. R package version 0.4.0,
+row by row*. R package version 0.4.1,
 <https://sunstone-bioinformatics.github.io/bodybuildr/>.
 
     @Manual{,
       title = {bodybuildr: Bodybuildr creates infographics row by row},
       author = {Rafael Leon and Dan Alvarez},
       year = {2026},
-      note = {R package version 0.4.0},
+      note = {R package version 0.4.1},
       url = {https://sunstone-bioinformatics.github.io/bodybuildr/},
     }

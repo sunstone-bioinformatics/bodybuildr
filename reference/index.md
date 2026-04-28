@@ -15,10 +15,16 @@
 - [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
   [`export_pdf_top()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
   : Export a canvas to PDF (top-anchored)
+- [`html_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/html_text_box.md)
+  : Construct a raw HTML text box item
 - [`layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/layout_style.md)
   : Define a row layout style
+- [`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
+  : Construct a Markdown-formatted text box item
 - [`new_canvas()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.md)
   : Create a new canvas gtable
+- [`rich_table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/rich_table_box.md)
+  : Construct a mixed-content table grob
 - [`str_banner_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_banner_row.md)
   : Two-column banner with logo and text
 - [`str_n_panel_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_n_panel_row.md)
@@ -29,6 +35,8 @@
   : Three-panel row layout (A \| B over C)
 - [`subtitle_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.md)
   : Define subtitle row layout defaults
+- [`table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_box.md)
+  : Construct a native grid table for use in layout rows
 - [`text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.md)
   : Construct a styled text box item
 - [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
