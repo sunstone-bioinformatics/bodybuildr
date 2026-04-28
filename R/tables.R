@@ -141,6 +141,7 @@ table_box <- function(
 #' @importFrom grid unit unit.c gpar grobTree gTree gList rectGrob textGrob
 #'   viewport nullGrob
 #' @importFrom gtable gtable gtable_add_grob gtable_add_rows
+#' @importFrom gridtext textbox_grob
 rich_table_box <- function(
     headers,
     rows,
@@ -244,13 +245,29 @@ rich_table_box <- function(
 
     # character (or coerce to string)
     lbl <- if (is.character(item)) item else paste0(item)
-    txt <- textGrob(
-      lbl,
-      x = unit(0, "npc"), y = unit(0.5, "npc"),
-      just = c("left", "center"),
-      gp   = text_gp,
-      vp   = inner_vp
-    )
+    if (requireNamespace("gridtext", quietly = TRUE)) {
+      txt <- gridtext::textbox_grob(
+        text    = lbl,
+        x       = pad,
+        y       = unit(0.5, "npc"),
+        width   = unit(1, "npc") - 2 * pad,
+        hjust   = 0,
+        vjust   = 0.5,
+        halign  = 0,
+        gp      = text_gp,
+        box_gp  = gpar(col = NA, fill = NA),
+        padding = unit(c(0, 0, 0, 0), "pt"),
+        margin  = unit(c(0, 0, 0, 0), "pt")
+      )
+    } else {
+      txt <- textGrob(
+        lbl,
+        x = unit(0, "npc"), y = unit(0.5, "npc"),
+        just = c("left", "center"),
+        gp   = text_gp,
+        vp   = inner_vp
+      )
+    }
     grobTree(bg, txt)
   }
 
