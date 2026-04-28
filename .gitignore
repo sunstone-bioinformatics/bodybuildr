@@ -64,3 +64,10 @@ utils/subtitle_cell.R
 utils/to_in.R
 utils/use_noto_sans.R
 test_files/
+
+# Local agent notes and generated artifacts
+AGENT.md
+.office-hours-design-draft.md
+.office-hours-blank-box-design-draft.md
+Rplots.pdf
+tests/testthat/Rplots.pdf
