@@ -9,7 +9,7 @@
   inner_vp,
   gp = gpar(col = "#111111", fontsize = 11, fontface = "plain", fontfamily = "sans"),
   preserve_newlines = TRUE,
-  prefer_gridtext = TRUE,
+  prefer_gridtext = FALSE,
   box_r = unit(6, "pt"),
   box_border_col = "#CBD5E1",
   box_border_lwd = 1,

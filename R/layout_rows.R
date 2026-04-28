@@ -218,6 +218,7 @@ str_n_panel_row <- function(
     # text_box / md_text_box wrapper
     if (inherits(obj, "bbdr_text_box")) {
       lbl <- obj$label
+      use_gridtext <- inherits(obj, c("bbdr_md_text_box", "bbdr_html_text_box"))
       if (inherits(obj, "bbdr_md_text_box")) {
         lbl <- .md_to_html(lbl, link_color = obj$link_color)
       }
@@ -228,6 +229,7 @@ str_n_panel_row <- function(
       if (!is.null(obj$pad_y)) style$pad_y <- obj$pad_y
       box <- .wrap_text_top_left(
         lbl, inner_vp, gp = style$text_style,
+        prefer_gridtext = use_gridtext,
         box_r = style$box_style$radius,
         box_border_col = style$box_style$border_color,
         box_border_lwd = style$box_style$border_lwd,
@@ -451,11 +453,13 @@ str_three_panel_row <- function(
     }
     if (inherits(obj, "bbdr_text_box")) {
       lbl <- obj$label
+      use_gridtext <- inherits(obj, c("bbdr_md_text_box", "bbdr_html_text_box"))
       if (inherits(obj, "bbdr_md_text_box")) {
         lbl <- .md_to_html(lbl, link_color = obj$link_color)
       }
       txt <- .wrap_text_top_left(
         lbl, inner_vp, gp = style$text_style,
+        prefer_gridtext = use_gridtext,
         box_r = style$box_style$radius, box_border_col = style$box_style$border_color,
         box_border_lwd = style$box_style$border_lwd, box_fill = style$box_style$fill,
         box_margin = style$box_style$margin, text_pad = style$box_style$padding
