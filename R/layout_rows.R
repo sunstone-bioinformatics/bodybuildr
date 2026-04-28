@@ -691,7 +691,7 @@ str_banner_row <- function(
   )
 
   # backgrounds
-  banner_bg <- rectGrob(gp = gpar(fill = layout_style$banner_bg, col = layout_style$banner_bg))
+  banner_bg <- rectGrob(gp = gpar(fill = layout_style$banner_bg, col = NA))
 
   # LEFT PANEL (color + centered logo with inner padding)
   left_outer_vp <- viewport(x = 0, y = 1, width = unit(1, "npc"), height = unit(1, "npc"),
@@ -701,7 +701,7 @@ str_banner_row <- function(
     width  = unit(1, "npc") - 2*layout_style$logo_pad_x,
     height = unit(1, "npc") - 2*layout_style$logo_pad_y
   )
-  left_panel_bg <- rectGrob(gp = gpar(fill = layout_style$logo_panel_bg, col = layout_style$logo_panel_bg))
+  left_panel_bg <- rectGrob(gp = gpar(fill = layout_style$logo_panel_bg, col = NA))
 
   # keep aspect ratio
   hpx <- dim(img)[1]; wpx <- dim(img)[2]; aspect <- wpx / hpx
@@ -740,7 +740,7 @@ str_banner_row <- function(
   }
 
   # assemble
-  gt <- gtable(widths = unit.c(layout_style$logo_panel_width, unit(1, "null")), heights = layout_style$banner_height)
+  gt <- gtable(widths = unit.c(layout_style$logo_panel_width, unit(1, "null")), heights = unit(1, "null"))
   gt <- gtable_add_grob(gt, banner_bg,  t = 1, l = 1, b = 1, r = 2, z = 0)
   gt <- gtable_add_grob(gt, left_panel, t = 1, l = 1, z = 1, clip = "on")
   gt <- gtable_add_grob(gt, title_g,    t = 1, l = 2, z = 2, clip = "off", name = "title")
