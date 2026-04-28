@@ -11,6 +11,11 @@
 #' @param df A `data.frame` to render.
 #' @param rows Whether to show row names. Default `NULL` (hidden).
 #' @param fill_height Whether to stretch row heights to fill available space. Default `FALSE`.
+#' @param title Optional character string rendered as a full-width title row above the header. Default `NULL`.
+#' @param title_fill Background color for the title row. Default matches `header_fill`.
+#' @param title_col Text color for the title row. Default matches `header_col`.
+#' @param title_height Height of the title row as `grid::unit`. Default `unit(0.4, "in")`.
+#' @param title_fontsize Font size for the title row in pt. Default `fontsize + 2`.
 #' @param header_fill Background color for header row. Default `"#1E3A8A"`.
 #' @param header_col Text color for header row. Default `"white"`.
 #' @param cell_fill Background color for data cells. Default `"white"`.
@@ -21,19 +26,25 @@
 #' @param padding Cell padding as `grid::unit`. Default `unit(4, "pt")`.
 #' @return A `gtable` grob to use as an item in layout rows.
 #' @export
-#' @importFrom grid unit unit.c gpar
+#' @importFrom grid unit unit.c gpar rectGrob textGrob
+#' @importFrom gtable gtable_add_rows gtable_add_grob
 table_box <- function(
     df,
-    rows        = NULL,
-    fill_height = FALSE,
-    header_fill = "#1E3A8A",
-    header_col  = "white",
-    cell_fill   = "white",
-    alt_fill    = "#F1F5F9",
-    border_col  = "#CBD5E1",
-    fontsize    = 9,
-    fontfamily  = "sans",
-    padding     = unit(4, "pt")
+    rows          = NULL,
+    fill_height   = FALSE,
+    title         = NULL,
+    title_fill    = NULL,
+    title_col     = NULL,
+    title_height  = unit(0.4, "in"),
+    title_fontsize = NULL,
+    header_fill   = "#1E3A8A",
+    header_col    = "white",
+    cell_fill     = "white",
+    alt_fill      = "#F1F5F9",
+    border_col    = "#CBD5E1",
+    fontsize      = 9,
+    fontfamily    = "sans",
+    padding       = unit(4, "pt")
 ) {
   if (!requireNamespace("gridExtra", quietly = TRUE)) {
     stop("Package 'gridExtra' needed for table_box(). Install with install.packages('gridExtra').", call. = FALSE)
@@ -76,6 +87,23 @@ table_box <- function(
     tg$heights <- unit(rep(1, length(tg$heights)), "null")
   }
 
+  if (!is.null(title)) {
+    t_fill <- if (!is.null(title_fill)) title_fill else header_fill
+    t_col  <- if (!is.null(title_col))  title_col  else header_col
+    t_fs   <- if (!is.null(title_fontsize)) title_fontsize else fontsize + 2
+    t_h    <- if (inherits(title_height, "unit")) title_height else unit(title_height, "in")
+    nc     <- length(tg$widths)
+
+    tg <- gtable_add_rows(tg, heights = t_h, pos = 0)
+    title_grob <- grid::grobTree(
+      rectGrob(gp = gpar(fill = t_fill, col = border_col, lwd = 0.5)),
+      textGrob(title, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
+               just = c("center", "center"),
+               gp   = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily))
+    )
+    tg <- gtable_add_grob(tg, title_grob, t = 1, l = 1, r = nc, z = 1, clip = "on")
+  }
+
   tg
 }
 
@@ -94,6 +122,11 @@ table_box <- function(
 #'   `NULL` = equal-width columns.
 #' @param row_height Height of each data row as `grid::unit`. Default `unit(0.4, "in")`.
 #' @param header_height Height of header row as `grid::unit`. Default `unit(0.35, "in")`.
+#' @param title Optional character string rendered as a full-width title row above the header. Default `NULL`.
+#' @param title_fill Background color for the title row. Default matches `header_fill`.
+#' @param title_col Text color for the title row. Default matches `header_col`.
+#' @param title_height Height of the title row as `grid::unit`. Default `unit(0.4, "in")`.
+#' @param title_fontsize Font size for the title row in pt. Default `fontsize + 2`.
 #' @param header_fill Header background color. Default `"#1E3A8A"`.
 #' @param header_col Header text color. Default `"white"`.
 #' @param cell_fill Base data cell background. Default `"white"`.
@@ -107,22 +140,27 @@ table_box <- function(
 #' @export
 #' @importFrom grid unit unit.c gpar grobTree gTree gList rectGrob textGrob
 #'   viewport nullGrob
-#' @importFrom gtable gtable gtable_add_grob
+#' @importFrom gtable gtable gtable_add_grob gtable_add_rows
 rich_table_box <- function(
     headers,
     rows,
-    col_widths    = NULL,
-    row_height    = unit(0.4, "in"),
-    header_height = unit(0.35, "in"),
-    header_fill   = "#1E3A8A",
-    header_col    = "white",
-    cell_fill     = "white",
-    alt_fill      = "#F1F5F9",
-    border_col    = "#CBD5E1",
-    fontsize      = 9,
-    fontfamily    = "sans",
-    padding       = unit(4, "pt"),
-    image_scale   = c("fit", "fill")
+    col_widths     = NULL,
+    row_height     = unit(0.4, "in"),
+    header_height  = unit(0.35, "in"),
+    title          = NULL,
+    title_fill     = NULL,
+    title_col      = NULL,
+    title_height   = unit(0.4, "in"),
+    title_fontsize = NULL,
+    header_fill    = "#1E3A8A",
+    header_col     = "white",
+    cell_fill      = "white",
+    alt_fill       = "#F1F5F9",
+    border_col     = "#CBD5E1",
+    fontsize       = 9,
+    fontfamily     = "sans",
+    padding        = unit(4, "pt"),
+    image_scale    = c("fit", "fill")
 ) {
   image_scale <- match.arg(image_scale)
 
@@ -231,6 +269,23 @@ rich_table_box <- function(
       cell <- .rich_cell(rows[[i]][[j]], bg_fill = row_fill, text_gp = cell_gp)
       gt   <- gtable_add_grob(gt, cell, t = i + 1, l = j, z = 1, clip = "on")
     }
+  }
+
+  # prepend title row spanning all columns
+  if (!is.null(title)) {
+    t_fill <- if (!is.null(title_fill)) title_fill else header_fill
+    t_col  <- if (!is.null(title_col))  title_col  else header_col
+    t_fs   <- if (!is.null(title_fontsize)) title_fontsize else fontsize + 2
+    t_h    <- if (inherits(title_height, "unit")) title_height else unit(title_height, "in")
+
+    gt <- gtable_add_rows(gt, heights = t_h, pos = 0)
+    title_grob <- grobTree(
+      rectGrob(gp = gpar(fill = t_fill, col = border_col, lwd = 0.5)),
+      textGrob(title, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
+               just = c("center", "center"),
+               gp   = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily))
+    )
+    gt <- gtable_add_grob(gt, title_grob, t = 1, l = 1, r = nc, z = 1, clip = "on")
   }
 
   gt

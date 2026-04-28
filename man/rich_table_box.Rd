@@ -10,6 +10,11 @@ rich_table_box(
   col_widths = NULL,
   row_height = unit(0.4, "in"),
   header_height = unit(0.35, "in"),
+  title = NULL,
+  title_fill = NULL,
+  title_col = NULL,
+  title_height = unit(0.4, "in"),
+  title_fontsize = NULL,
   header_fill = "#1E3A8A",
   header_col = "white",
   cell_fill = "white",
@@ -34,6 +39,16 @@ rich_table_box(
 \item{row_height}{Height of each data row as `grid::unit`. Default `unit(0.4, "in")`.}
 
 \item{header_height}{Height of header row as `grid::unit`. Default `unit(0.35, "in")`.}
+
+\item{title}{Optional character string rendered as a full-width title row above the header. Default `NULL`.}
+
+\item{title_fill}{Background color for the title row. Default matches `header_fill`.}
+
+\item{title_col}{Text color for the title row. Default matches `header_col`.}
+
+\item{title_height}{Height of the title row as `grid::unit`. Default `unit(0.4, "in")`.}
+
+\item{title_fontsize}{Font size for the title row in pt. Default `fontsize + 2`.}
 
 \item{header_fill}{Header background color. Default `"#1E3A8A"`.}
 
