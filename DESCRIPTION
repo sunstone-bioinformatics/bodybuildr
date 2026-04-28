@@ -1,7 +1,7 @@
 Package: bodybuildr
 Type: Package
 Title: Bodybuildr creates infographics row by row
-Version: 0.4.3
+Version: 0.4.2
 Authors@R: c(
     person(
       "Rafael", "Leon",

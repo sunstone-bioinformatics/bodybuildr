@@ -215,14 +215,14 @@ html_text_box <- function(
 #' @param text_pad Inner padding as `grid::unit`.
 #' @return A grob representing the wrapped text box.
 #' @keywords internal
-#' @importFrom grid gpar unit viewport grobTree vpStack pushViewport popViewport convertWidth grobWidth roundrectGrob textGrob rectGrob
+#' @importFrom grid gpar unit viewport grobTree vpStack pushViewport popViewport convertWidth stringWidth roundrectGrob textGrob rectGrob
 #' @importFrom gridtext textbox_grob
 .wrap_text_top_left <- function(
     label,
     inner_vp,
     gp = gpar(col = "#111111", fontsize = 11, fontface = "plain", fontfamily = "sans"),
     preserve_newlines = TRUE,
-    prefer_gridtext   = FALSE,
+    prefer_gridtext   = TRUE,
     box_r             = unit(6, "pt"),
     box_border_col    = "#CBD5E1",
     box_border_lwd    = 1,
@@ -273,13 +273,15 @@ html_text_box <- function(
   }
 
   # Fallback: approximate char-based wrap
-  pushViewport(vpStack(inner_vp, box_vp))
-  on.exit(popViewport(), add = TRUE)
+  pushViewport(inner_vp)
+  pushViewport(box_vp)
+  on.exit({
+    popViewport(2)
+  }, add = TRUE)
 
   inner_w <- convertWidth(unit(1, "npc") - (text_pad[2] + text_pad[4]), "inch", valueOnly = TRUE)
   sample_str <- paste(rep("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 3), collapse = "")
-  sample_grob <- textGrob(sample_str, gp = gp)
-  avg_char_in <- convertWidth(grid::grobWidth(sample_grob), "inch", valueOnly = TRUE) / nchar(sample_str)
+  avg_char_in <- convertWidth(stringWidth(sample_str), "inch", valueOnly = TRUE) / nchar(sample_str)
   if (!is.finite(avg_char_in) || avg_char_in <= 0) avg_char_in <- 0.1
   wrap_chars <- max(1L, floor(inner_w / avg_char_in))
 
@@ -309,7 +311,7 @@ html_text_box <- function(
     just = c("left","top"),
     gp = gp
   )
-  grobTree(rr, txt_g, vp = vpStack(inner_vp, box_vp))
+  grobTree(rr, txt_g, vp = inner_vp)
 }
 
 #' Internal: subtitle cell with gradient and rounded corners
