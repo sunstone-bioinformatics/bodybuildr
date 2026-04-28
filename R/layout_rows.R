@@ -691,17 +691,17 @@ str_banner_row <- function(
   )
 
   # backgrounds
-  banner_bg <- rectGrob(gp = gpar(fill = layout_style$banner_bg, col = NA))
+  banner_bg <- rectGrob(gp = gpar(fill = layout_style$banner_bg, col = layout_style$banner_bg))
 
   # LEFT PANEL (color + centered logo with inner padding)
-  left_outer_vp <- viewport(x = 0, y = 1, width = layout_style$logo_panel_width, height = layout_style$banner_height,
+  left_outer_vp <- viewport(x = 0, y = 1, width = unit(1, "npc"), height = unit(1, "npc"),
                                   just = c("left","top"))
   left_inner_vp <- viewport(
     x = 0.5, y = 0.5, just = c("center","center"),
     width  = unit(1, "npc") - 2*layout_style$logo_pad_x,
     height = unit(1, "npc") - 2*layout_style$logo_pad_y
   )
-  left_panel_bg <- rectGrob(gp = gpar(fill = layout_style$logo_panel_bg, col = NA))
+  left_panel_bg <- rectGrob(gp = gpar(fill = layout_style$logo_panel_bg, col = layout_style$logo_panel_bg))
 
   # keep aspect ratio
   hpx <- dim(img)[1]; wpx <- dim(img)[2]; aspect <- wpx / hpx
