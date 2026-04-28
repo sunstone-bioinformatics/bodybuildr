@@ -12,6 +12,11 @@ table_box(
   df,
   rows = NULL,
   fill_height = FALSE,
+  title = NULL,
+  title_fill = NULL,
+  title_col = NULL,
+  title_height = unit(0.4, "in"),
+  title_fontsize = NULL,
   header_fill = "#1E3A8A",
   header_col = "white",
   cell_fill = "white",
@@ -37,6 +42,28 @@ table_box(
 
   Whether to stretch row heights to fill available space. Default
   \`FALSE\`.
+
+- title:
+
+  Optional character string rendered as a full-width title row above the
+  header. Default \`NULL\`.
+
+- title_fill:
+
+  Background color for the title row. Default matches \`header_fill\`.
+
+- title_col:
+
+  Text color for the title row. Default matches \`header_col\`.
+
+- title_height:
+
+  Height of the title row as \`grid::unit\`. Default \`unit(0.4,
+  "in")\`.
+
+- title_fontsize:
+
+  Font size for the title row in pt. Default \`fontsize + 2\`.
 
 - header_fill:
 

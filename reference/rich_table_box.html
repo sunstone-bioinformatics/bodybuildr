@@ -9,7 +9,7 @@ a grob, or `NULL`. Returns a `gtable` that drops into any layout row function.">
 
     <a class="navbar-brand me-2" href="../index.html">bodybuildr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,11 @@ a grob, or `NULL`. Returns a `gtable` that drops into any layout row function.</
 <span>  col_widths <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  row_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.4</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
 <span>  header_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.35</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  title_fill <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  title_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  title_height <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.4</span>, <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>  title_fontsize <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  header_fill <span class="op">=</span> <span class="st">"#1E3A8A"</span>,</span>
 <span>  header_col <span class="op">=</span> <span class="st">"white"</span>,</span>
 <span>  cell_fill <span class="op">=</span> <span class="st">"white"</span>,</span>
@@ -87,6 +92,26 @@ a grob, or `NULL`. Returns a `gtable` that drops into any layout row function.</
 
 <dt id="arg-header-height">header_height<a class="anchor" aria-label="anchor" href="#arg-header-height"></a></dt>
 <dd><p>Height of header row as `grid::unit`. Default `unit(0.35, "in")`.</p></dd>
+
+
+<dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
+<dd><p>Optional character string rendered as a full-width title row above the header. Default `NULL`.</p></dd>
+
+
+<dt id="arg-title-fill">title_fill<a class="anchor" aria-label="anchor" href="#arg-title-fill"></a></dt>
+<dd><p>Background color for the title row. Default matches `header_fill`.</p></dd>
+
+
+<dt id="arg-title-col">title_col<a class="anchor" aria-label="anchor" href="#arg-title-col"></a></dt>
+<dd><p>Text color for the title row. Default matches `header_col`.</p></dd>
+
+
+<dt id="arg-title-height">title_height<a class="anchor" aria-label="anchor" href="#arg-title-height"></a></dt>
+<dd><p>Height of the title row as `grid::unit`. Default `unit(0.4, "in")`.</p></dd>
+
+
+<dt id="arg-title-fontsize">title_fontsize<a class="anchor" aria-label="anchor" href="#arg-title-fontsize"></a></dt>
+<dd><p>Font size for the title row in pt. Default `fontsize + 2`.</p></dd>
 
 
 <dt id="arg-header-fill">header_fill<a class="anchor" aria-label="anchor" href="#arg-header-fill"></a></dt>
