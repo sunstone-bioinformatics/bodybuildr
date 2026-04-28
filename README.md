@@ -95,3 +95,18 @@ Canvas helpers:
 ## Notes
 - Uses grid units (`grid::unit`) for sizing; keep units consistent.
 - ggplot2 support is optional; install it if you want to render plots in rows.
+
+## Cairo and PDF rendering
+
+`export_pdf()` uses `cairo_pdf()` when available for full UTF-8 support
+(bullet points, accented characters, rich text from `md_text_box()` and
+`html_text_box()`). Without Cairo it falls back to `pdf()`, which may
+substitute some characters.
+
+| Platform | Status | Fix |
+|----------|--------|-----|
+| Windows  | Built into R | Nothing needed |
+| Linux    | Usually present | `sudo apt install libcairo2-dev` then reinstall R |
+| macOS    | Requires XQuartz | Install from <https://www.xquartz.org> and restart R |
+
+Verify Cairo is active: `capabilities("cairo")` should return `TRUE`.

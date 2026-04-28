@@ -93,6 +93,17 @@ canvas_add_row <- function(canvas, grob, height) {
 #'
 #' Opens a PDF device, draws a grob top-aligned, and closes the device.
 #'
+#' @details
+#' `export_pdf()` uses `cairo_pdf()` when Cairo is available, which provides
+#' full UTF-8 support (bullet points, special characters, etc.). If Cairo is
+#' unavailable it falls back to `pdf()` with a message.
+#'
+#' **Cairo availability by platform:**
+#' - **Windows:** bundled with R — no action needed.
+#' - **Linux:** usually present; install `libcairo2-dev` if missing.
+#' - **macOS:** requires XQuartz (<https://www.xquartz.org>). After installing,
+#'   restart R and verify with `capabilities("cairo")`.
+#'
 #' @param grob A grob/gtable to export.
 #' @param file Output PDF path.
 #' @param width,height Page dimensions as non-negative `grid::unit` (length 1).
@@ -101,7 +112,7 @@ canvas_add_row <- function(canvas, grob, height) {
 #' @return Invisibly returns the output file path.
 #' @export
 #' @importFrom grid unit grid.newpage
-#' @importFrom grDevices pdf dev.off
+#' @importFrom grDevices pdf cairo_pdf dev.off
 export_pdf <- function(grob, file = "infographic_layout.pdf",
                        width = unit(8.5, "in"),
                        height = unit(11, "in"),
@@ -119,7 +130,34 @@ export_pdf <- function(grob, file = "infographic_layout.pdf",
   width_in  <- .to_in(width)
   height_in <- .to_in(height)
 
-  pdf(file, width = width_in, height = height_in, useDingbats = FALSE)
+  use_cairo <- isTRUE(capabilities("cairo"))
+  if (use_cairo) {
+    cairo_failed <- FALSE
+    withCallingHandlers(
+      cairo_pdf(file, width = width_in, height = height_in),
+      warning = function(w) {
+        if (grepl("cairo", conditionMessage(w), ignore.case = TRUE)) {
+          cairo_failed <<- TRUE
+          invokeRestart("muffleWarning")
+        }
+      }
+    )
+    if (cairo_failed) {
+      try(dev.off(), silent = TRUE)
+      use_cairo <- FALSE
+      hint <- if (.Platform$OS.type == "unix" && Sys.info()[["sysname"]] == "Darwin") {
+        " On macOS, install XQuartz (https://www.xquartz.org) and restart R."
+      } else if (.Platform$OS.type == "unix") {
+        " On Linux, install the Cairo library (e.g. `sudo apt install libcairo2-dev`) and reinstall R."
+      } else {
+        " Cairo should be bundled with R on Windows; try reinstalling R."
+      }
+      message("Cairo PDF device unavailable; falling back to pdf() -- non-ASCII characters (e.g. bullet points) may not render correctly.", hint)
+    }
+  }
+  if (!use_cairo) {
+    pdf(file, width = width_in, height = height_in, useDingbats = FALSE)
+  }
   on.exit(dev.off(), add = TRUE)
   grid.newpage()
   .draw_canvas_top(

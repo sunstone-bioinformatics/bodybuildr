@@ -14,8 +14,11 @@ Authors@R: c(
       role = c("aut")
     ))
 Maintainer: Rafael Leon <rafa.leon190@gmail.com>
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
+Description: Build infographic-style PDF layouts in R by composing pages as
+    vertical stacks of rows. Mix text, ggplot2 plots, images, and grobs in the
+    same row. Export to PDF with predictable sizing using grid units.
+SystemRequirements: Cairo (optional but recommended for full UTF-8 PDF output;
+    macOS users should install XQuartz from https://www.xquartz.org)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
@@ -25,12 +28,14 @@ Imports:
     ggplot2,
     grid,
     grDevices,
+    gridExtra,
     gridtext,
     gtable,
     jpeg,
     png,
     tools
 Suggests:
+    commonmark,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

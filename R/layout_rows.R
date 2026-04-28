@@ -215,9 +215,12 @@ str_n_panel_row <- function(
       img_g <- .bbdr_raster_grob(img, scale = image_scale)
       return(grobTree(bg, blue_box, gTree(children = gList(img_g), vp = inner_vp)))
     }
-    # text_box wrapper
+    # text_box / md_text_box wrapper
     if (inherits(obj, "bbdr_text_box")) {
       lbl <- obj$label
+      if (inherits(obj, "bbdr_md_text_box")) {
+        lbl <- .md_to_html(lbl, link_color = obj$link_color)
+      }
       style$text_style <- obj$text_style
       style$box_style  <- obj$box_style
       if (!is.null(obj$bg))    style$bg <- obj$bg
@@ -447,8 +450,12 @@ str_three_panel_row <- function(
       return(grobTree(bg, blue_box, gTree(children = gList(img_g), vp = inner_vp)))
     }
     if (inherits(obj, "bbdr_text_box")) {
+      lbl <- obj$label
+      if (inherits(obj, "bbdr_md_text_box")) {
+        lbl <- .md_to_html(lbl, link_color = obj$link_color)
+      }
       txt <- .wrap_text_top_left(
-        obj$label, inner_vp, gp = style$text_style,
+        lbl, inner_vp, gp = style$text_style,
         box_r = style$box_style$radius, box_border_col = style$box_style$border_color,
         box_border_lwd = style$box_style$border_lwd, box_fill = style$box_style$fill,
         box_margin = style$box_style$margin, text_pad = style$box_style$padding
