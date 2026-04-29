@@ -95,17 +95,21 @@ table_box <- function(
     nc     <- length(tg$widths)
 
     tg <- gtable_add_rows(tg, heights = t_h, pos = 0)
+    title_vp <- viewport(
+      x = pad, y = unit(0.5, "npc"), just = c("left", "center"),
+      width = unit(1, "npc") - 2 * pad, height = unit(1, "npc") - 2 * pad
+    )
     title_txt <- if (requireNamespace("gridtext", quietly = TRUE)) {
-      gridtext::textbox_grob(
+      gTree(children = gList(gridtext::textbox_grob(
         text    = title,
         x       = unit(0.5, "npc"), y = unit(0.5, "npc"),
-        width   = unit(1, "npc") - 2 * pad,
+        width   = unit(1, "npc"),
         hjust   = 0.5, vjust = 0.5, halign = 0.5,
         gp      = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily),
         box_gp  = gpar(col = NA, fill = NA),
         padding = unit(c(0, 0, 0, 0), "pt"),
         margin  = unit(c(0, 0, 0, 0), "pt")
-      )
+      )), vp = title_vp)
     } else {
       textGrob(title, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
                just = c("center", "center"),
@@ -260,19 +264,16 @@ rich_table_box <- function(
     # character (or coerce to string)
     lbl <- if (is.character(item)) item else paste0(item)
     if (requireNamespace("gridtext", quietly = TRUE)) {
-      txt <- gridtext::textbox_grob(
+      txt <- gTree(children = gList(gridtext::textbox_grob(
         text    = lbl,
-        x       = pad,
-        y       = unit(0.5, "npc"),
-        width   = unit(1, "npc") - 2 * pad,
-        hjust   = 0,
-        vjust   = 0.5,
-        halign  = 0,
+        x       = unit(0, "npc"), y = unit(0.5, "npc"),
+        width   = unit(1, "npc"),
+        hjust   = 0, vjust = 0.5, halign = 0,
         gp      = text_gp,
         box_gp  = gpar(col = NA, fill = NA),
         padding = unit(c(0, 0, 0, 0), "pt"),
         margin  = unit(c(0, 0, 0, 0), "pt")
-      )
+      )), vp = inner_vp)
     } else {
       txt <- textGrob(
         lbl,
@@ -310,17 +311,21 @@ rich_table_box <- function(
     t_h    <- if (inherits(title_height, "unit")) title_height else unit(title_height, "in")
 
     gt <- gtable_add_rows(gt, heights = t_h, pos = 0)
+    title_vp <- viewport(
+      x = pad, y = unit(0.5, "npc"), just = c("left", "center"),
+      width = unit(1, "npc") - 2 * pad, height = unit(1, "npc") - 2 * pad
+    )
     title_txt <- if (requireNamespace("gridtext", quietly = TRUE)) {
-      gridtext::textbox_grob(
+      gTree(children = gList(gridtext::textbox_grob(
         text    = title,
         x       = unit(0.5, "npc"), y = unit(0.5, "npc"),
-        width   = unit(1, "npc") - 2 * pad,
+        width   = unit(1, "npc"),
         hjust   = 0.5, vjust = 0.5, halign = 0.5,
         gp      = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily),
         box_gp  = gpar(col = NA, fill = NA),
         padding = unit(c(0, 0, 0, 0), "pt"),
         margin  = unit(c(0, 0, 0, 0), "pt")
-      )
+      )), vp = title_vp)
     } else {
       textGrob(title, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
                just = c("center", "center"),
