@@ -95,11 +95,25 @@ table_box <- function(
     nc     <- length(tg$widths)
 
     tg <- gtable_add_rows(tg, heights = t_h, pos = 0)
-    title_grob <- grid::grobTree(
-      rectGrob(gp = gpar(fill = t_fill, col = border_col, lwd = 0.5)),
+    title_txt <- if (requireNamespace("gridtext", quietly = TRUE)) {
+      gridtext::textbox_grob(
+        text    = title,
+        x       = unit(0.5, "npc"), y = unit(0.5, "npc"),
+        width   = unit(1, "npc") - 2 * pad,
+        hjust   = 0.5, vjust = 0.5, halign = 0.5,
+        gp      = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily),
+        box_gp  = gpar(col = NA, fill = NA),
+        padding = unit(c(0, 0, 0, 0), "pt"),
+        margin  = unit(c(0, 0, 0, 0), "pt")
+      )
+    } else {
       textGrob(title, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
                just = c("center", "center"),
                gp   = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily))
+    }
+    title_grob <- grid::grobTree(
+      rectGrob(gp = gpar(fill = t_fill, col = border_col, lwd = 0.5)),
+      title_txt
     )
     tg <- gtable_add_grob(tg, title_grob, t = 1, l = 1, r = nc, z = 1, clip = "on")
   }
@@ -296,11 +310,25 @@ rich_table_box <- function(
     t_h    <- if (inherits(title_height, "unit")) title_height else unit(title_height, "in")
 
     gt <- gtable_add_rows(gt, heights = t_h, pos = 0)
-    title_grob <- grobTree(
-      rectGrob(gp = gpar(fill = t_fill, col = border_col, lwd = 0.5)),
+    title_txt <- if (requireNamespace("gridtext", quietly = TRUE)) {
+      gridtext::textbox_grob(
+        text    = title,
+        x       = unit(0.5, "npc"), y = unit(0.5, "npc"),
+        width   = unit(1, "npc") - 2 * pad,
+        hjust   = 0.5, vjust = 0.5, halign = 0.5,
+        gp      = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily),
+        box_gp  = gpar(col = NA, fill = NA),
+        padding = unit(c(0, 0, 0, 0), "pt"),
+        margin  = unit(c(0, 0, 0, 0), "pt")
+      )
+    } else {
       textGrob(title, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
                just = c("center", "center"),
                gp   = gpar(col = t_col, fontsize = t_fs, fontface = "bold", fontfamily = fontfamily))
+    }
+    title_grob <- grobTree(
+      rectGrob(gp = gpar(fill = t_fill, col = border_col, lwd = 0.5)),
+      title_txt
     )
     gt <- gtable_add_grob(gt, title_grob, t = 1, l = 1, r = nc, z = 1, clip = "on")
   }
