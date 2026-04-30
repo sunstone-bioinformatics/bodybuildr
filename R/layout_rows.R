@@ -631,10 +631,8 @@ str_subtitle_row <- function(
 #'
 #' @param image_path Path to a PNG/JPEG logo.
 #' @param title,subtitle Text content.
-#' @param layout_style A list from [layout_style()] or [banner_layout_style()] controlling geometry and colors.
+#' @param layout_style A list from [banner_layout_style()] controlling geometry, colors, `logo_position` (`"left"`/`"right"`), and `image_scale` (`"fit"`/`"fill"`).
 #' @param text_style A list with `title` and `subtitle` entries produced by [text_style()].
-#' @param image_scale How to place the logo: `"fit"` (preserve aspect ratio) or `"fill"` (fill the panel).
-#' @param logo_position Which side the logo panel appears on: `"left"` or `"right"`.
 #' @return A `gtable` representing the banner.
 #' @export
 #' @importFrom grid unit rectGrob gpar viewport gTree gList textGrob grobHeight unit.c
@@ -644,15 +642,11 @@ str_subtitle_row <- function(
 #' @importFrom jpeg readJPEG
 str_banner_row <- function(
     image_path,
-    title         = "Project Title",
-    subtitle      = "Concise one-liner about the project",
-    layout_style  = banner_layout_style(),
-    text_style    = NULL,
-    image_scale   = c("fit", "fill"),
-    logo_position = c("left", "right")
+    title        = "Project Title",
+    subtitle     = "Concise one-liner about the project",
+    layout_style = banner_layout_style(),
+    text_style   = NULL
 ){
-  image_scale   <- match.arg(image_scale)
-  logo_position <- match.arg(logo_position)
 
   # merge user overrides with defaults
   if (is.list(layout_style)) {
@@ -662,7 +656,9 @@ str_banner_row <- function(
   } else {
     layout_style <- banner_layout_style()
   }
-  layout_style <- do.call(banner_layout_style, layout_style)
+  layout_style  <- do.call(banner_layout_style, layout_style)
+  image_scale   <- layout_style$image_scale
+  logo_position <- layout_style$logo_position
 
   # validate styles
   if (is.null(text_style)) {

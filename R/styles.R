@@ -145,7 +145,9 @@ banner_layout_style <- function(
     text_left_pad      = unit(12, "pt"),
     text_block_top_pad = unit(10, "pt"),
     title_vshift       = unit(0, "pt"),
-    subtitle_gap       = unit(6, "pt")
+    subtitle_gap       = unit(6, "pt"),
+    logo_position      = c("left", "right"),
+    image_scale        = c("fit", "fill")
 ) {
   banner_height      <- .as_unit_nonneg(banner_height, "banner_height")
   logo_panel_width   <- .as_unit_nonneg(logo_panel_width, "logo_panel_width")
@@ -155,6 +157,8 @@ banner_layout_style <- function(
   text_block_top_pad <- .as_unit_nonneg(text_block_top_pad, "text_block_top_pad")
   title_vshift       <- .as_unit_nonneg(title_vshift, "title_vshift")
   subtitle_gap       <- .as_unit_nonneg(subtitle_gap, "subtitle_gap")
+  logo_position      <- match.arg(logo_position)
+  image_scale        <- match.arg(image_scale)
 
   list(
     banner_height      = banner_height,
@@ -166,7 +170,9 @@ banner_layout_style <- function(
     text_left_pad      = text_left_pad,
     text_block_top_pad = text_block_top_pad,
     title_vshift       = title_vshift,
-    subtitle_gap       = subtitle_gap
+    subtitle_gap       = subtitle_gap,
+    logo_position      = logo_position,
+    image_scale        = image_scale
   )
 }
 
