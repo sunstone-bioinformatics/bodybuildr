@@ -25,12 +25,14 @@ The name is the point: you build the body one row at a time.
 If the package is on CRAN:
 
 ``` r
+
 install.packages("bodybuildr")
 ```
 
 If you are installing from GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("sunstone-bioinformatics/bodybuildr")
 ```
@@ -38,6 +40,7 @@ remotes::install_github("sunstone-bioinformatics/bodybuildr")
 ## Quick start
 
 ``` r
+
 library(bodybuildr)
 
 # Build a banner
@@ -136,6 +139,7 @@ and
 ## Rich text example
 
 ``` r
+
 library(bodybuildr)
 
 # Markdown cell
@@ -158,6 +162,7 @@ export_pdf(canvas, file = "output.pdf")
 ## Table example
 
 ``` r
+
 # Text-only table (selectable text in PDF)
 tbl <- table_box(
   data.frame(Metric = c("n", "Mean age"), Value = c("1,204", "52.3")),
@@ -205,10 +210,10 @@ Without Cairo it falls back to
 [`pdf()`](https://rdrr.io/r/grDevices/pdf.html), which may substitute
 some characters.
 
-| Platform | Status           | Fix                                                  |
-|----------|------------------|------------------------------------------------------|
-| Windows  | Built into R     | Nothing needed                                       |
-| Linux    | Usually present  | `sudo apt install libcairo2-dev` then reinstall R    |
-| macOS    | Requires XQuartz | Install from <https://www.xquartz.org> and restart R |
+| Platform | Status | Fix |
+|----|----|----|
+| Windows | Built into R | Nothing needed |
+| Linux | Usually present | `sudo apt install libcairo2-dev` then reinstall R |
+| macOS | Requires XQuartz | Install from <https://www.xquartz.org> and restart R |
 
 Verify Cairo is active: `capabilities("cairo")` should return `TRUE`.

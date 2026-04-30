@@ -1,6 +1,7 @@
 # Box Margins and Lanes
 
 ``` r
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -31,6 +32,7 @@ layered/3D looks.
 ## Subtitle Examples
 
 ``` r
+
 # Lane-only: no box margin, fill matches lanes
 lane_only_layout <- subtitle_layout_style(
   row_height = unit(1, "in"),
@@ -136,6 +138,7 @@ right_row <- str_subtitle_row(
 ## Three-Panel Row Example
 
 ``` r
+
 three_style <- three_panel_layout_style(
   A_bg = "#F8FAFC",
   B_bg = "#ECFDF5",
@@ -194,6 +197,7 @@ Combine rows on a canvas and export (set `eval = FALSE` if you do not
 want to generate the file during checks):
 
 ``` r
+
 canvas <- new_canvas()
 canvas <- canvas_add_row(canvas, lane_only_row, lane_only_layout$row_height)
 canvas <- canvas_add_row(canvas, layered_row, layered_layout$row_height)
