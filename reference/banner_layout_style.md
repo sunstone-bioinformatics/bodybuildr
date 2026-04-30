@@ -15,7 +15,9 @@ banner_layout_style(
   text_left_pad = unit(12, "pt"),
   text_block_top_pad = unit(10, "pt"),
   title_vshift = unit(0, "pt"),
-  subtitle_gap = unit(6, "pt")
+  subtitle_gap = unit(6, "pt"),
+  logo_position = c("left", "right"),
+  image_scale = c("fit", "fill")
 )
 ```
 

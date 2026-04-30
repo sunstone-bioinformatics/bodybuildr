@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bodybuildr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +46,7 @@
 <span>  title <span class="op">=</span> <span class="st">"Project Title"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Concise one-liner about the project"</span>,</span>
 <span>  layout_style <span class="op">=</span> <span class="fu"><a href="banner_layout_style.html">banner_layout_style</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  text_style <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  image_scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"fill"</span><span class="op">)</span>,</span>
-<span>  logo_position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"right"</span><span class="op">)</span></span>
+<span>  text_style <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -65,19 +63,11 @@
 
 
 <dt id="arg-layout-style">layout_style<a class="anchor" aria-label="anchor" href="#arg-layout-style"></a></dt>
-<dd><p>A list from [layout_style()] or [banner_layout_style()] controlling geometry and colors.</p></dd>
+<dd><p>A list from [banner_layout_style()] controlling geometry, colors, `logo_position` (`"left"`/`"right"`), and `image_scale` (`"fit"`/`"fill"`).</p></dd>
 
 
 <dt id="arg-text-style">text_style<a class="anchor" aria-label="anchor" href="#arg-text-style"></a></dt>
 <dd><p>A list with `title` and `subtitle` entries produced by [text_style()].</p></dd>
-
-
-<dt id="arg-image-scale">image_scale<a class="anchor" aria-label="anchor" href="#arg-image-scale"></a></dt>
-<dd><p>How to place the logo: `"fit"` (preserve aspect ratio) or `"fill"` (fill the panel).</p></dd>
-
-
-<dt id="arg-logo-position">logo_position<a class="anchor" aria-label="anchor" href="#arg-logo-position"></a></dt>
-<dd><p>Which side the logo panel appears on: `"left"` or `"right"`.</p></dd>
 
 </dl></div>
     <div class="section level2">
