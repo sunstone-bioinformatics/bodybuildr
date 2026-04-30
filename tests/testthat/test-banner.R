@@ -48,6 +48,19 @@ test_that("str_banner_row errors on negative layout overrides", {
   )
 })
 
+test_that("str_banner_row logo_position right builds valid gtable", {
+  logo <- make_test_png()
+  gt <- str_banner_row(image_path = logo, title = "T", logo_position = "right")
+  expect_s3_class(gt, "gtable")
+  expect_equal(ncol(gt), 2L)
+})
+
+test_that("str_banner_row image_scale fill builds valid gtable", {
+  logo <- make_test_png()
+  gt <- str_banner_row(image_path = logo, title = "T", image_scale = "fill")
+  expect_s3_class(gt, "gtable")
+})
+
 test_that("str_banner_row export creates PDF", {
   logo <- make_test_png()
   banner <- str_banner_row(image_path = logo, title = "Title", subtitle = "Subtitle", text_style = list(

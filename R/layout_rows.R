@@ -627,26 +627,33 @@ str_subtitle_row <- function(
 
 #' Two-column banner with logo and text
 #'
-#' Builds a banner with a fixed-width image lane on the left and title/subtitle text on the right.
+#' Builds a banner with a fixed-width image lane and title/subtitle text.
 #'
 #' @param image_path Path to a PNG/JPEG logo.
 #' @param title,subtitle Text content.
 #' @param layout_style A list from [layout_style()] or [banner_layout_style()] controlling geometry and colors.
 #' @param text_style A list with `title` and `subtitle` entries produced by [text_style()].
+#' @param image_scale How to place the logo: `"fit"` (preserve aspect ratio) or `"fill"` (fill the panel).
+#' @param logo_position Which side the logo panel appears on: `"left"` or `"right"`.
 #' @return A `gtable` representing the banner.
 #' @export
-#' @importFrom grid unit rectGrob gpar viewport rasterGrob gTree gList textGrob grobHeight unit.c
+#' @importFrom grid unit rectGrob gpar viewport gTree gList textGrob grobHeight unit.c
 #' @importFrom gtable gtable gtable_add_grob
 #' @importFrom tools file_ext
 #' @importFrom png readPNG
 #' @importFrom jpeg readJPEG
 str_banner_row <- function(
     image_path,
-    title    = "Project Title",
-    subtitle = "Concise one-liner about the project",
-    layout_style = banner_layout_style(),
-    text_style  = NULL
+    title         = "Project Title",
+    subtitle      = "Concise one-liner about the project",
+    layout_style  = banner_layout_style(),
+    text_style    = NULL,
+    image_scale   = c("fit", "fill"),
+    logo_position = c("left", "right")
 ){
+  image_scale   <- match.arg(image_scale)
+  logo_position <- match.arg(logo_position)
+
   # merge user overrides with defaults
   if (is.list(layout_style)) {
     defaults <- banner_layout_style()
@@ -655,7 +662,6 @@ str_banner_row <- function(
   } else {
     layout_style <- banner_layout_style()
   }
-  # validate and normalize via banner_layout_style
   layout_style <- do.call(banner_layout_style, layout_style)
 
   # validate styles
@@ -684,68 +690,68 @@ str_banner_row <- function(
   ext <- tolower(file_ext(image_path))
   img <- switch(
     ext,
-    png = readPNG(image_path),
-    jpg = readJPEG(image_path),
+    png  = readPNG(image_path),
+    jpg  = readJPEG(image_path),
     jpeg = readJPEG(image_path),
     stop("`image_path` must be a PNG or JPEG file.", call. = FALSE)
   )
 
-  # backgrounds
   banner_bg <- rectGrob(gp = gpar(fill = layout_style$banner_bg, col = NA))
 
-  # LEFT PANEL (color + centered logo with inner padding)
-  left_outer_vp <- viewport(x = 0, y = 1, width = unit(1, "npc"), height = unit(1, "npc"),
-                                  just = c("left","top"))
-  left_inner_vp <- viewport(
-    x = 0.5, y = 0.5, just = c("center","center"),
-    width  = unit(1, "npc") - 2*layout_style$logo_pad_x,
-    height = unit(1, "npc") - 2*layout_style$logo_pad_y
+  # LOGO PANEL — defer aspect ratio to draw time via .bbdr_raster_grob
+  logo_outer_vp <- viewport(x = 0, y = 1, width = unit(1, "npc"), height = unit(1, "npc"),
+                            just = c("left", "top"))
+  logo_inner_vp <- viewport(
+    x = 0.5, y = 0.5, just = c("center", "center"),
+    width  = unit(1, "npc") - 2 * layout_style$logo_pad_x,
+    height = unit(1, "npc") - 2 * layout_style$logo_pad_y
   )
-  left_panel_bg <- rectGrob(gp = gpar(fill = layout_style$logo_panel_bg, col = NA))
+  logo_panel_bg <- rectGrob(gp = gpar(fill = layout_style$logo_panel_bg, col = NA))
+  logo_img      <- .bbdr_raster_grob(img, scale = image_scale)
+  logo_in_pad   <- gTree(children = gList(logo_img), vp = logo_inner_vp)
+  logo_panel    <- gTree(children = gList(logo_panel_bg, logo_in_pad), vp = logo_outer_vp)
 
-  # keep aspect ratio
-  hpx <- dim(img)[1]; wpx <- dim(img)[2]; aspect <- wpx / hpx
-  if (aspect >= 1) { w_unit <- unit(1, "npc"); h_unit <- unit(1/aspect, "npc")
-  } else            { w_unit <- unit(aspect, "npc"); h_unit <- unit(1, "npc") }
-
-  logo_img <- rasterGrob(
-    img, x = 0.5, y = 0.5, just = c("center","center"),
-    width = w_unit, height = h_unit, interpolate = TRUE,
-    vp = left_inner_vp
-  )
-  left_panel <- gTree(children = gList(left_panel_bg, logo_img), vp = left_outer_vp)
-
-  # RIGHT TEXT (uses text styles)
+  # TEXT PANEL
   title_g <- textGrob(
     label = title,
-    x = unit(0, "npc") + layout_style$text_left_pad,
-    y = unit(1, "npc") - layout_style$text_block_top_pad - layout_style$title_vshift,
-    just = c("left","top"),
-    gp = text_style$title
+    x     = unit(0, "npc") + layout_style$text_left_pad,
+    y     = unit(1, "npc") - layout_style$text_block_top_pad - layout_style$title_vshift,
+    just  = c("left", "top"),
+    gp    = text_style$title
   )
 
-  # place subtitle just below measured title height
-  title_h <- grobHeight(title_g)
-  subtitle_y <- unit(1, "npc") - layout_style$text_block_top_pad - layout_style$title_vshift - title_h - layout_style$subtitle_gap
+  title_h    <- grobHeight(title_g)
+  subtitle_y <- unit(1, "npc") - layout_style$text_block_top_pad - layout_style$title_vshift -
+                title_h - layout_style$subtitle_gap
 
   subtitle_g <- NULL
   if (!is.null(subtitle) && nzchar(subtitle)) {
     subtitle_g <- textGrob(
       label = subtitle,
-      x = unit(0, "npc") + layout_style$text_left_pad,
-      y = subtitle_y,
-      just = c("left","top"),
-      gp = text_style$subtitle
+      x     = unit(0, "npc") + layout_style$text_left_pad,
+      y     = subtitle_y,
+      just  = c("left", "top"),
+      gp    = text_style$subtitle
     )
   }
 
-  # assemble
-  gt <- gtable(widths = unit.c(layout_style$logo_panel_width, unit(1, "null")), heights = unit(1, "null"))
-  gt <- gtable_add_grob(gt, banner_bg,  t = 1, l = 1, b = 1, r = 2, z = 0)
-  gt <- gtable_add_grob(gt, left_panel, t = 1, l = 1, z = 1, clip = "on")
-  gt <- gtable_add_grob(gt, title_g,    t = 1, l = 2, z = 2, clip = "off", name = "title")
+  # assemble — logo col is fixed width, text col is 1null
+  if (logo_position == "left") {
+    widths   <- unit.c(layout_style$logo_panel_width, unit(1, "null"))
+    logo_col <- 1L
+    text_col <- 2L
+  } else {
+    widths   <- unit.c(unit(1, "null"), layout_style$logo_panel_width)
+    logo_col <- 2L
+    text_col <- 1L
+  }
+
+  gt <- gtable(widths = widths, heights = unit(1, "null"))
+  gt <- gtable_add_grob(gt, banner_bg,  t = 1, l = 1, b = 1, r = 2,        z = 0)
+  gt <- gtable_add_grob(gt, logo_panel, t = 1, l = logo_col,                z = 1, clip = "on")
+  gt <- gtable_add_grob(gt, title_g,    t = 1, l = text_col,                z = 2, clip = "off", name = "title")
   if (!is.null(subtitle_g)) {
-    gt <- gtable_add_grob(gt, subtitle_g, t = 1, l = 2, z = 2, clip = "off", name = "subtitle")
+    gt <- gtable_add_grob(gt, subtitle_g, t = 1, l = text_col,              z = 2, clip = "off", name = "subtitle")
   }
   gt
 }
