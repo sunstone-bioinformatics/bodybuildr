@@ -1,0 +1,61 @@
+# Inline text runs
+
+\`span()\` changes weight, colour, size, italics or family for part of a
+string. \`link()\` marks a URL. Both return a string, so they can be
+combined with \`paste0()\`, and both work in every \[bb_text()\] markup
+mode.
+
+## Usage
+
+``` r
+span(
+  text,
+  weight = NULL,
+  color = NULL,
+  size = NULL,
+  italic = NULL,
+  family = NULL
+)
+
+link(url, text = url)
+```
+
+## Arguments
+
+- text:
+
+  Text of the run. For \`link()\`, the visible label (defaults to the
+  URL).
+
+- weight, color, size, italic, family:
+
+  Overrides for this run. \`size\` is in points; \`color\` takes theme
+  colour names.
+
+- url:
+
+  Link target.
+
+## Value
+
+A character string with class \`bb_inline\`.
+
+## Details
+
+Weights resolve like \[text_style()\] (semibold through the installed
+face). Spans can't be nested.
+
+In plain text, links are drawn underlined, and each line of a link is a
+single unbroken text run so PDF viewers detect the URL. The URL moves to
+a new line whole when it fits there. Plain text that contains links
+can't also contain spans. In markdown and HTML text, links are drawn in
+\`link_color\` without an underline (gridtext can't underline).
+
+## Examples
+
+``` r
+bb_text(paste0("Coverage ", span("rose", weight = 700, color = "accent"), " in 2024."))
+#> <bb_text>
+bb_text(paste0("Source: WHO/UNICEF, ", link("https://immunizationdata.who.int")))
+#> <bb_text>
+```

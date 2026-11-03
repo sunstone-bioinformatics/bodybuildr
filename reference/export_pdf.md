@@ -1,63 +1,51 @@
-# Export a canvas to PDF (top-anchored)
+# Export pages to PDF
 
-Opens a PDF device, draws a grob top-aligned, and closes the device.
+Writes one page, a \[bb_document()\], or a list of pages to a single PDF
+file. Each page is drawn from its top-left corner; headers and footers
+get their \`{page}\` / \`{pages}\` numbers here.
 
 ## Usage
 
 ``` r
-export_pdf(
-  grob,
-  file = "infographic_layout.pdf",
-  width = unit(8.5, "in"),
-  height = unit(11, "in"),
-  margin_top = unit(0, "in"),
-  margin_right = unit(0, "in"),
-  margin_bottom = unit(0, "in"),
-  margin_left = unit(0, "in")
-)
-
-export_pdf_top(
-  grob,
-  file = "infographic_layout.pdf",
-  width = unit(8.5, "in"),
-  height = unit(11, "in"),
-  margin_top = unit(0, "in"),
-  margin_right = unit(0, "in"),
-  margin_bottom = unit(0, "in"),
-  margin_left = unit(0, "in")
-)
+export_pdf(x, file = "bodybuildr.pdf", debug = FALSE)
 ```
 
 ## Arguments
 
-- grob:
+- x:
 
-  A grob/gtable to export.
+  A \[bb_page()\], a \[bb_document()\], a list of pages (\`NULL\`s are
+  dropped), or a single block (exported on a default page).
 
 - file:
 
-  Output PDF path.
+  Output path.
 
-- width, height:
+- debug:
 
-  Page dimensions as non-negative \`grid::unit\` (length 1).
-
-- margin_top, margin_right, margin_bottom, margin_left:
-
-  Page margins as non-negative \`grid::unit\` (length 1).
+  Outline every block's box, for layout work.
 
 ## Value
 
-Invisibly returns the output file path.
+The output path, invisibly.
 
 ## Details
 
-\`export_pdf()\` uses \`cairo_pdf()\` when Cairo is available, which
-provides full UTF-8 support (bullet points, special characters, etc.).
-If Cairo is unavailable it falls back to \`pdf()\` with a message.
+\`export_pdf()\` uses \`cairo_pdf()\` when Cairo is available, for full
+UTF-8 support and installed font weights. Otherwise it falls back to
+\`pdf()\` with a message.
 
 \*\*Cairo availability by platform:\*\* - \*\*Windows:\*\* bundled with
-R — no action needed. - \*\*Linux:\*\* usually present; install
-\`libcairo2-dev\` if missing. - \*\*macOS:\*\* requires XQuartz
-(\<https://www.xquartz.org\>). After installing, restart R and verify
-with \`capabilities("cairo")\`.
+R. - \*\*Linux:\*\* usually present; install \`libcairo2-dev\` if
+missing. - \*\*macOS:\*\* requires XQuartz
+(\<https://www.xquartz.org\>). After installing, restart R and check
+\`capabilities("cairo")\`.
+
+All pages must share one page size.
+
+## Examples
+
+``` r
+f <- tempfile(fileext = ".pdf")
+export_pdf(bb_page(bb_section_header("Hello"), "World"), f)
+```

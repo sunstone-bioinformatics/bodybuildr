@@ -1,63 +1,88 @@
 # Define a box style
 
-Provides a reusable set of parameters for rounded boxes (radius, border,
-fill, margin, padding).
+Fill, border and spacing for \[bb_box()\] (and the label of
+\[bb_placeholder()\]). Padding sits inside the border, margin outside
+it. Lengths are \`grid::unit\` or inches, with 1, 2 (vertical,
+horizontal) or 4 (top, right, bottom, left) values.
 
 ## Usage
 
 ``` r
 box_style(
-  radius = unit(8, "pt"),
-  border_color = "#D1D5DB",
-  border_lwd = 1,
   fill = NA,
-  margin = unit(c(0, 0, 0, 0), "pt"),
-  margin_fill = NA,
-  padding = unit(c(0, 0, 0, 0), "pt")
+  border = NULL,
+  radius = 0,
+  padding = 0,
+  margin = 0,
+  margin_fill = NA
 )
+
+box_style_panel(fill = "panel", padding = c(12, 14, 12, 14)/96, ...)
 ```
 
 ## Arguments
 
-- radius:
-
-  Corner radius as \`grid::unit\`.
-
-- border_color:
-
-  Border color.
-
-- border_lwd:
-
-  Border line width (non-negative).
-
 - fill:
 
-  Fill color.
+  Fill: a colour (theme names allowed), \[gradient_fill()\],
+  \[stripe_fill()\], or \`NA\`.
 
-- margin:
+- border:
 
-  Outer margin as \`grid::unit\` (t, r, b, l).
+  A \[line_style()\] or a colour for the border; \`NULL\`/\`NA\` for
+  none.
 
-- margin_fill:
+- radius:
 
-  Fill color for the margin band (defaults to NA/transparent).
+  Corner radius.
 
 - padding:
 
-  Inner padding as \`grid::unit\` (t, r, b, l).
+  Space between the border and the content.
+
+- margin:
+
+  Space outside the border.
+
+- margin_fill:
+
+  Fill colour of the margin band.
+
+- ...:
+
+  For \`box_style_panel()\`, further \[box_style()\] arguments.
 
 ## Value
 
-A list with box styling parameters.
+A \`bb_box_style\` object.
 
 ## Details
 
-All unit arguments must be non-negative.
+\`box_style_panel()\` is the flat note panel: theme \`panel\` fill, no
+border, square corners, 12/14px padding.
 
-Margin layers: - Box margin (\`margin\`, \`margin_fill\`) creates an
-inner gap around the box itself. Leave at zero for a single-layer look,
-or set \`margin\`/\`margin_fill\` for a double-layer/3D effect. -
-Row/column lanes come from layout styles (e.g.,
-\[column_layout_style()\], \[subtitle_layout_style()\]); they sit
-outside the box entirely.
+## Examples
+
+``` r
+box_style(fill = "panel", padding = unit(c(6, 8), "pt"))
+#> $fill
+#> [1] "panel"
+#> 
+#> $border
+#> NULL
+#> 
+#> $radius
+#> [1] 0
+#> 
+#> $padding
+#> [1] 0.083022 0.110696 0.083022 0.110696
+#> 
+#> $margin
+#> [1] 0 0 0 0
+#> 
+#> $margin_fill
+#> [1] NA
+#> 
+#> attr(,"class")
+#> [1] "bb_box_style"
+```

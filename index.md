@@ -1,35 +1,46 @@
 # bodybuildr
 
-Build cool infographics in R by building the body row by row.
+Build infographic-style PDF pages in R from blocks that size themselves.
 
-bodybuildr solves the annoying part of infographic work: layout. Instead
-of fighting with absolute positioning, you stack flexible rows with
-consistent lanes, gaps, and padding. Each row can be text, a plot, an
-image, or a custom grob, and the whole thing exports cleanly to PDF.
-
-The name is the point: you build the body one row at a time.
+bodybuildr handles the annoying part of report and profile layout:
+deciding how tall everything is. Each piece of a page is a *block* that
+knows its height at the width it gets. You stack blocks, split them into
+columns, and place them between a page header and a footer that stays
+pinned to the bottom margin. No absolute coordinates, no hand-tuned row
+heights, and translated text that runs longer just makes the block
+taller.
 
 ## Why bodybuildr?
 
-- Compose complex infographics by stacking rows on a canvas.
-- Mix text, ggplot2 objects, images, and grobs in the same row.
-- Write cell content in plain text, **Markdown**, or **raw HTML**.
-- Add native tables with selectable text — text-only or mixed content
-  (plots, images, grobs).
-- Control spacing with layout styles (lanes, gaps, margins) and box
-  styles.
-- Export to PDF with predictable sizing using grid units.
+- **Self-sizing layout.**
+  [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md)
+  and
+  [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+  pass widths down and collect heights up. Plots stretch to match their
+  neighbours.
+- **Real pages.**
+  [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md)
+  gives margins, a running header, and a footer anchored to the bottom
+  with `{page} / {pages}` numbering.
+  [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+  writes a whole document to one PDF.
+- **Editorial tables.**
+  [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md)
+  draws rules-only or boxed tables with rows that grow with wrapped
+  text, per-column styles and alignment, and any block as a cell (status
+  icons, dots, images). Side-by-side tables can share row heights.
+- **Typography that holds up.**
+  [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
+  supports weights such as 600 (through the installed font face), line
+  height and letter case; themes define every text role once.
+- **Mixed content.** Text (plain, Markdown, HTML), inline
+  [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)s
+  and underlined
+  [`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)s,
+  ggplot2 plots, images, grobs, legends, status marks, banners, section
+  headers and patterned placeholders.
 
 ## Install
-
-If the package is on CRAN:
-
-``` r
-
-install.packages("bodybuildr")
-```
-
-If you are installing from GitHub:
 
 ``` r
 
@@ -43,177 +54,116 @@ remotes::install_github("sunstone-bioinformatics/bodybuildr")
 
 library(bodybuildr)
 
-# Build a banner
-banner <- str_banner_row(
-  image_path = "path/to/logo.png",
-  title = "Project Title",
-  subtitle = "Short, punchy summary"
+template <- page_template(
+  margin_x = 0.5,
+  header   = bb_running_header("Immunization Profile", "{country}, 2025"),
+  footer   = bb_page_footer("Organisation, 2026", "{country} · {page} / {pages}")
 )
 
-# Add a subtitle band
-subtitle <- str_subtitle_row(
-  label = "Key Findings",
-  layout_style = layout_style(
-    type = "subtitle",
-    outer_margin = grid::unit(10, "pt"),
-    bottom_margin = grid::unit(6, "pt")
+indicators <- bb_table(
+  list(
+    list("Total population",  "45,696,159"),
+    list("Surviving infants", "530,193"),
+    list("Skilled birth attendance", cell("No data", text_style(color = "faint")))
   ),
-  text_style = text_style(color = "white", size = 14, face = "bold")
+  widths = c(2, 1), align = c("left", "right"),
+  col_style = list(NULL, text_style(weight = 600))
 )
 
-# Build a 3-column row with per-panel styling
-row <- str_n_panel_row(
-  items = list(
-    blank_box(),
-    "Centered middle text",
-    blank_box()
-  ),
-  layout_style = layout_style(
-    type = "columns",
-    column_gap = grid::unit(8, "pt"),
-    outer_margin = grid::unit(6, "pt"),
-    bottom_margin = grid::unit(6, "pt")
-  )
+page <- bb_page(
+  bb_section_header("General indicators", refs = "[1][2]"),
+  bb_cols(indicators, my_ggplot, gap = 0.3),      # the plot matches the table's height
+  bb_section_header("Notes"),
+  bb_box(bb_text("Values below <80% are flagged.", style = "note"), box_style_panel()),
+  template = template,
+  header   = bb_banner("Immunization Profile", "Argentina, 2025"),
+  gap      = c(0.08, 0.3, 0.08),
+  data     = list(country = "Argentina")
 )
 
-# Assemble the canvas row by row
-canvas <- new_canvas()
-canvas <- canvas_add_row(canvas, banner,   grid::unit(1.6, "in"))
-canvas <- canvas_add_row(canvas, subtitle, grid::unit(0.9, "in"))
-canvas <- canvas_add_row(canvas, row,      grid::unit(3.0, "in"))
-
-# Export
-export_pdf(canvas, file = "infographic.pdf")
+export_pdf(bb_document(page, page_two), "profile.pdf")
 ```
 
-## Core building blocks
+## Building blocks
 
-**Row builders:** -
-[`str_banner_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_banner_row.md)
-— logo + title/subtitle banner -
-[`str_subtitle_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_subtitle_row.md)
-— full-width subtitle band -
-[`str_n_panel_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_n_panel_row.md)
-— 1..n equal-width columns -
-[`str_three_panel_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/str_three_panel_row.md)
-— asymmetric A \| (B over C) layout
+| Kind | Functions |
+|----|----|
+| Layout | [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md), [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md), [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md), [`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md), [`bb_fixed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_fixed.md), [`bb_full_bleed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_full_bleed.md) |
+| Text | [`bb_text()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_text.md), [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md), [`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md), [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md) |
+| Content | [`bb_plot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_plot.md), [`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md), [`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md), [`as_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/as_block.md) |
+| Tables | [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md), [`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md), [`table_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md), [`table_style_grid()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md) |
+| Marks and legends | [`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md), [`bb_dot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_dot.md), [`bb_legend()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_legend.md), [`legend_key()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/legend_key.md) |
+| Page chrome | [`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md), [`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md), [`bb_running_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_running_header.md), [`bb_page_footer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_running_header.md), [`bb_placeholder()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_placeholder.md) |
+| Styles | [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md), [`box_style_panel()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md), [`line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/line_style.md), [`gradient_fill()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/gradient_fill.md), [`stripe_fill()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/gradient_fill.md), [`banner_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_style.md), [`section_header_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/section_header_style.md), [`header_line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/header_line_style.md), [`footer_line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/header_line_style.md) |
+| Theme | [`bb_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_theme.md), [`bb_set_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md), [`with_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md) |
+| Pages | [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md), [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md), [`bb_document()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_document.md), [`page_layout()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_layout.md), [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md) |
+| Measuring and custom blocks | [`measure_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/measure_block.md), [`text_width()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_width.md), [`text_gpar()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_gpar.md), [`with_measure_device()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/with_measure_device.md), [`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md) |
 
-**Cell content helpers:** -
-[`text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_box.md)
-— plain text with per-cell style overrides -
-[`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
-— Markdown text (bold, italic, lists, headings, links) -
-[`html_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/html_text_box.md)
-— raw HTML passed to gridtext (`<b>`, `<em>`, `<span style="...">`,
-`<br/>`, `<sup>`, `<sub>`) -
-[`blank_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/blank_box.md)
-— intentional empty slot that still participates in layout
+Lengths take [`grid::unit()`](https://rdrr.io/r/grid/unit.html) values
+or plain numbers in inches. Colours take any R colour or a theme colour
+name such as `"muted"` or `"rule_light"`.
 
-**Table helpers:** -
-[`table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_box.md)
-— `data.frame` → native grid table with selectable text; columns fill
-available width -
-[`rich_table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/rich_table_box.md)
-— table where each cell can be text, image, ggplot, grob, or `NULL`
+## Spacing: three separate bands
 
-**Styling helpers:** -
-[`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
-and
-[`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
-— typography and box styling - `layout_style(type = ...)` — row spacing,
-lanes, and backgrounds -
-[`banner_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_layout_style.md),
-[`column_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/column_layout_style.md),
-[`subtitle_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/subtitle_layout_style.md),
-[`three_panel_layout_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/three_panel_layout_style.md)
-— row-specific aliases
+1.  **Page margins** come from
+    [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md).
+    Full-bleed blocks (banners) escape the side margins.
+2.  **Layout gaps** are the `gap` of
+    [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md),
+    [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+    and
+    [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md).
+3.  **Box spacing** is the padding and margin of
+    [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md).
 
-**Canvas helpers:** -
-[`new_canvas()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_canvas.md)
-and
-[`canvas_add_row()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/canvas_add_row.md)
-— stack rows vertically -
-[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
-— write final PDF
+Each band is set in one place, so changing one never shifts the others.
 
-## Rich text example
+## Upgrading from 0.4.x
 
-``` r
+0.5.0 replaces the row-based API. The canvas (`new_canvas()`,
+`canvas_add_row()`), the row builders (`str_banner_row()`,
+`str_subtitle_row()`, `str_n_panel_row()`, `str_three_panel_row()`), the
+layout-style constructors, `text_box()` / `md_text_box()` /
+`html_text_box()` / `blank_box()` and `table_box()` / `rich_table_box()`
+are gone.
 
-library(bodybuildr)
-
-# Markdown cell
-findings <- md_text_box(
-  "**Key findings:**\n\n- Primary endpoint met (p < 0.001)\n- *n* = 1,204 patients\n- 12-month follow-up",
-  box_style = box_style(fill = "#F0F9FF", border_color = "#BAE6FD")
-)
-
-# HTML cell with colored spans
-status <- html_text_box(
-  'Result: <span style="color:#16A34A;"><b>Met</b></span><br/>p-value: <b>0.0003</b>',
-  box_style = box_style(fill = "#F0FDF4")
-)
-
-canvas <- new_canvas()
-canvas <- canvas_add_row(canvas, str_n_panel_row(list(findings, status)), grid::unit(2, "in"))
-export_pdf(canvas, file = "output.pdf")
-```
-
-## Table example
-
-``` r
-
-# Text-only table (selectable text in PDF)
-tbl <- table_box(
-  data.frame(Metric = c("n", "Mean age"), Value = c("1,204", "52.3")),
-  header_fill = "#1E3A8A"
-)
-
-# Mixed-content table (text + plots + images per cell)
-rtbl <- rich_table_box(
-  headers = c("Gene", "Trend", "Status"),
-  rows = list(
-    list("BRCA1", my_sparkline_plot, "path/to/green_dot.png"),
-    list("TP53",  another_plot,      "path/to/red_dot.png")
-  ),
-  col_widths = c(2, 3, 1),
-  row_height = grid::unit(0.5, "in")
-)
-
-canvas <- new_canvas()
-canvas <- canvas_add_row(canvas, str_n_panel_row(list(tbl, rtbl)), grid::unit(3, "in"))
-export_pdf(canvas, file = "output.pdf")
-```
+| 0.4.x | 0.5.0 |
+|----|----|
+| `new_canvas()` + `canvas_add_row(height = )` | `bb_page(...)` (heights are measured) |
+| `str_n_panel_row(items)` | `bb_cols(...)` with optional `widths` |
+| `str_three_panel_row(A, B, C)` | `bb_cols(A, bb_stack(B, C))` |
+| `str_banner_row()` | [`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md) |
+| `str_subtitle_row()` | `bb_box(bb_text(...), box_style(fill = gradient_fill(...)))` or [`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md) |
+| `text_box()` / `md_text_box()` / `html_text_box()` | `bb_text(markup = )`, wrapped in [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md) for fills and borders |
+| `blank_box()` / `NULL` slot | `NULL` in [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md) |
+| `table_box()` / `rich_table_box()` | `bb_table(style = table_style_grid())` |
+| `text_style(face = "bold")` | `text_style(weight = 700)` |
+| `export_pdf(canvas, margin_*)` | `export_pdf(page_or_document)`; margins live in [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md) |
 
 ## Notes
 
-- Uses grid units ([`grid::unit`](https://rdrr.io/r/grid/unit.html)) for
-  sizing; keep units consistent.
-- ggplot2 support is optional; install it to render plots in rows.
-- [`table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_box.md)
-  and
-  [`rich_table_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/rich_table_box.md)
-  require `gridExtra`;
-  [`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
-  requires `commonmark`.
+- Text renders with gridtext. Plain text is escaped, so `<80%`, `*` and
+  `[1]` print literally. Links in plain text are underlined; in
+  Markdown/HTML text they are coloured only, because gridtext can’t
+  underline. Links are not clickable PDF annotations, but each line of a
+  URL is one text run so most viewers detect it.
+- R graphics can’t switch on OpenType features such as tabular figures
+  (`tnum`). Pick a font whose default figures are equal width (Source
+  Sans 3 is) when numbers must line up.
 
 ## Cairo and PDF rendering
 
 [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
 uses [`cairo_pdf()`](https://rdrr.io/r/grDevices/cairo.html) when
-available for full UTF-8 support (bullet points, accented characters,
-rich text from
-[`md_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/md_text_box.md)
-and
-[`html_text_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/html_text_box.md)).
-Without Cairo it falls back to
-[`pdf()`](https://rdrr.io/r/grDevices/pdf.html), which may substitute
-some characters.
+available, for full UTF-8 output and installed font weights, and
+measures text on the same kind of device so measured heights match the
+file.
 
-| Platform | Status | Fix |
-|----|----|----|
-| Windows | Built into R | Nothing needed |
-| Linux | Usually present | `sudo apt install libcairo2-dev` then reinstall R |
-| macOS | Requires XQuartz | Install from <https://www.xquartz.org> and restart R |
+| Platform | Cairo status                                        |
+|----------|-----------------------------------------------------|
+| Windows  | Bundled with R                                      |
+| Linux    | Usually present; install `libcairo2-dev` if missing |
+| macOS    | Requires [XQuartz](https://www.xquartz.org)         |
 
-Verify Cairo is active: `capabilities("cairo")` should return `TRUE`.
+Check with `capabilities("cairo")`. Without Cairo, bodybuildr falls back
+to [`pdf()`](https://rdrr.io/r/grDevices/pdf.html) and prints a message.
