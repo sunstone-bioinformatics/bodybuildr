@@ -50,6 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/sunstone-bioinformatics/bodybuildr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -62,6 +63,7 @@
 </h1></div>
 <p>Build infographic-style PDF pages in R from blocks that size themselves.</p>
 <p>bodybuildr handles the annoying part of report and profile layout: deciding how tall everything is. Each piece of a page is a <em>block</em> that knows its height at the width it gets. You stack blocks, split them into columns, and place them between a page header and a footer that stays pinned to the bottom margin. No absolute coordinates, no hand-tuned row heights, and translated text that runs longer just makes the block taller.</p>
+<p>Documentation, a step-by-step tutorial and worked examples are at <a href="https://bodybuildr.sunstonebio.info/">bodybuildr.sunstonebio.info</a>.</p>
 <div class="section level2">
 <h2 id="why-bodybuildr">Why bodybuildr?<a class="anchor" aria-label="anchor" href="#why-bodybuildr"></a>
 </h2>
@@ -86,10 +88,24 @@
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sunstone-bioinformatics/bodybuildr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="learn-bodybuildr">Learn bodybuildr<a class="anchor" aria-label="anchor" href="#learn-bodybuildr"></a>
+</h2>
+<ol style="list-style-type: decimal">
+<li><p><a href="https://bodybuildr.sunstonebio.info/articles/learn-bodybuildr.html"><strong>Tutorial</strong></a> Starts with a single block and works up to a multi-page PDF report with a header, a footer, tables, plots, a theme and a block you write yourself. One idea per step, each with its rendered output.</p></li>
+<li><p><a href="https://bodybuildr.sunstonebio.info/articles/layout-model.html"><strong>Layout model</strong></a> How blocks measure themselves, how stacks, columns and pages share space, and the three separate kinds of spacing.</p></li>
+<li><p><a href="https://bodybuildr.sunstonebio.info/articles/showcase.html"><strong>Showcase</strong></a> Three very different documents built from random data: a dark landscape dashboard, a serif magazine and small-format event passes.</p></li>
+<li><p><a href="https://bodybuildr.sunstonebio.info/reference/index.html"><strong>Function reference</strong></a> Every function, grouped by what it does.</p></li>
+</ol>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>On the documentation site, the <strong>Tutorial</strong> and <strong>Articles</strong> menus in the navigation bar link to all of these guides.</p>
+</blockquote>
+</div>
+<div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sunstone-bioinformatics.github.io/bodybuildr/">bodybuildr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bodybuildr.sunstonebio.info/">bodybuildr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/page_template.html">page_template</a></span><span class="op">(</span></span>
 <span>  margin_x <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -319,8 +335,21 @@
 </table>
 <p>Check with <code>capabilities("cairo")</code>. Without Cairo, bodybuildr falls back to <code><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf()</a></code> and prints a message.</p>
 </div>
+<div class="section level2">
+<h2 id="contribute">Contribute<a class="anchor" aria-label="anchor" href="#contribute"></a>
+</h2>
+<p>Suggestions, bug reports and feature requests are welcome on the <a href="https://github.com/sunstone-bioinformatics/bodybuildr/issues" class="external-link">GitHub Issues</a> page. To contribute code or fixes, open a <a href="https://github.com/sunstone-bioinformatics/bodybuildr/pulls" class="external-link">pull request</a>.</p>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+</div>
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/sunstone-bioinformatics/bodybuildr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/sunstone-bioinformatics/bodybuildr/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>

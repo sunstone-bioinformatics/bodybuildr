@@ -10,33 +10,36 @@ pinned to the bottom margin. No absolute coordinates, no hand-tuned row
 heights, and translated text that runs longer just makes the block
 taller.
 
+Documentation, a step-by-step tutorial and worked examples are at
+[bodybuildr.sunstonebio.info](https://bodybuildr.sunstonebio.info/).
+
 ## Why bodybuildr?
 
 - **Self-sizing layout.**
-  [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md)
+  [`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md)
   and
-  [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+  [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)
   pass widths down and collect heights up. Plots stretch to match their
   neighbours.
 - **Real pages.**
-  [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md)
+  [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md)
   gives margins, a running header, and a footer anchored to the bottom
   with `{page} / {pages}` numbering.
-  [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+  [`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
   writes a whole document to one PDF.
 - **Editorial tables.**
-  [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md)
+  [`bb_table()`](https://bodybuildr.sunstonebio.info/reference/bb_table.md)
   draws rules-only or boxed tables with rows that grow with wrapped
   text, per-column styles and alignment, and any block as a cell (status
   icons, dots, images). Side-by-side tables can share row heights.
 - **Typography that holds up.**
-  [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
+  [`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md)
   supports weights such as 600 (through the installed font face), line
   height and letter case; themes define every text role once.
 - **Mixed content.** Text (plain, Markdown, HTML), inline
-  [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)s
-  and underlined
-  [`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)s,
+  [`span()`](https://bodybuildr.sunstonebio.info/reference/span.md)s and
+  underlined
+  [`link()`](https://bodybuildr.sunstonebio.info/reference/span.md)s,
   ggplot2 plots, images, grobs, legends, status marks, banners, section
   headers and patterned placeholders.
 
@@ -47,6 +50,31 @@ taller.
 # install.packages("remotes")
 remotes::install_github("sunstone-bioinformatics/bodybuildr")
 ```
+
+## Learn bodybuildr
+
+1.  [**Tutorial**](https://bodybuildr.sunstonebio.info/articles/learn-bodybuildr.html)
+    Starts with a single block and works up to a multi-page PDF report
+    with a header, a footer, tables, plots, a theme and a block you
+    write yourself. One idea per step, each with its rendered output.
+
+2.  [**Layout
+    model**](https://bodybuildr.sunstonebio.info/articles/layout-model.html)
+    How blocks measure themselves, how stacks, columns and pages share
+    space, and the three separate kinds of spacing.
+
+3.  [**Showcase**](https://bodybuildr.sunstonebio.info/articles/showcase.html)
+    Three very different documents built from random data: a dark
+    landscape dashboard, a serif magazine and small-format event passes.
+
+4.  [**Function
+    reference**](https://bodybuildr.sunstonebio.info/reference/index.html)
+    Every function, grouped by what it does.
+
+> **Note**
+>
+> On the documentation site, the **Tutorial** and **Articles** menus in
+> the navigation bar link to all of these guides.
 
 ## Quick start
 
@@ -88,16 +116,16 @@ export_pdf(bb_document(page, page_two), "profile.pdf")
 
 | Kind | Functions |
 |----|----|
-| Layout | [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md), [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md), [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md), [`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md), [`bb_fixed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_fixed.md), [`bb_full_bleed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_full_bleed.md) |
-| Text | [`bb_text()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_text.md), [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md), [`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md), [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md) |
-| Content | [`bb_plot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_plot.md), [`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md), [`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md), [`as_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/as_block.md) |
-| Tables | [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md), [`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md), [`table_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md), [`table_style_grid()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md) |
-| Marks and legends | [`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md), [`bb_dot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_dot.md), [`bb_legend()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_legend.md), [`legend_key()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/legend_key.md) |
-| Page chrome | [`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md), [`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md), [`bb_running_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_running_header.md), [`bb_page_footer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_running_header.md), [`bb_placeholder()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_placeholder.md) |
-| Styles | [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md), [`box_style_panel()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md), [`line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/line_style.md), [`gradient_fill()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/gradient_fill.md), [`stripe_fill()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/gradient_fill.md), [`banner_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_style.md), [`section_header_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/section_header_style.md), [`header_line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/header_line_style.md), [`footer_line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/header_line_style.md) |
-| Theme | [`bb_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_theme.md), [`bb_set_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md), [`with_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md) |
-| Pages | [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md), [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md), [`bb_document()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_document.md), [`page_layout()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_layout.md), [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md) |
-| Measuring and custom blocks | [`measure_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/measure_block.md), [`text_width()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_width.md), [`text_gpar()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_gpar.md), [`with_measure_device()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/with_measure_device.md), [`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md) |
+| Layout | [`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md), [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md), [`bb_box()`](https://bodybuildr.sunstonebio.info/reference/bb_box.md), [`bb_spacer()`](https://bodybuildr.sunstonebio.info/reference/bb_spacer.md), [`bb_fixed()`](https://bodybuildr.sunstonebio.info/reference/bb_fixed.md), [`bb_full_bleed()`](https://bodybuildr.sunstonebio.info/reference/bb_full_bleed.md) |
+| Text | [`bb_text()`](https://bodybuildr.sunstonebio.info/reference/bb_text.md), [`span()`](https://bodybuildr.sunstonebio.info/reference/span.md), [`link()`](https://bodybuildr.sunstonebio.info/reference/span.md), [`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md) |
+| Content | [`bb_plot()`](https://bodybuildr.sunstonebio.info/reference/bb_plot.md), [`bb_image()`](https://bodybuildr.sunstonebio.info/reference/bb_image.md), [`bb_grob()`](https://bodybuildr.sunstonebio.info/reference/bb_grob.md), [`as_block()`](https://bodybuildr.sunstonebio.info/reference/as_block.md) |
+| Tables | [`bb_table()`](https://bodybuildr.sunstonebio.info/reference/bb_table.md), [`cell()`](https://bodybuildr.sunstonebio.info/reference/cell.md), [`table_style()`](https://bodybuildr.sunstonebio.info/reference/table_style.md), [`table_style_grid()`](https://bodybuildr.sunstonebio.info/reference/table_style.md) |
+| Marks and legends | [`bb_status()`](https://bodybuildr.sunstonebio.info/reference/bb_status.md), [`bb_dot()`](https://bodybuildr.sunstonebio.info/reference/bb_dot.md), [`bb_legend()`](https://bodybuildr.sunstonebio.info/reference/bb_legend.md), [`legend_key()`](https://bodybuildr.sunstonebio.info/reference/legend_key.md) |
+| Page chrome | [`bb_banner()`](https://bodybuildr.sunstonebio.info/reference/bb_banner.md), [`bb_section_header()`](https://bodybuildr.sunstonebio.info/reference/bb_section_header.md), [`bb_running_header()`](https://bodybuildr.sunstonebio.info/reference/bb_running_header.md), [`bb_page_footer()`](https://bodybuildr.sunstonebio.info/reference/bb_running_header.md), [`bb_placeholder()`](https://bodybuildr.sunstonebio.info/reference/bb_placeholder.md) |
+| Styles | [`box_style()`](https://bodybuildr.sunstonebio.info/reference/box_style.md), [`box_style_panel()`](https://bodybuildr.sunstonebio.info/reference/box_style.md), [`line_style()`](https://bodybuildr.sunstonebio.info/reference/line_style.md), [`gradient_fill()`](https://bodybuildr.sunstonebio.info/reference/gradient_fill.md), [`stripe_fill()`](https://bodybuildr.sunstonebio.info/reference/gradient_fill.md), [`banner_style()`](https://bodybuildr.sunstonebio.info/reference/banner_style.md), [`section_header_style()`](https://bodybuildr.sunstonebio.info/reference/section_header_style.md), [`header_line_style()`](https://bodybuildr.sunstonebio.info/reference/header_line_style.md), [`footer_line_style()`](https://bodybuildr.sunstonebio.info/reference/header_line_style.md) |
+| Theme | [`bb_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_theme.md), [`bb_set_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_set_theme.md), [`with_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_set_theme.md) |
+| Pages | [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md), [`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md), [`bb_document()`](https://bodybuildr.sunstonebio.info/reference/bb_document.md), [`page_layout()`](https://bodybuildr.sunstonebio.info/reference/page_layout.md), [`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md) |
+| Measuring and custom blocks | [`measure_block()`](https://bodybuildr.sunstonebio.info/reference/measure_block.md), [`text_width()`](https://bodybuildr.sunstonebio.info/reference/text_width.md), [`text_gpar()`](https://bodybuildr.sunstonebio.info/reference/text_gpar.md), [`with_measure_device()`](https://bodybuildr.sunstonebio.info/reference/with_measure_device.md), [`new_block()`](https://bodybuildr.sunstonebio.info/reference/new_block.md) |
 
 Lengths take [`grid::unit()`](https://rdrr.io/r/grid/unit.html) values
 or plain numbers in inches. Colours take any R colour or a theme colour
@@ -106,15 +134,15 @@ name such as `"muted"` or `"rule_light"`.
 ## Spacing: three separate bands
 
 1.  **Page margins** come from
-    [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md).
+    [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md).
     Full-bleed blocks (banners) escape the side margins.
 2.  **Layout gaps** are the `gap` of
-    [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md),
-    [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+    [`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md),
+    [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)
     and
-    [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md).
+    [`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md).
 3.  **Box spacing** is the padding and margin of
-    [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md).
+    [`bb_box()`](https://bodybuildr.sunstonebio.info/reference/bb_box.md).
 
 Each band is set in one place, so changing one never shifts the others.
 
@@ -132,13 +160,13 @@ are gone.
 | `new_canvas()` + `canvas_add_row(height = )` | `bb_page(...)` (heights are measured) |
 | `str_n_panel_row(items)` | `bb_cols(...)` with optional `widths` |
 | `str_three_panel_row(A, B, C)` | `bb_cols(A, bb_stack(B, C))` |
-| `str_banner_row()` | [`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md) |
-| `str_subtitle_row()` | `bb_box(bb_text(...), box_style(fill = gradient_fill(...)))` or [`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md) |
-| `text_box()` / `md_text_box()` / `html_text_box()` | `bb_text(markup = )`, wrapped in [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md) for fills and borders |
-| `blank_box()` / `NULL` slot | `NULL` in [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md) |
+| `str_banner_row()` | [`bb_banner()`](https://bodybuildr.sunstonebio.info/reference/bb_banner.md) |
+| `str_subtitle_row()` | `bb_box(bb_text(...), box_style(fill = gradient_fill(...)))` or [`bb_section_header()`](https://bodybuildr.sunstonebio.info/reference/bb_section_header.md) |
+| `text_box()` / `md_text_box()` / `html_text_box()` | `bb_text(markup = )`, wrapped in [`bb_box()`](https://bodybuildr.sunstonebio.info/reference/bb_box.md) for fills and borders |
+| `blank_box()` / `NULL` slot | `NULL` in [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md) |
 | `table_box()` / `rich_table_box()` | `bb_table(style = table_style_grid())` |
 | `text_style(face = "bold")` | `text_style(weight = 700)` |
-| `export_pdf(canvas, margin_*)` | `export_pdf(page_or_document)`; margins live in [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md) |
+| `export_pdf(canvas, margin_*)` | `export_pdf(page_or_document)`; margins live in [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md) |
 
 ## Notes
 
@@ -153,7 +181,7 @@ are gone.
 
 ## Cairo and PDF rendering
 
-[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+[`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
 uses [`cairo_pdf()`](https://rdrr.io/r/grDevices/cairo.html) when
 available, for full UTF-8 output and installed font weights, and
 measures text on the same kind of device so measured heights match the
@@ -168,128 +196,135 @@ file.
 Check with `capabilities("cairo")`. Without Cairo, bodybuildr falls back
 to [`pdf()`](https://rdrr.io/r/grDevices/pdf.html) and prints a message.
 
+## Contribute
+
+Suggestions, bug reports and feature requests are welcome on the [GitHub
+Issues](https://github.com/sunstone-bioinformatics/bodybuildr/issues)
+page. To contribute code or fixes, open a [pull
+request](https://github.com/sunstone-bioinformatics/bodybuildr/pulls).
+
 # Package index
 
 ## Pages and export
 
-- [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md)
+- [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md)
   : Page template
-- [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md)
+- [`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md)
   : Page
-- [`bb_document()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_document.md)
+- [`bb_document()`](https://bodybuildr.sunstonebio.info/reference/bb_document.md)
   : Document
-- [`page_layout()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_layout.md)
+- [`page_layout()`](https://bodybuildr.sunstonebio.info/reference/page_layout.md)
   : Page layout report
-- [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+- [`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
   : Export pages to PDF
 
 ## Layout
 
-- [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md)
+- [`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md)
   : Stack blocks vertically
-- [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+- [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)
   : Place blocks side by side
-- [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md)
+- [`bb_box()`](https://bodybuildr.sunstonebio.info/reference/bb_box.md)
   : Box around a block
-- [`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md)
+- [`bb_spacer()`](https://bodybuildr.sunstonebio.info/reference/bb_spacer.md)
   : Empty space
-- [`bb_fixed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_fixed.md)
+- [`bb_fixed()`](https://bodybuildr.sunstonebio.info/reference/bb_fixed.md)
   : Fix a block's height
-- [`bb_full_bleed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_full_bleed.md)
+- [`bb_full_bleed()`](https://bodybuildr.sunstonebio.info/reference/bb_full_bleed.md)
   : Mark a block as full bleed
 
 ## Text
 
-- [`bb_text()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_text.md)
+- [`bb_text()`](https://bodybuildr.sunstonebio.info/reference/bb_text.md)
   : Text block
-- [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)
-  [`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)
-  : Inline text runs
-- [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
+- [`span()`](https://bodybuildr.sunstonebio.info/reference/span.md)
+  [`link()`](https://bodybuildr.sunstonebio.info/reference/span.md) :
+  Inline text runs
+- [`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md)
   : Define a text style
 
 ## Content
 
-- [`bb_plot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_plot.md)
+- [`bb_plot()`](https://bodybuildr.sunstonebio.info/reference/bb_plot.md)
   : Plot block
-- [`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md)
+- [`bb_image()`](https://bodybuildr.sunstonebio.info/reference/bb_image.md)
   : Image block
-- [`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md)
+- [`bb_grob()`](https://bodybuildr.sunstonebio.info/reference/bb_grob.md)
   : Grob block
-- [`as_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/as_block.md)
+- [`as_block()`](https://bodybuildr.sunstonebio.info/reference/as_block.md)
   : Turn content into a block
 
 ## Tables
 
-- [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md)
+- [`bb_table()`](https://bodybuildr.sunstonebio.info/reference/bb_table.md)
   : Table
-- [`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md)
-  : Table cell with its own style
-- [`table_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md)
-  [`table_style_grid()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md)
+- [`cell()`](https://bodybuildr.sunstonebio.info/reference/cell.md) :
+  Table cell with its own style
+- [`table_style()`](https://bodybuildr.sunstonebio.info/reference/table_style.md)
+  [`table_style_grid()`](https://bodybuildr.sunstonebio.info/reference/table_style.md)
   : Table style
 
 ## Marks and legends
 
-- [`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md)
+- [`bb_status()`](https://bodybuildr.sunstonebio.info/reference/bb_status.md)
   : Status icon
-- [`bb_dot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_dot.md)
+- [`bb_dot()`](https://bodybuildr.sunstonebio.info/reference/bb_dot.md)
   : Dots and other small marks
-- [`bb_legend()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_legend.md)
+- [`bb_legend()`](https://bodybuildr.sunstonebio.info/reference/bb_legend.md)
   : Inline legend
-- [`legend_key()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/legend_key.md)
+- [`legend_key()`](https://bodybuildr.sunstonebio.info/reference/legend_key.md)
   : Legend key
 
 ## Page chrome
 
-- [`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md)
+- [`bb_banner()`](https://bodybuildr.sunstonebio.info/reference/bb_banner.md)
   : Banner
-- [`banner_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/banner_style.md)
+- [`banner_style()`](https://bodybuildr.sunstonebio.info/reference/banner_style.md)
   : Banner style
-- [`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md)
+- [`bb_section_header()`](https://bodybuildr.sunstonebio.info/reference/bb_section_header.md)
   : Section header
-- [`section_header_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/section_header_style.md)
+- [`section_header_style()`](https://bodybuildr.sunstonebio.info/reference/section_header_style.md)
   : Section header style
-- [`bb_running_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_running_header.md)
-  [`bb_page_footer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_running_header.md)
+- [`bb_running_header()`](https://bodybuildr.sunstonebio.info/reference/bb_running_header.md)
+  [`bb_page_footer()`](https://bodybuildr.sunstonebio.info/reference/bb_running_header.md)
   : Running header and page footer
-- [`header_line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/header_line_style.md)
-  [`footer_line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/header_line_style.md)
+- [`header_line_style()`](https://bodybuildr.sunstonebio.info/reference/header_line_style.md)
+  [`footer_line_style()`](https://bodybuildr.sunstonebio.info/reference/header_line_style.md)
   : Header and footer line styles
-- [`bb_placeholder()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_placeholder.md)
+- [`bb_placeholder()`](https://bodybuildr.sunstonebio.info/reference/bb_placeholder.md)
   : Placeholder panel
 
 ## Styles and fills
 
-- [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
-  [`box_style_panel()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
+- [`box_style()`](https://bodybuildr.sunstonebio.info/reference/box_style.md)
+  [`box_style_panel()`](https://bodybuildr.sunstonebio.info/reference/box_style.md)
   : Define a box style
-- [`line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/line_style.md)
+- [`line_style()`](https://bodybuildr.sunstonebio.info/reference/line_style.md)
   : Define a line style
-- [`gradient_fill()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/gradient_fill.md)
-  [`stripe_fill()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/gradient_fill.md)
+- [`gradient_fill()`](https://bodybuildr.sunstonebio.info/reference/gradient_fill.md)
+  [`stripe_fill()`](https://bodybuildr.sunstonebio.info/reference/gradient_fill.md)
   : Gradient and stripe fills
 
 ## Theme
 
-- [`bb_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_theme.md)
+- [`bb_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_theme.md)
   : Define a theme
-- [`bb_set_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md)
-  [`bb_get_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md)
-  [`with_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_set_theme.md)
+- [`bb_set_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_set_theme.md)
+  [`bb_get_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_set_theme.md)
+  [`with_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_set_theme.md)
   : Get or set the active theme
 
 ## Measuring and custom blocks
 
-- [`measure_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/measure_block.md)
+- [`measure_block()`](https://bodybuildr.sunstonebio.info/reference/measure_block.md)
   : Measure a block
-- [`text_width()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_width.md)
+- [`text_width()`](https://bodybuildr.sunstonebio.info/reference/text_width.md)
   : Width of a string in a text style
-- [`text_gpar()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_gpar.md)
+- [`text_gpar()`](https://bodybuildr.sunstonebio.info/reference/text_gpar.md)
   : Graphical parameters for a text style
-- [`with_measure_device()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/with_measure_device.md)
+- [`with_measure_device()`](https://bodybuildr.sunstonebio.info/reference/with_measure_device.md)
   : Evaluate code on bodybuildr's measuring device
-- [`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md)
+- [`new_block()`](https://bodybuildr.sunstonebio.info/reference/new_block.md)
   : Build a custom block
 
 # Articles
@@ -299,14 +334,14 @@ to [`pdf()`](https://rdrr.io/r/grDevices/pdf.html) and prints a message.
 Start here. One idea at a time, from a single block to a full report.
 
 - [Learn bodybuildr: from one block to a full
-  report](https://sunstone-bioinformatics.github.io/bodybuildr/articles/learn-bodybuildr.md):
+  report](https://bodybuildr.sunstonebio.info/articles/learn-bodybuildr.md):
 
 ### Concepts
 
 - [Layout model: blocks, pages and
-  margins](https://sunstone-bioinformatics.github.io/bodybuildr/articles/layout-model.md):
+  margins](https://bodybuildr.sunstonebio.info/articles/layout-model.md):
 
 ### Examples
 
 - [Showcase: three very different
-  documents](https://sunstone-bioinformatics.github.io/bodybuildr/articles/showcase.md):
+  documents](https://bodybuildr.sunstonebio.info/articles/showcase.md):

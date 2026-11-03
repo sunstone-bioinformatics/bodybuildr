@@ -12,13 +12,13 @@ blocks can produce, and how each piece of a page is put together.
 | **Nightjar festival passes** | 4 × 6 in, 3 pages | A different gradient for each attendee | A small page size, headers built from page data, images made from arrays |
 
 Every page shown here is exported by
-[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+[`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
 and then turned into a picture so it can be displayed. Unless the code
 says otherwise, no height on any page is typed by hand: every block
 measures itself.
 
 If you’re new to bodybuildr, read
-[`vignette("learn-bodybuildr")`](https://sunstone-bioinformatics.github.io/bodybuildr/articles/learn-bodybuildr.md)
+[`vignette("learn-bodybuildr")`](https://bodybuildr.sunstonebio.info/articles/learn-bodybuildr.md)
 first. It introduces each function step by step.
 
 ## Setup
@@ -65,7 +65,7 @@ pieces of its own: a KPI tile with a sparkline, a progress meter and a
 thin horizontal line.
 
 You make a custom block with
-[`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md)
+[`new_block()`](https://bodybuildr.sunstonebio.info/reference/new_block.md)
 by giving it two functions:
 
 - `measure(width)`: how tall the block is when it is given this width,
@@ -228,7 +228,7 @@ margins, the banner header and the footer.
 The banner logo isn’t an image file. It’s a ringed planet drawn pixel by
 pixel into a numeric array (height × width × 4 channels: red, green,
 blue and transparency), which
-[`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md)
+[`bb_banner()`](https://bodybuildr.sunstonebio.info/reference/bb_banner.md)
 accepts as it is.
 
 ``` r
@@ -417,7 +417,7 @@ the tallest block next to it, so each chart is exactly as tall as the
 table beside it.
 
 The last row also absorbs any height left over on the page. The
-[`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md)
+[`bb_spacer()`](https://bodybuildr.sunstonebio.info/reference/bb_spacer.md)
 at the bottom of its right-hand column has no height of its own. That
 makes the column flexible, and with every block in the row now flexible,
 the row grows to fill the page down to the footer. The heatmap grows
@@ -729,7 +729,7 @@ alm_page1 <- bb_page(
 
 Twelve small ads of different lengths, in five box styles. They are
 dealt into three columns, and each column is its own
-[`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md).
+[`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md).
 Because every ad is exactly as tall as its text, the columns pack
 tightly like a masonry wall, with no grid of fixed cells.
 
@@ -910,7 +910,7 @@ attendee.](showcase_files/figure-html/fest-show-3.png)
 
 | Technique | Where it appears |
 |----|----|
-| Custom blocks with [`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md) | KPI tiles, progress meters, masthead lines |
+| Custom blocks with [`new_block()`](https://bodybuildr.sunstonebio.info/reference/new_block.md) | KPI tiles, progress meters, masthead lines |
 | Blocks inside table cells | Status icons, meters, dots and diamonds in every document |
 | Flexible blocks filling space | Charts matching their tables, the dashboard’s last row, the pull-quote bar, the pushed-down colophon and tear-off token |
 | Themes with new colours and roles | `void`, `paper`, `mono`, `kicker`, `quote` |

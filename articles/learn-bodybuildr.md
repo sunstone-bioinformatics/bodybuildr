@@ -18,17 +18,17 @@ links to the previous part, this list, and the next part.
 | Part | What you’ll learn |
 |----|----|
 | [Part 0: Getting set up](#part-0) | Load the packages and a small helper for looking at your work |
-| [Part 1: Your first block](#part-1) | What a block is, how it measures itself, flexible blocks, [`as_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/as_block.md) |
-| [Part 2: Putting blocks together](#part-2) | [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md), [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md), column widths, alignment, nesting |
-| [Part 3: Making text look right](#part-3) | Text roles, [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md), [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md) and [`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md), Markdown and HTML |
-| [Part 4: Boxes, fills and spacing](#part-4) | [`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md), [`line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/line_style.md), gradients and stripes, the three kinds of spacing |
-| [Part 5: Tables](#part-5) | [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md), [`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md), table styles, data frames, `sync_rows` |
-| [Part 6: Status marks, dots and legends](#part-6) | [`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md), [`bb_dot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_dot.md), [`bb_legend()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_legend.md) |
-| [Part 7: Plots, images and grobs](#part-7) | ggplots, fixed vs flexible heights, [`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md), [`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md) |
-| [Part 8: Pages](#part-8) | [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md), [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md), headers, footers, tokens, banners, [`page_layout()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_layout.md) |
-| [Part 9: Documents](#part-9) | [`bb_document()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_document.md), optional pages, page-aware headers, [`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md) |
-| [Part 10: Themes](#part-10) | [`bb_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_theme.md), custom colours and roles, three ways to apply a theme |
-| [Part 11: Writing your own block](#part-11) | [`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md), drawing with the theme, using your block anywhere |
+| [Part 1: Your first block](#part-1) | What a block is, how it measures itself, flexible blocks, [`as_block()`](https://bodybuildr.sunstonebio.info/reference/as_block.md) |
+| [Part 2: Putting blocks together](#part-2) | [`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md), [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md), column widths, alignment, nesting |
+| [Part 3: Making text look right](#part-3) | Text roles, [`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md), [`span()`](https://bodybuildr.sunstonebio.info/reference/span.md) and [`link()`](https://bodybuildr.sunstonebio.info/reference/span.md), Markdown and HTML |
+| [Part 4: Boxes, fills and spacing](#part-4) | [`bb_box()`](https://bodybuildr.sunstonebio.info/reference/bb_box.md), [`line_style()`](https://bodybuildr.sunstonebio.info/reference/line_style.md), gradients and stripes, the three kinds of spacing |
+| [Part 5: Tables](#part-5) | [`bb_table()`](https://bodybuildr.sunstonebio.info/reference/bb_table.md), [`cell()`](https://bodybuildr.sunstonebio.info/reference/cell.md), table styles, data frames, `sync_rows` |
+| [Part 6: Status marks, dots and legends](#part-6) | [`bb_status()`](https://bodybuildr.sunstonebio.info/reference/bb_status.md), [`bb_dot()`](https://bodybuildr.sunstonebio.info/reference/bb_dot.md), [`bb_legend()`](https://bodybuildr.sunstonebio.info/reference/bb_legend.md) |
+| [Part 7: Plots, images and grobs](#part-7) | ggplots, fixed vs flexible heights, [`bb_image()`](https://bodybuildr.sunstonebio.info/reference/bb_image.md), [`bb_grob()`](https://bodybuildr.sunstonebio.info/reference/bb_grob.md) |
+| [Part 8: Pages](#part-8) | [`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md), [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md), headers, footers, tokens, banners, [`page_layout()`](https://bodybuildr.sunstonebio.info/reference/page_layout.md) |
+| [Part 9: Documents](#part-9) | [`bb_document()`](https://bodybuildr.sunstonebio.info/reference/bb_document.md), optional pages, page-aware headers, [`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md) |
+| [Part 10: Themes](#part-10) | [`bb_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_theme.md), custom colours and roles, three ways to apply a theme |
+| [Part 11: Writing your own block](#part-11) | [`new_block()`](https://bodybuildr.sunstonebio.info/reference/new_block.md), drawing with the theme, using your block anywhere |
 | [Part 12: Debugging layouts](#part-12) | `export_pdf(debug = TRUE)` |
 | [Cheat sheet](#cheat-sheet) | Which function to reach for, by task |
 
@@ -135,7 +135,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-2-01-1.png)
 
 The one idea behind the whole package: **a block can tell you how tall
 it is once you tell it how wide it may be.**
-[`measure_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/measure_block.md)
+[`measure_block()`](https://bodybuildr.sunstonebio.info/reference/measure_block.md)
 asks that question:
 
 ``` r
@@ -190,7 +190,7 @@ everything below moves down.
 
 Some blocks have no natural height. An empty space, or a plot, could be
 any height. bodybuildr calls these **flexible** blocks, and
-[`measure_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/measure_block.md)
+[`measure_block()`](https://bodybuildr.sunstonebio.info/reference/measure_block.md)
 returns `NA` for them:
 
 ``` r
@@ -210,14 +210,14 @@ tables, how a footer gets pushed down, and much more later on.
 
 Anywhere a block is expected, you can pass ordinary R objects.
 bodybuildr converts them with
-[`as_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/as_block.md):
+[`as_block()`](https://bodybuildr.sunstonebio.info/reference/as_block.md):
 
 | You pass | It becomes |
 |----|----|
-| a string or number | [`bb_text()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_text.md) |
-| a ggplot | [`bb_plot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_plot.md) |
-| a grid grob | [`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md) |
-| a path to a `.png`/`.jpg`, or an image array | [`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md) |
+| a string or number | [`bb_text()`](https://bodybuildr.sunstonebio.info/reference/bb_text.md) |
+| a ggplot | [`bb_plot()`](https://bodybuildr.sunstonebio.info/reference/bb_plot.md) |
+| a grid grob | [`bb_grob()`](https://bodybuildr.sunstonebio.info/reference/bb_grob.md) |
+| a path to a `.png`/`.jpg`, or an image array | [`bb_image()`](https://bodybuildr.sunstonebio.info/reference/bb_image.md) |
 | `NULL` | nothing (it’s skipped) |
 
 ``` r
@@ -241,9 +241,9 @@ blocks together →](#part-2)
 ## Part 2: Putting blocks together
 
 A page is a few blocks arranged in two directions: top to bottom
-([`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md))
+([`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md))
 and side by side
-([`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)).
+([`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)).
 Those two functions, nested inside each other, can build almost any
 layout.
 
@@ -294,7 +294,7 @@ measure_block(bb_stack("a", "b", "c", gap = 0.15), width = 6)
 
 ### 2.2 Placing blocks side by side
 
-[`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+[`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)
 splits the available width into columns, one per block:
 
 ``` r
@@ -368,9 +368,9 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-15-10-1.png)
 ### 2.5 Nesting: the real power
 
 Since
-[`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md)
+[`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md)
 and
-[`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+[`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)
 both return blocks, you can put one inside the other as deep as you
 like:
 
@@ -424,7 +424,7 @@ page changes with it (Part 10).
 ### 3.2 `text_style()`: change only what you need
 
 When a role isn’t quite right, use
-[`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md).
+[`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md).
 It lists **only the properties you want to change**. Everything else is
 inherited:
 
@@ -456,10 +456,9 @@ drawn, so the same block can be drawn with different themes.
 
 ### 3.3 Styling part of a sentence: `span()` and `link()`
 
-[`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)
-styles a piece of text inside a longer string. It returns a string, so
-you build sentences with
-[`paste0()`](https://rdrr.io/r/base/paste.html):
+[`span()`](https://bodybuildr.sunstonebio.info/reference/span.md) styles
+a piece of text inside a longer string. It returns a string, so you
+build sentences with [`paste0()`](https://rdrr.io/r/base/paste.html):
 
 ``` r
 
@@ -473,8 +472,8 @@ preview(bb_text(sentence))
 ![The PDF produced by the code above, shown as an
 image.](learn-bodybuildr_files/figure-html/unnamed-chunk-19-14-1.png)
 
-[`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)
-marks a URL. In plain text it is underlined, and PDF viewers make it
+[`link()`](https://bodybuildr.sunstonebio.info/reference/span.md) marks
+a URL. In plain text it is underlined, and PDF viewers make it
 clickable:
 
 ``` r
@@ -540,7 +539,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-24-19-1.png)
 
 Sometimes you need to know how wide a string will be, for example to
 size a column to fit a label.
-[`text_width()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_width.md)
+[`text_width()`](https://bodybuildr.sunstonebio.info/reference/text_width.md)
 tells you:
 
 ``` r
@@ -560,9 +559,9 @@ fills and spacing →](#part-4)
 
 ### 4.1 Putting a box around something
 
-[`bb_box()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_box.md)
+[`bb_box()`](https://bodybuildr.sunstonebio.info/reference/bb_box.md)
 wraps any block in a box. The look comes from
-[`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md):
+[`box_style()`](https://bodybuildr.sunstonebio.info/reference/box_style.md):
 
 ``` r
 
@@ -577,13 +576,13 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-26-20-1.png)
 
 - `fill`: background colour (theme names allowed)
 - `border`: a colour, or a
-  [`line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/line_style.md)
+  [`line_style()`](https://bodybuildr.sunstonebio.info/reference/line_style.md)
   for width and dash pattern
 - `padding`: space between the border and the content
 - `radius`: rounded corners
 - `margin`: space outside the border
 
-[`box_style_panel()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md)
+[`box_style_panel()`](https://bodybuildr.sunstonebio.info/reference/box_style.md)
 is a ready-made flat grey panel for notes:
 
 ``` r
@@ -596,7 +595,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-27-21-1.png)
 
 ### 4.2 Lines
 
-[`line_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/line_style.md)
+[`line_style()`](https://bodybuildr.sunstonebio.info/reference/line_style.md)
 describes any line: borders, rules under headers, table dividers. `lwd`
 is the line width and `lty` the dash pattern (`"22"` means 2 on, 2 off):
 
@@ -647,7 +646,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-30-24-1.png)
 ### 4.5 A trick: a box around a flexible block is flexible too
 
 Wrap a flexible
-[`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md)
+[`bb_spacer()`](https://bodybuildr.sunstonebio.info/reference/bb_spacer.md)
 in a filled box and you get a coloured bar with no height of its own.
 Put it in a row and it stretches to the height of its neighbour, which
 makes a neat accent bar for a quote:
@@ -672,15 +671,15 @@ bodybuildr keeps three kinds of spacing separate so they never
 interfere:
 
 1.  **Page margins**: the white border around the page. Set once in
-    [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md)
+    [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md)
     (Part 8).
 2.  **Layout gaps**: space *between* blocks, set with `gap` in
-    [`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md),
-    [`bb_cols()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_cols.md)
+    [`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md),
+    [`bb_cols()`](https://bodybuildr.sunstonebio.info/reference/bb_cols.md)
     and
-    [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md).
+    [`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md).
 3.  **Box spacing**: `padding` and `margin` *inside*
-    [`box_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md).
+    [`box_style()`](https://bodybuildr.sunstonebio.info/reference/box_style.md).
 
 When something looks too spaced out, ask which of the three it is and
 change it there. Components never add page-level spacing on their own.
@@ -730,8 +729,8 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-33-27-1.png)
 ### 5.3 Styling columns and single cells
 
 `col_style` styles whole columns.
-[`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md)
-styles one cell:
+[`cell()`](https://bodybuildr.sunstonebio.info/reference/cell.md) styles
+one cell:
 
 ``` r
 
@@ -752,8 +751,8 @@ preview(styled)
 ![The PDF produced by the code above, shown as an
 image.](learn-bodybuildr_files/figure-html/unnamed-chunk-34-28-1.png)
 
-[`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md)
-also takes `indent` (for sub-rows), `markup` and `align`.
+[`cell()`](https://bodybuildr.sunstonebio.info/reference/cell.md) also
+takes `indent` (for sub-rows), `markup` and `align`.
 
 ### 5.4 Straight from a data frame
 
@@ -769,9 +768,9 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-35-29-1.png)
 
 ### 5.5 Two table looks
 
-[`table_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md)
+[`table_style()`](https://bodybuildr.sunstonebio.info/reference/table_style.md)
 (the default) draws only horizontal rules.
-[`table_style_grid()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md)
+[`table_style_grid()`](https://bodybuildr.sunstonebio.info/reference/table_style.md)
 is the boxed spreadsheet look. Both take arguments for every detail:
 
 ``` r
@@ -847,7 +846,7 @@ marks, dots and legends →](#part-6)
 
 ### 6.1 Status icons
 
-[`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md)
+[`bb_status()`](https://bodybuildr.sunstonebio.info/reference/bb_status.md)
 draws a filled circle with a check, a cross or a dash. It understands
 `"yes"`/`"no"`/`"unknown"` and also `TRUE`/`FALSE`/`NA`:
 
@@ -868,7 +867,7 @@ The colours come from the theme’s status palette (Part 10).
 
 ### 6.2 Dots and small marks
 
-[`bb_dot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_dot.md)
+[`bb_dot()`](https://bodybuildr.sunstonebio.info/reference/bb_dot.md)
 draws one or more small marks in a row. Colours, shapes and sizes are
 recycled, so one call can draw a whole pattern:
 
@@ -889,7 +888,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-41-35-1.png)
 ### 6.3 Legends
 
 A legend is a list of
-[`legend_key()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/legend_key.md)s.
+[`legend_key()`](https://bodybuildr.sunstonebio.info/reference/legend_key.md)s.
 There are six key types: `swatch`, `dot`, `diamond`, `status`, `line`
 and `dash`.
 
@@ -981,7 +980,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-45-39-1.png)
 
 ### 7.3 Images
 
-[`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md)
+[`bb_image()`](https://bodybuildr.sunstonebio.info/reference/bb_image.md)
 takes a `.png`/`.jpg` path, or a numeric array (rows × columns × colour
 channels). Without a height, an image keeps its natural aspect ratio at
 the width it gets:
@@ -1005,7 +1004,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-46-40-1.png)
 
 ### 7.4 Any grid drawing
 
-[`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md)
+[`bb_grob()`](https://bodybuildr.sunstonebio.info/reference/bb_grob.md)
 wraps any grid grob. Give it a height, or leave it flexible:
 
 ``` r
@@ -1028,9 +1027,9 @@ reports use real pages.
 
 ### 8.1 Your first page
 
-[`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md)
+[`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md)
 stacks blocks from the top of the page down. Like
-[`bb_stack()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_stack.md),
+[`bb_stack()`](https://bodybuildr.sunstonebio.info/reference/bb_stack.md),
 it takes `gap`:
 
 ``` r
@@ -1051,10 +1050,10 @@ By default a page is US Letter (8.5 × 11 in) with half-inch margins.
 
 ### 8.2 Section headers
 
-[`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md)
+[`bb_section_header()`](https://bodybuildr.sunstonebio.info/reference/bb_section_header.md)
 is a title with a small accent marker and a rule underneath. `refs` adds
 muted references, and
-[`section_header_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/section_header_style.md)
+[`section_header_style()`](https://bodybuildr.sunstonebio.info/reference/section_header_style.md)
 changes everything else:
 
 ``` r
@@ -1073,7 +1072,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-49-43-1.png)
 ### 8.3 Page templates: size, margins, header and footer
 
 Most reports repeat the same page setup on every page.
-[`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md)
+[`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md)
 holds it once:
 
 ``` r
@@ -1114,7 +1113,7 @@ What to notice:
 
 A flexible block in a page body gets all the height that’s left over. A
 plain
-[`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md)
+[`bb_spacer()`](https://bodybuildr.sunstonebio.info/reference/bb_spacer.md)
 pushes everything after it to the bottom, and a plot with no height
 fills the gap:
 
@@ -1134,7 +1133,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-51-45-1.png)
 
 ### 8.5 How much room is left? And what if it’s too much?
 
-[`page_layout()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_layout.md)
+[`page_layout()`](https://bodybuildr.sunstonebio.info/reference/page_layout.md)
 measures a page without exporting it:
 
 ``` r
@@ -1151,7 +1150,7 @@ page_layout(page_north)[c("available", "used", "free")]
 ```
 
 `free` is in inches. If it’s negative, the content doesn’t fit, and
-[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+[`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
 warns you and says by how much:
 
 ``` r
@@ -1192,7 +1191,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-54-46-1.png)
 ### 8.7 Placeholders for missing content
 
 When a data source doesn’t provide something,
-[`bb_placeholder()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_placeholder.md)
+[`bb_placeholder()`](https://bodybuildr.sunstonebio.info/reference/bb_placeholder.md)
 fills the space with a patterned panel and a sentence. It is flexible,
 so in a row it takes the height of its neighbour:
 
@@ -1217,9 +1216,9 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-55-47-1.png)
 
 ### 9.1 Several pages in one PDF
 
-[`bb_document()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_document.md)
+[`bb_document()`](https://bodybuildr.sunstonebio.info/reference/bb_document.md)
 collects pages.
-[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+[`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
 writes them into one file and numbers them:
 
 ``` r
@@ -1287,7 +1286,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-58-49-2.png)
 export_pdf(doc, "my-report.pdf")
 ```
 
-[`export_pdf()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/export_pdf.md)
+[`export_pdf()`](https://bodybuildr.sunstonebio.info/reference/export_pdf.md)
 uses the Cairo PDF device when available, for full Unicode and proper
 font weights. Every page in one export must have the same size.
 
@@ -1306,7 +1305,7 @@ A theme has three things:
   `rule_light`, …)
 - **text roles**: the `body`, `note`, `section`, … styles from Part 3
 - a **status palette**: the yes/no/unknown colours of
-  [`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md)
+  [`bb_status()`](https://bodybuildr.sunstonebio.info/reference/bb_status.md)
 
 ``` r
 
@@ -1318,7 +1317,7 @@ bb_get_theme()
 
 ### 10.2 Making your own theme
 
-[`bb_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_theme.md)
+[`bb_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_theme.md)
 only needs what you want to change. Here’s a green, serif theme with one
 new colour (`moss`) and one new text role (`callout`):
 
@@ -1429,7 +1428,7 @@ do:
 
 - `bb_get_theme()$colors` is the palette.
 - `text_gpar(style)` turns a role name or
-  [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md)
+  [`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md)
   into grid’s graphics parameters (font, size, colour).
 
 Here’s a labelled progress bar:
@@ -1511,7 +1510,7 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-66-55-1.png)
 
 ### 11.4 Optional extras
 
-[`new_block()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/new_block.md)
+[`new_block()`](https://bodybuildr.sunstonebio.info/reference/new_block.md)
 takes a few more optional arguments:
 
 - `min_height = function(width)`: for flexible blocks, the smallest
@@ -1525,7 +1524,7 @@ takes a few more optional arguments:
 One rule: if you measure text or grobs yourself with grid (for example
 [`convertWidth()`](https://rdrr.io/r/grid/grid.convert.html)), wrap it
 in
-[`with_measure_device()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/with_measure_device.md).
+[`with_measure_device()`](https://bodybuildr.sunstonebio.info/reference/with_measure_device.md).
 That way measurements use the same kind of device as the export, and no
 stray `Rplots.pdf` gets created.
 
@@ -1564,25 +1563,25 @@ image.](learn-bodybuildr_files/figure-html/unnamed-chunk-67-debug.png)
 
 | I want to… | Use |
 |----|----|
-| put text on the page | [`bb_text()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_text.md), or just a string |
-| style text | `style = "role"` or [`text_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_style.md); [`span()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md)/[`link()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/span.md) inside a sentence |
+| put text on the page | [`bb_text()`](https://bodybuildr.sunstonebio.info/reference/bb_text.md), or just a string |
+| style text | `style = "role"` or [`text_style()`](https://bodybuildr.sunstonebio.info/reference/text_style.md); [`span()`](https://bodybuildr.sunstonebio.info/reference/span.md)/[`link()`](https://bodybuildr.sunstonebio.info/reference/span.md) inside a sentence |
 | stack things vertically | `bb_stack(..., gap =)` |
 | put things side by side | `bb_cols(..., widths =, gap =, valign =)` |
-| add a box, panel or border | `bb_box(x, box_style(...))`, [`box_style_panel()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/box_style.md) |
-| add empty space | `bb_spacer(height)`; [`bb_spacer()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_spacer.md) to fill leftover space |
+| add a box, panel or border | `bb_box(x, box_style(...))`, [`box_style_panel()`](https://bodybuildr.sunstonebio.info/reference/box_style.md) |
+| add empty space | `bb_spacer(height)`; [`bb_spacer()`](https://bodybuildr.sunstonebio.info/reference/bb_spacer.md) to fill leftover space |
 | force a height | `bb_fixed(x, height)` |
-| show a table | [`bb_table()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_table.md), [`cell()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/cell.md), [`table_style()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md), [`table_style_grid()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/table_style.md) |
-| show yes/no marks | [`bb_status()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_status.md), [`bb_dot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_dot.md) |
+| show a table | [`bb_table()`](https://bodybuildr.sunstonebio.info/reference/bb_table.md), [`cell()`](https://bodybuildr.sunstonebio.info/reference/cell.md), [`table_style()`](https://bodybuildr.sunstonebio.info/reference/table_style.md), [`table_style_grid()`](https://bodybuildr.sunstonebio.info/reference/table_style.md) |
+| show yes/no marks | [`bb_status()`](https://bodybuildr.sunstonebio.info/reference/bb_status.md), [`bb_dot()`](https://bodybuildr.sunstonebio.info/reference/bb_dot.md) |
 | add a legend | `bb_legend(list(legend_key(...)))` |
-| show a plot, image or grob | pass it in, or [`bb_plot()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_plot.md) / [`bb_image()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_image.md) / [`bb_grob()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_grob.md) |
-| title a section | [`bb_section_header()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_section_header.md) |
-| a coloured band across the page | [`bb_banner()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_banner.md), [`bb_full_bleed()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_full_bleed.md) |
-| mark missing content | [`bb_placeholder()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_placeholder.md) |
-| set up pages | [`page_template()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_template.md), [`bb_page()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_page.md), [`bb_document()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_document.md) |
-| check how full a page is | [`page_layout()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/page_layout.md) |
+| show a plot, image or grob | pass it in, or [`bb_plot()`](https://bodybuildr.sunstonebio.info/reference/bb_plot.md) / [`bb_image()`](https://bodybuildr.sunstonebio.info/reference/bb_image.md) / [`bb_grob()`](https://bodybuildr.sunstonebio.info/reference/bb_grob.md) |
+| title a section | [`bb_section_header()`](https://bodybuildr.sunstonebio.info/reference/bb_section_header.md) |
+| a coloured band across the page | [`bb_banner()`](https://bodybuildr.sunstonebio.info/reference/bb_banner.md), [`bb_full_bleed()`](https://bodybuildr.sunstonebio.info/reference/bb_full_bleed.md) |
+| mark missing content | [`bb_placeholder()`](https://bodybuildr.sunstonebio.info/reference/bb_placeholder.md) |
+| set up pages | [`page_template()`](https://bodybuildr.sunstonebio.info/reference/page_template.md), [`bb_page()`](https://bodybuildr.sunstonebio.info/reference/bb_page.md), [`bb_document()`](https://bodybuildr.sunstonebio.info/reference/bb_document.md) |
+| check how full a page is | [`page_layout()`](https://bodybuildr.sunstonebio.info/reference/page_layout.md) |
 | write the PDF | `export_pdf(x, file, debug =)` |
-| change the whole look | [`bb_theme()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/bb_theme.md) on `page_template(theme =)` |
-| draw something new | `new_block(measure =, render =)`, [`text_gpar()`](https://sunstone-bioinformatics.github.io/bodybuildr/reference/text_gpar.md) |
+| change the whole look | [`bb_theme()`](https://bodybuildr.sunstonebio.info/reference/bb_theme.md) on `page_template(theme =)` |
+| draw something new | `new_block(measure =, render =)`, [`text_gpar()`](https://bodybuildr.sunstonebio.info/reference/text_gpar.md) |
 
 ------------------------------------------------------------------------
 
