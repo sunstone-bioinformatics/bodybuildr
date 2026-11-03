@@ -24,7 +24,8 @@ SystemRequirements: Cairo (optional but recommended for full UTF-8 PDF output;
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: https://sunstone-bioinformatics.github.io/bodybuildr/
+URL: https://bodybuildr.sunstonebio.info/, https://github.com/sunstone-bioinformatics/bodybuildr
+BugReports: https://github.com/sunstone-bioinformatics/bodybuildr/issues
 RoxygenNote: 7.3.3
 Imports:
     ggplot2,

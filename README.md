@@ -9,6 +9,9 @@ place them between a page header and a footer that stays pinned to the bottom
 margin. No absolute coordinates, no hand-tuned row heights, and translated
 text that runs longer just makes the block taller.
 
+Documentation, a step-by-step tutorial and worked examples are at
+[bodybuildr.sunstonebio.info](https://bodybuildr.sunstonebio.info/).
+
 ## Why bodybuildr?
 
 - **Self-sizing layout.** `bb_stack()` and `bb_cols()` pass widths down and
@@ -33,6 +36,29 @@ text that runs longer just makes the block taller.
 # install.packages("remotes")
 remotes::install_github("sunstone-bioinformatics/bodybuildr")
 ```
+
+## Learn bodybuildr
+
+1. [**Tutorial**](https://bodybuildr.sunstonebio.info/articles/learn-bodybuildr.html)
+   Starts with a single block and works up to a multi-page PDF report with a
+   header, a footer, tables, plots, a theme and a block you write yourself.
+   One idea per step, each with its rendered output.
+
+2. [**Layout model**](https://bodybuildr.sunstonebio.info/articles/layout-model.html)
+   How blocks measure themselves, how stacks, columns and pages share space,
+   and the three separate kinds of spacing.
+
+3. [**Showcase**](https://bodybuildr.sunstonebio.info/articles/showcase.html)
+   Three very different documents built from random data: a dark landscape
+   dashboard, a serif magazine and small-format event passes.
+
+4. [**Function reference**](https://bodybuildr.sunstonebio.info/reference/index.html)
+   Every function, grouped by what it does.
+
+> **Note**
+>
+> On the documentation site, the **Tutorial** and **Articles** menus in the
+> navigation bar link to all of these guides.
 
 ## Quick start
 
@@ -142,3 +168,10 @@ measured heights match the file.
 
 Check with `capabilities("cairo")`. Without Cairo, bodybuildr falls back to
 `pdf()` and prints a message.
+
+## Contribute
+
+Suggestions, bug reports and feature requests are welcome on the
+[GitHub Issues](https://github.com/sunstone-bioinformatics/bodybuildr/issues)
+page. To contribute code or fixes, open a
+[pull request](https://github.com/sunstone-bioinformatics/bodybuildr/pulls).
