@@ -1,0 +1,133 @@
+---
+title: "Layout model: blocks, pages and margins"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Layout model: blocks, pages and margins}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(bodybuildr)
+```
+
+## Blocks
+
+Everything on a bodybuildr page is a **block**. A block answers two
+questions:
+
+- *How tall are you at this width?* (`measure_block()`)
+- *Draw yourself in this box.*
+
+Text wraps to the width it gets, so its height follows:
+
+```{r}
+para <- bb_text(paste(rep("Coverage rose in most provinces.", 8), collapse = " "))
+measure_block(para, width = 6)
+measure_block(para, width = 2)
+```
+
+Some blocks have no height of their own. A plot without a `height`, a
+`bb_spacer()` without a height and a `bb_placeholder()` are **flexible**: they
+take the height their container gives them.
+
+```{r}
+measure_block(bb_spacer(), 3)
+```
+
+Anything you pass where a block is expected goes through `as_block()`:
+strings become `bb_text()`, ggplots `bb_plot()`, image paths `bb_image()`,
+grobs `bb_grob()`.
+
+## Composing
+
+`bb_stack()` places blocks top to bottom; `bb_cols()` side by side. Widths are
+passed down and heights come back up, so nothing needs a hand-set height.
+
+```{r}
+row <- bb_cols(
+  bb_table(list(list("Total population", "45,696,159"),
+                list("Surviving infants", "530,193")),
+           widths = c(2, 1), align = c("left", "right")),
+  bb_stack(bb_text("Notes", style = "subheading"),
+           bb_text("A second column with its own stack.", style = "note"),
+           gap = unit(4, "pt")),
+  widths = unit(c(4, 1), c("in", "null")),   # 4 in, then the rest
+  gap = 0.25
+)
+measure_block(row, width = 7.5)
+```
+
+In a row, flexible children (a plot, a placeholder) stretch to the tallest
+fixed sibling. Tables placed side by side can share row heights with
+`sync_rows = TRUE`, so their dividers line up.
+
+## Pages
+
+A `page_template()` holds the page size, margins, header and footer. A
+`bb_page()` stacks its blocks in the space between them. The footer is
+anchored to the bottom margin, so it lands in the same place on every page,
+however much content sits above it.
+
+```{r}
+template <- page_template(
+  margin_x = 0.5, margin_top = 0.3, margin_bottom = 0.3,
+  header = bb_running_header("Annual report", "{country}"),
+  footer = bb_page_footer("Organisation", "{page} / {pages}")
+)
+
+page <- bb_page(
+  bb_section_header("Overview", refs = "[1]"),
+  row,
+  bb_box(bb_text("Flat grey note panel.", style = "note"), box_style_panel()),
+  template = template,
+  gap = c(0.08, 0.2),
+  data = list(country = "Argentina")
+)
+
+page_layout(page)[c("available", "used", "free")]
+```
+
+`page_layout()` reports the space without exporting. If content outgrows the
+body, `export_pdf()` warns with the overflow in inches.
+
+A `bb_document()` numbers its pages after dropping `NULL`s, so an optional
+page shifts every later "n / N" automatically:
+
+```{r}
+optional_page <- NULL
+doc <- bb_document(page, optional_page, bb_page("Second page", template = template,
+                                                data = list(country = "Argentina")))
+f <- tempfile(fileext = ".pdf")
+export_pdf(doc, f)
+```
+
+## Three spacing bands
+
+Spacing is set in three separate places, and none of them affects the others:
+
+1. **Page margins**: `page_template(margin_x, margin_top, margin_bottom)`.
+   A full-bleed block, such as `bb_banner()`, spans the full page width
+   instead (and sits flush with the top edge when it is the header).
+2. **Layout gaps**: `gap` in `bb_stack()`, `bb_cols()` and `bb_page()`.
+3. **Box spacing**: `padding` and `margin` of `box_style()` in `bb_box()`.
+
+## Themes and text styles
+
+A theme defines the palette and the text roles (`body`, `note`, `section`,
+`table_header`, ...). Components default to a role, and a `text_style()`
+only lists what it changes:
+
+```{r}
+th <- bb_theme(font = "sans", base_size = 9,
+               colors = list(primary = "#0C2C5E", accent = "#E5782A"))
+bb_set_theme(th)
+
+bb_text("Semibold, muted", style = text_style(weight = 600, color = "muted"))
+bb_text("Note role, italic", style = text_style("note", italic = TRUE))
+```
+
+Weights other than 400 and 700 resolve to the installed face (for example
+"Source Sans 3 Semibold") when systemfonts finds one, and fall back to bold
+or regular otherwise.

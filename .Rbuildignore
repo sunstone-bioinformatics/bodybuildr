@@ -4,3 +4,10 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^CLAUDE\.md$
+^CNAME$
+^LICENSE$
+^test_files$
+^Rplots\.pdf$
+^\.office-hours.*\.md$
+^\.claude$

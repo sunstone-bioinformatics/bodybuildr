@@ -1,52 +1,37 @@
 # Helper fixtures for tests -------------------------------------------------
 
-# Minimal ggplot fixture (only if ggplot2 is installed)
 make_test_plot <- function() {
   if (!requireNamespace("ggplot2", quietly = TRUE)) return(NULL)
   ggplot2::ggplot(data.frame(x = 1:3, y = 1:3), ggplot2::aes(x, y)) +
     ggplot2::geom_point()
 }
 
-# Minimal grob fixture
-make_test_grob <- function() {
-  grid::rectGrob(width = grid::unit(1, "npc"), height = grid::unit(1, "npc"))
-}
-
-# Minimal PNG written to a temp file (skip if not writable)
-make_test_png <- function() {
+make_test_png <- function(width = 20, height = 10) {
   tf <- tempfile(fileext = ".png")
-  grDevices::png(tf, width = 10, height = 10)
-  on.exit(grDevices::dev.off(), add = TRUE)
-  grid::grid.rect(gp = grid::gpar(fill = "blue"))
+  img <- array(0.5, dim = c(height, width, 3))
+  png::writePNG(img, tf)
   tf
 }
 
-# Rectangular PNG fixture (custom aspect ratio)
-make_test_png_rect <- function(width = 200, height = 100) {
-  tf <- tempfile(fileext = ".png")
-  grDevices::png(tf, width = width, height = height)
-  on.exit(grDevices::dev.off(), add = TRUE)
-  grid::grid.rect(gp = grid::gpar(fill = "blue"))
-  tf
+# A block that records the width/height it is measured and drawn at.
+probe_block <- function(env, height = 0.5, full_bleed = FALSE, name = "probe") {
+  new_block(
+    "probe",
+    measure = function(width) { env[[paste0(name, "_mw")]] <- width; height },
+    render = function(width, height) {
+      env[[paste0(name, "_rw")]] <- width
+      env[[paste0(name, "_rh")]] <- height
+      grid::nullGrob()
+    },
+    full_bleed = full_bleed
+  )
 }
 
-# Find the first raster grob inside a grob tree
-find_first_raster_grob <- function(g) {
-  if (inherits(g, "rastergrob")) return(g)
-  if (inherits(g, c("gTree", "grobTree"))) {
-    kids <- g$children
-    if (length(kids)) {
-      for (kid in kids) {
-        res <- find_first_raster_grob(kid)
-        if (!is.null(res)) return(res)
-      }
-    }
-  }
-  if (is.list(g)) {
-    for (kid in g) {
-      res <- find_first_raster_grob(kid)
-      if (!is.null(res)) return(res)
-    }
-  }
-  NULL
+# Export to a temp PDF and return the path.
+export_tmp <- function(x, ...) {
+  f <- tempfile(fileext = ".pdf")
+  export_pdf(x, f, ...)
+  f
 }
+
+h_in <- function(x, width) as.numeric(measure_block(x, width))

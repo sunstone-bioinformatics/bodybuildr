@@ -1,4 +1,24 @@
 url: https://sunstone-bioinformatics.github.io/bodybuildr/
 template:
   bootstrap: 5
-
+reference:
+- title: Pages and export
+  contents: [page_template, bb_page, bb_document, page_layout, export_pdf]
+- title: Layout
+  contents: [bb_stack, bb_cols, bb_box, bb_spacer, bb_fixed, bb_full_bleed]
+- title: Text
+  contents: [bb_text, span, text_style]
+- title: Content
+  contents: [bb_plot, bb_image, bb_grob, as_block]
+- title: Tables
+  contents: [bb_table, cell, table_style]
+- title: Marks and legends
+  contents: [bb_status, bb_dot, bb_legend, legend_key]
+- title: Page chrome
+  contents: [bb_banner, banner_style, bb_section_header, section_header_style, bb_running_header, header_line_style, bb_placeholder]
+- title: Styles and fills
+  contents: [box_style, line_style, gradient_fill]
+- title: Theme
+  contents: [bb_theme, bb_set_theme]
+- title: Measuring and custom blocks
+  contents: [measure_block, text_width, text_gpar, with_measure_device, new_block]

@@ -1,7 +1,7 @@
 Package: bodybuildr
 Type: Package
-Title: Bodybuildr creates infographics row by row
-Version: 0.4.9
+Title: Build Infographic PDF Pages from Self-Sizing Blocks
+Version: 0.5.0
 Authors@R: c(
     person(
       "Rafael", "Leon",
@@ -14,12 +14,14 @@ Authors@R: c(
       role = c("aut")
     ))
 Maintainer: Rafael Leon <rafa.leon190@gmail.com>
-Description: Build infographic-style PDF layouts in R by composing pages as
-    vertical stacks of rows. Mix text, ggplot2 plots, images, and grobs in the
-    same row. Export to PDF with predictable sizing using grid units.
+Description: Build infographic-style PDF pages in R from blocks that know
+    their own height. Stack and split blocks into columns, mix text, tables,
+    ggplot2 plots, images, legends and status marks, and place them between a
+    page header and a footer pinned to the bottom margin. Export one or many
+    pages to a single PDF with predictable sizing.
 SystemRequirements: Cairo (optional but recommended for full UTF-8 PDF output;
     macOS users should install XQuartz from https://www.xquartz.org)
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://sunstone-bioinformatics.github.io/bodybuildr/
@@ -28,14 +30,17 @@ Imports:
     ggplot2,
     grid,
     grDevices,
-    gridExtra,
     gridtext,
-    gtable,
     jpeg,
     png,
+    stats,
+    systemfonts,
     tools
 Suggests:
     commonmark,
     knitr,
-    rmarkdown
+    qpdf,
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3

@@ -1,423 +1,383 @@
-# Text and gradient helpers ------------------------------------------------
-# Scaffolding only; implementations will be filled in.
+# Text -----------------------------------------------------------------------------
+# bb_text() renders with gridtext. Text always goes through gridtext's markdown
+# mode: plain text is escaped first, because gridtext 0.1.6 with
+# use_markdown = FALSE can break lines at every space. Inline spans and links
+# travel inside the string as <bb-span>/<bb-link> tags, so they survive
+# paste() and are resolved against the theme at draw time.
 
-#' Construct a styled text box item
+.tag_re <- "</?bb-(span|link)(\\s[^>]*)?>"
+
+#' Inline text runs
 #'
-#' Creates a text box payload that can be passed into layout functions (e.g., `str_n_panel_row`)
-#' with its own text and box styles.
+#' `span()` changes weight, colour, size, italics or family for part of a
+#' string. `link()` marks a URL. Both return a string, so they can be
+#' combined with `paste0()`, and both work in every [bb_text()] markup mode.
 #'
-#' @param label Character text to render.
-#' @param text_style A `gpar` from [text_style()].
-#' @param box_style A list from [box_style()].
-#' @param bg Optional column background color override.
-#' @param pad_x,pad_y Optional column padding overrides as `grid::unit` (non-negative).
-#' @return An object of class `"bbdr_text_box"` to use as an item in layout rows.
+#' Weights resolve like [text_style()] (semibold through the installed face).
+#' Spans can't be nested.
+#'
+#' In plain text, links are drawn underlined, and each line of a link is a
+#' single unbroken text run so PDF viewers detect the URL. The URL moves to a
+#' new line whole when it fits there. Plain text that contains links can't
+#' also contain spans. In markdown and HTML text, links are drawn in
+#' `link_color` without an underline (gridtext can't underline).
+#'
+#' @param text Text of the run. For `link()`, the visible label (defaults to
+#'   the URL).
+#' @param weight,color,size,italic,family Overrides for this run. `size` is
+#'   in points; `color` takes theme colour names.
+#' @param url Link target.
+#' @return A character string with class `bb_inline`.
+#' @examples
+#' bb_text(paste0("Coverage ", span("rose", weight = 700, color = "accent"), " in 2024."))
+#' bb_text(paste0("Source: WHO/UNICEF, ", link("https://immunizationdata.who.int")))
 #' @export
-text_box <- function(
-    label,
-    text_style = NULL,
-    box_style  = NULL,
-    bg         = NULL,
-    pad_x      = NULL,
-    pad_y      = NULL
-) {
-  if (is.null(label)) label <- ""
-  if (is.null(text_style)) {
-    text_style <- get("text_style", envir = parent.env(environment()))()
-  }
-  if (is.null(box_style)) {
-    box_style <- get("box_style", envir = parent.env(environment()))()
-  }
-  if (!inherits(text_style, "gpar")) stop("`text_style` must be a gpar (use text_style()).", call. = FALSE)
-  if (!is.list(box_style)) stop("`box_style` must be a list (use box_style()).", call. = FALSE)
-  if (!is.null(pad_x)) pad_x <- .as_unit_nonneg(pad_x, "pad_x")
-  if (!is.null(pad_y)) pad_y <- .as_unit_nonneg(pad_y, "pad_y")
-  structure(
-    list(
-      label = label,
-      text_style = text_style,
-      box_style = box_style,
-      bg = bg,
-      pad_x = pad_x,
-      pad_y = pad_y
-    ),
-    class = "bbdr_text_box"
+span <- function(text, weight = NULL, color = NULL, size = NULL, italic = NULL, family = NULL) {
+  attrs <- c(
+    w = if (!is.null(weight)) .weight_num(weight),
+    c = color,
+    s = if (!is.null(size)) as.character(size),
+    i = if (!is.null(italic)) as.integer(isTRUE(italic)),
+    f = family
   )
+  a <- if (length(attrs)) paste0(" ", names(attrs), "=\"", gsub("\"", "&quot;", attrs), "\"", collapse = "") else ""
+  structure(paste0("<bb-span", a, ">", text, "</bb-span>"), class = c("bb_inline", "character"))
 }
 
-#' Construct an intentional empty layout box
-#'
-#' Creates a blank layout payload that can be passed into row layout functions when
-#' you want an explicit empty slot in the composition.
-#'
-#' Unlike `NULL`, which means missing content, `blank_box()` means a deliberate
-#' empty layout element that still participates in row geometry.
-#'
-#' @return An object of class `"bbdr_blank_box"` to use as an item in layout rows.
+#' @rdname span
 #' @export
-blank_box <- function() {
-  structure(list(), class = "bbdr_blank_box")
+link <- function(url, text = url) {
+  if (!is.character(url) || length(url) != 1 || is.na(url)) stop("`url` must be one string.", call. = FALSE)
+  structure(paste0("<bb-link href=\"", gsub("\"", "&quot;", url), "\">", text, "</bb-link>"),
+            class = c("bb_inline", "character"))
 }
 
-#' Construct a Markdown-formatted text box item
-#'
-#' Like [text_box()], but `label` is parsed as Markdown and rendered as rich
-#' HTML via `gridtext`. Supports **bold**, *italic*, `inline code`, line breaks,
-#' and bullet lists. Links render as styled text but are not clickable in PDF.
-#'
-#' Requires the `commonmark` package. If not installed, falls back to plain text.
-#'
-#' @param label Markdown-formatted character string.
-#' @param text_style A `gpar` from [text_style()].
-#' @param box_style A list from [box_style()].
-#' @param bg Optional column background color override.
-#' @param pad_x,pad_y Optional column padding overrides as `grid::unit` (non-negative).
-#' @param link_color Color for hyperlink text. Default `"#2563EB"`.
-#' @return An object of class `"bbdr_md_text_box"` to use as an item in layout rows.
-#' @export
-md_text_box <- function(
-    label,
-    text_style = NULL,
-    box_style  = NULL,
-    bg         = NULL,
-    pad_x      = NULL,
-    pad_y      = NULL,
-    link_color = "#2563EB"
-) {
-  if (is.null(label)) label <- ""
-  if (is.null(text_style)) {
-    text_style <- get("text_style", envir = parent.env(environment()))()
-  }
-  if (is.null(box_style)) {
-    box_style <- get("box_style", envir = parent.env(environment()))()
-  }
-  if (!inherits(text_style, "gpar")) stop("`text_style` must be a gpar (use text_style()).", call. = FALSE)
-  if (!is.list(box_style)) stop("`box_style` must be a list (use box_style()).", call. = FALSE)
-  if (!is.null(pad_x)) pad_x <- .as_unit_nonneg(pad_x, "pad_x")
-  if (!is.null(pad_y)) pad_y <- .as_unit_nonneg(pad_y, "pad_y")
-  structure(
-    list(
-      label      = label,
-      text_style = text_style,
-      box_style  = box_style,
-      bg         = bg,
-      pad_x      = pad_x,
-      pad_y      = pad_y,
-      link_color = link_color
-    ),
-    class = c("bbdr_md_text_box", "bbdr_text_box")
-  )
+#' Internal: escape markdown/HTML so gridtext prints text literally
+#' @noRd
+.escape_md <- function(x) {
+  x <- gsub("&(?!#?[A-Za-z0-9]+;)", "&amp;", x, perl = TRUE)
+  x <- gsub("<", "&lt;", x, fixed = TRUE)
+  x <- gsub(">", "&gt;", x, fixed = TRUE)
+  x <- gsub("([\\\\`*_\\[\\]#|~])", "\\\\\\1", x, perl = TRUE)
+  gsub("(^|\n)(\\s*)([0-9]+)\\.", "\\1\\2\\3\\\\.", x, perl = TRUE)
 }
 
-#' Construct a raw HTML text box item
-#'
-#' Like [text_box()], but `label` is treated as HTML and passed directly to
-#' `gridtext` for rendering. Supports the gridtext HTML subset: `<b>`, `<i>`,
-#' `<em>`, `<strong>`, `<code>`, `<span style="...">`, `<br/>`, `<sup>`, `<sub>`.
-#' Links render as styled text but are not clickable in PDF.
-#'
-#' @param label HTML-formatted character string.
-#' @param text_style A `gpar` from [text_style()].
-#' @param box_style A list from [box_style()].
-#' @param bg Optional column background color override.
-#' @param pad_x,pad_y Optional column padding overrides as `grid::unit` (non-negative).
-#' @return An object of class `"bbdr_html_text_box"` to use as an item in layout rows.
-#' @export
-html_text_box <- function(
-    label,
-    text_style = NULL,
-    box_style  = NULL,
-    bg         = NULL,
-    pad_x      = NULL,
-    pad_y      = NULL
-) {
-  if (is.null(label)) label <- ""
-  if (is.null(text_style)) {
-    text_style <- get("text_style", envir = parent.env(environment()))()
-  }
-  if (is.null(box_style)) {
-    box_style <- get("box_style", envir = parent.env(environment()))()
-  }
-  if (!inherits(text_style, "gpar")) stop("`text_style` must be a gpar (use text_style()).", call. = FALSE)
-  if (!is.list(box_style)) stop("`box_style` must be a list (use box_style()).", call. = FALSE)
-  if (!is.null(pad_x)) pad_x <- .as_unit_nonneg(pad_x, "pad_x")
-  if (!is.null(pad_y)) pad_y <- .as_unit_nonneg(pad_y, "pad_y")
-  structure(
-    list(
-      label      = label,
-      text_style = text_style,
-      box_style  = box_style,
-      bg         = bg,
-      pad_x      = pad_x,
-      pad_y      = pad_y
-    ),
-    class = c("bbdr_html_text_box", "bbdr_text_box")
-  )
+#' Internal: split text around bb tags (parts has one more entry than tags)
+#' @noRd
+.protect_tags <- function(x) {
+  m <- gregexpr(.tag_re, x, perl = TRUE)
+  list(parts = regmatches(x, m, invert = TRUE)[[1]], tags = regmatches(x, m)[[1]])
+}
+
+.restore_tags <- function(parts, tags) {
+  if (!length(tags)) return(paste(parts, collapse = ""))
+  paste0(c(rbind(parts[seq_along(tags)], tags), parts[length(tags) + 1]), collapse = "")
+}
+
+#' @noRd
+.apply_case <- function(x, case) {
+  switch(case %||% "none",
+    upper = toupper(x),
+    lower = tolower(x),
+    title = gsub("(^|\\s)(\\p{Ll})", "\\1\\U\\2", x, perl = TRUE),
+    x)
 }
 
 #' Internal: convert Markdown to gridtext-compatible HTML
-#'
-#' @keywords internal
-.md_to_html <- function(md, link_color = "#2563EB") {
+#' @noRd
+.md_to_html <- function(md) {
   if (!requireNamespace("commonmark", quietly = TRUE)) {
-    warning("Package 'commonmark' needed for Markdown rendering. Showing plain text.", call. = FALSE)
-    return(md)
+    warning("Package 'commonmark' is needed for Markdown text; showing it as plain text.", call. = FALSE)
+    return(.escape_md(md))
   }
-  html <- commonmark::markdown_html(md, smart = TRUE)
-  html <- paste(html, collapse = "")
-
-  # headings → bold line
+  html <- paste(commonmark::markdown_html(md, smart = TRUE), collapse = "")
   html <- gsub("<h[1-6][^>]*>(.*?)</h[1-6]>", "<b>\\1</b><br/>", html)
-
-  # lists → bullet lines (handle tight lists: <li>text</li> and loose: <li><p>text</p></li>)
   html <- gsub("<li><p>", "<li>", html)
   html <- gsub("</p></li>", "</li>", html)
   html <- gsub("<li>", "&#x2022; ", html)
   html <- gsub("</li>\n?", "<br/>", html)
   html <- gsub("</?[uo]l>\n?", "", html)
-
-  # links → colored span (not clickable in PDF)
-  html <- gsub(
-    '<a href="[^"]*">(.*?)</a>',
-    paste0('<span style="color:', link_color, '; text-decoration: underline;">\\1</span>'),
-    html
-  )
-
-  # code blocks → strip tags, keep text (gridtext does not support <code>)
+  html <- gsub("<a href=\"([^\"]*)\">(.*?)</a>", "<bb-link href=\"\\1\">\\2</bb-link>", html)
   html <- gsub("<pre><code[^>]*>", "", html)
   html <- gsub("</code></pre>", "", html)
   html <- gsub("</?code>", "", html)
   html <- gsub("<hr[^>]*/?>", "<br/>", html)
-
-  # paragraphs: closing </p> becomes double break; opening <p> is dropped
   html <- gsub("</p>\n?", "<br/><br/>", html)
   html <- gsub("<p>\n?", "", html)
-  # trim trailing breaks
   html <- gsub("(<br/>\\s*)+$", "", trimws(html))
-
+  # commonmark escapes characters gridtext's own markdown pass would read again
+  html <- gsub("([\\\\`*_\\[\\]])", "\\\\\\1", html, perl = TRUE)
   trimws(html)
 }
 
-#' Internal: wrapped text box anchored top-left
-#'
-#' Internal helper used by layout row builders to render wrapped text inside a padded, rounded box.
-#' Users should construct text content via [text_box()] or pass character vectors to layout functions;
-#' this helper is not part of the public API.
-#'
-#' @param label Character vector to render.
-#' @param inner_vp A `grid::viewport` defining the available space.
-#' @param gp A `grid::gpar` for text styling.
-#' @param preserve_newlines Whether to keep newline breaks.
-#' @param prefer_gridtext Whether to prefer `gridtext::textbox_grob`.
-#' @param box_r Corner radius as `grid::unit`.
-#' @param box_border_col,box_border_lwd,box_fill Border styling.
-#' @param box_margin Outer margin as `grid::unit`.
-#' @param text_pad Inner padding as `grid::unit`.
-#' @return A grob representing the wrapped text box.
-#' @keywords internal
-#' @importFrom grid gpar unit viewport grobTree vpStack pushViewport popViewport convertWidth stringWidth roundrectGrob textGrob rectGrob
-#' @importFrom gridtext textbox_grob
-.wrap_text_top_left <- function(
-    label,
-    inner_vp,
-    gp = gpar(col = "#111111", fontsize = 11, fontface = "plain", fontfamily = "sans"),
-    preserve_newlines = TRUE,
-    prefer_gridtext   = TRUE,
-    box_r             = unit(6, "pt"),
-    box_border_col    = "#CBD5E1",
-    box_border_lwd    = 1,
-    box_fill          = NA,
-    box_margin        = unit(c(6, 6, 6, 6), "pt"),
-    text_pad          = unit(c(4, 6, 4, 6), "pt")
-) {
-  if (is.null(label)) label <- ""
-  if (length(label) > 1) label <- paste(label, collapse = "\n")
+#' Internal: parse attributes of a bb tag
+#' @noRd
+.tag_attrs <- function(tag) {
+  m <- regmatches(tag, gregexpr("([a-z]+)=\"([^\"]*)\"", tag))[[1]]
+  if (!length(m)) return(list())
+  keys <- sub("=.*$", "", m)
+  vals <- gsub("&quot;", "\"", sub("^[a-z]+=\"(.*)\"$", "\\1", m))
+  stats::setNames(as.list(vals), keys)
+}
 
-  # normalize margin/padding into (t,r,b,l)
-  norm_trbl <- function(u) {
-    if (!inherits(u, "unit")) stop("Expect unit for margins/padding")
-    if (length(u) == 1) rep(u, 4)
-    else if (length(u) == 2) unit(c(u[1], u[2], u[1], u[2]), attr(u, "unit"))
-    else if (length(u) == 4) u
-    else stop("Use length 1, 2, or 4 for margin/padding")
+#' Internal: <bb-span>/<bb-link> -> gridtext HTML, resolved against the theme
+#' @noRd
+.resolve_inline <- function(html, rs, link_color) {
+  span_re <- "<bb-span(\\s[^>]*)?>(.*?)</bb-span>"
+  repeat {
+    m <- regexpr(span_re, html, perl = TRUE)
+    if (m < 0) break
+    whole <- regmatches(html, m)
+    open_tag <- sub("^(<bb-span[^>]*>).*$", "\\1", whole)
+    inner <- sub("^<bb-span[^>]*>(.*)</bb-span>$", "\\1", whole)
+    a <- .tag_attrs(open_tag)
+    s <- rs
+    if (!is.null(a$w)) s$weight <- as.numeric(a$w)
+    if (!is.null(a$c)) s$color <- a$c
+    if (!is.null(a$s)) s$size <- as.numeric(a$s)
+    if (!is.null(a$i)) s$italic <- a$i == "1"
+    if (!is.null(a$f)) s$family <- a$f
+    font <- .resolve_font(s$family, s$weight, isTRUE(s$italic))
+    # gridtext only resolves multi-word family names when they are quoted.
+    css <- paste0("font-family:'", gsub("'", "", font$family), "';")
+    if (!is.null(a$c)) css <- paste0(css, "color:", .col(a$c), ";")
+    if (!is.null(a$s)) css <- paste0(css, "font-size:", a$s, "pt;")
+    bold <- font$face %in% c("bold", "bold.italic")
+    ital <- font$face %in% c("italic", "bold.italic")
+    rep_html <- paste0("<span style=\"", css, "\">", if (bold) "<b>", if (ital) "<i>", inner,
+                       if (ital) "</i>", if (bold) "</b>", "</span>")
+    regmatches(html, m) <- rep_html
   }
-  box_margin <- norm_trbl(box_margin)
-  text_pad   <- norm_trbl(text_pad)
+  lc <- .col(link_color %||% rs$color)
+  html <- gsub("<bb-link[^>]*>(.*?)</bb-link>", paste0("<span style='color:", lc, ";'>\\1</span>"),
+               html, perl = TRUE)
+  html
+}
 
-  # Build an inner viewport that accounts for the OUTER margin
-  box_vp <- viewport(
-    x = unit(0, "npc") + box_margin[4],
-    y = unit(1, "npc") - box_margin[1],
-    width  = unit(1, "npc") - (box_margin[2] + box_margin[4]),
-    height = unit(1, "npc") - (box_margin[1] + box_margin[3]),
-    just = c("left","top"),
-    clip = "on"
+#' Internal: build gridtext HTML from text + markup mode
+#' @noRd
+.prepare_html <- function(x, markup, rs, link_color = NULL) {
+  p <- .protect_tags(x)
+  parts <- .apply_case(p$parts, rs$case)
+  if (markup == "plain") parts <- gsub("\n", "<br>", .escape_md(parts), fixed = TRUE)
+  txt <- .restore_tags(parts, p$tags)
+  if (markup == "markdown") txt <- .md_to_html(txt)
+  .defuse_autolinks(.resolve_inline(txt, rs, link_color))
+}
+
+#' Internal: stop gridtext's markdown pass from autolinking URLs and emails
+#'
+#' gridtext turns "https://...", "www." and "a@b.org" into <a> tags, which it
+#' then can't draw. Escaping the trigger characters in text (never inside
+#' tags) keeps them literal.
+#' @noRd
+.defuse_autolinks <- function(html) {
+  m <- gregexpr("<[^>]*>", html)
+  text <- regmatches(html, m, invert = TRUE)[[1]]
+  tags <- regmatches(html, m)[[1]]
+  text <- gsub("://", "\\\\://", text, fixed = FALSE)
+  text <- gsub("(?i)\\b(www)\\.", "\\1\\\\.", text, perl = TRUE)
+  text <- gsub("@", "<span>@</span>", text, fixed = TRUE)
+  .restore_tags(text, tags)
+}
+
+#' Internal: gridtext textbox anchored top-left
+#' @noRd
+.textbox <- function(html, width, gp, halign = 0, x = unit(0, "npc"), y = unit(1, "npc"),
+                     hjust = 0, vjust = 1, padding = c(0, 0, 0, 0), fill = NA) {
+  gridtext::textbox_grob(
+    html, x = x, y = y, hjust = hjust, vjust = vjust, halign = halign,
+    width = unit(max(width, 0.01), "in"),
+    padding = unit(padding, "in"), margin = unit(c(0, 0, 0, 0), "in"),
+    r = unit(0, "pt"), box_gp = gpar(col = NA, fill = fill),
+    gp = gp, use_markdown = TRUE
   )
+}
 
-  # Preferred path: gridtext
-  if (prefer_gridtext && requireNamespace("gridtext", quietly = TRUE)) {
-    txt <- if (preserve_newlines) label else gsub("\n+", " ", label)
+.halign <- function(align) switch(align, right = 1, center = 0.5, 0)
 
-    tb <- textbox_grob(
-      txt,
-      x = unit(0, "npc"), y = unit(1, "npc"),
-      hjust = 0, vjust = 1,
-      width = unit(1, "npc"),
-      box_gp = gpar(col = box_border_col, fill = box_fill, lwd = box_border_lwd),
-      r = box_r,
-      padding = text_pad,
-      margin  = unit(c(0, 0, 0, 0), "pt"),
-      gp = gp
-    )
-    return(grobTree(tb, vp = vpStack(inner_vp, box_vp)))
+#' Text block
+#'
+#' Wrapped text that is exactly as tall as its content at the width it is
+#' given.
+#'
+#' - `markup = "plain"` (default) prints the text literally: characters such
+#'   as `<80%`, `*` or `[1]` are escaped. `"\n"` breaks the line. [span()] and
+#'   [link()] runs are kept.
+#' - `markup = "markdown"` reads Markdown: bold, italic, lists, headings,
+#'   links.
+#' - `markup = "html"` passes the gridtext HTML subset (`<b>`, `<i>`,
+#'   `<span style>`, `<br>`, `<sup>`, `<sub>`).
+#'
+#' A character vector is pasted together without separators, so
+#' `c("Total: ", span("4", weight = 600))` reads as one line.
+#'
+#' @param x Text (character vector, pasted together).
+#' @param style A [text_style()], a theme role name, or `NULL` for `"body"`.
+#' @param markup `"plain"`, `"markdown"` or `"html"`.
+#' @param align Horizontal alignment: `"left"`, `"center"` or `"right"`.
+#' @param link_color Colour of links; defaults to the text colour.
+#' @return A block.
+#' @examples
+#' bb_text("Values below <80% are flagged.")
+#' bb_text("**Bold** and *italic*", markup = "markdown", style = "note")
+#' @export
+bb_text <- function(x, style = NULL, markup = c("plain", "markdown", "html"),
+                    align = c("left", "center", "right"), link_color = NULL) {
+  markup <- match.arg(markup)
+  align <- match.arg(align)
+  .text_block(x, style, "body", markup, align, link_color)
+}
+
+#' @noRd
+.text_block <- function(x, style, role, markup = "plain", align = "left", link_color = NULL) {
+  force(style); force(role); force(markup); force(align); force(link_color)
+  if (is.null(x) || !length(x)) x <- ""
+  x <- paste(ifelse(is.na(x), "", as.character(x)), collapse = "")
+  has_link <- grepl("<bb-link", x, fixed = TRUE)
+  use_runs <- markup == "plain" && has_link
+  if (use_runs && grepl("<bb-span", x, fixed = TRUE)) {
+    stop("Plain text with link() can't also contain span().", call. = FALSE)
+  }
+  empty <- !nzchar(trimws(gsub(.tag_re, "", x, perl = TRUE)))
+
+  build <- function(width) {
+    rs <- .resolve_text_style(style, role)
+    gp <- .as_gpar(rs)
+    if (use_runs) return(list(runs = .link_layout(x, width, rs, gp, align, link_color)))
+    html <- .prepare_html(x, markup, rs, link_color)
+    list(html = html, gp = gp)
   }
 
-  # Fallback: approximate char-based wrap
-  pushViewport(inner_vp)
-  pushViewport(box_vp)
-  on.exit({
-    popViewport(2)
-  }, add = TRUE)
+  new_block(
+    "text",
+    measure = function(width) {
+      if (empty) return(0)
+      b <- build(width)
+      if (!is.null(b$runs)) return(b$runs$height)
+      .grob_h_in(.textbox(b$html, width, b$gp, .halign(align)))
+    },
+    render = function(width, height) {
+      if (empty) return(nullGrob())
+      b <- build(width)
+      if (!is.null(b$runs)) return(b$runs$grob)
+      .textbox(b$html, width, b$gp, .halign(align))
+    },
+    text = x, markup = markup
+  )
+}
 
-  inner_w <- convertWidth(unit(1, "npc") - (text_pad[2] + text_pad[4]), "inch", valueOnly = TRUE)
-  sample_str <- paste(rep("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 3), collapse = "")
-  avg_char_in <- convertWidth(stringWidth(sample_str), "inch", valueOnly = TRUE) / nchar(sample_str)
-  if (!is.finite(avg_char_in) || avg_char_in <= 0) avg_char_in <- 0.1
-  wrap_chars <- max(1L, floor(inner_w / avg_char_in))
+# Link runs ----------------------------------------------------------------------
+# A small line breaker for plain text with underlined links: gridtext ignores
+# text-decoration, and viewers only detect a URL that is one text run.
 
-  wrap_lines <- function(text, width_chars) {
-    if (preserve_newlines) {
-      paras <- strsplit(text, "\n", fixed = TRUE)[[1]]
-      unlist(lapply(paras, function(p) if (nchar(p) == 0) "" else strwrap(p, width = width_chars)))
+#' @noRd
+.link_tokens <- function(x, case) {
+  pieces <- list()
+  rest <- x
+  re <- "<bb-link\\s[^>]*>(.*?)</bb-link>"
+  repeat {
+    m <- regexpr(re, rest, perl = TRUE)
+    if (m < 0) {
+      if (nzchar(rest)) pieces[[length(pieces) + 1]] <- list(text = rest, link = FALSE)
+      break
+    }
+    if (m > 1) pieces[[length(pieces) + 1]] <- list(text = substr(rest, 1, m - 1), link = FALSE)
+    whole <- regmatches(rest, m)
+    href <- .tag_attrs(sub("^(<bb-link[^>]*>).*$", "\\1", whole))$href
+    label <- sub("^<bb-link[^>]*>(.*)</bb-link>$", "\\1", whole)
+    pieces[[length(pieces) + 1]] <- list(text = label, link = TRUE, href = href)
+    rest <- substr(rest, m + attr(m, "match.length"), nchar(rest))
+  }
+
+  tok <- list(); pending_space <- FALSE; group <- 0L
+  add <- function(txt, link, space, grp, brk = FALSE) {
+    tok[[length(tok) + 1]] <<- list(txt = txt, link = link, space = space, group = grp, brk = brk)
+  }
+  for (p in pieces) {
+    if (!p$link) {
+      bits <- regmatches(p$text, gregexpr("\n|[ \t]+|[^ \t\n]+", p$text))[[1]]
+      for (b in bits) {
+        if (b == "\n") { add("", FALSE, FALSE, 0L, brk = TRUE); pending_space <- FALSE }
+        else if (grepl("^[ \t]+$", b)) pending_space <- TRUE
+        else { add(.apply_case(b, case), FALSE, pending_space, 0L); pending_space <- FALSE }
+      }
     } else {
-      strwrap(text, width = width_chars)
+      group <- group + 1L
+      label <- p$text
+      segs <- if (identical(label, p$href)) {
+        regmatches(label, gregexpr("[^/]*/+|[^/]+$", label))[[1]]
+      } else {
+        strsplit(trimws(label), "\\s+")[[1]]
+      }
+      sep_space <- !identical(label, p$href)
+      for (k in seq_along(segs)) {
+        add(segs[k], TRUE, if (k == 1) pending_space else sep_space, group)
+      }
+      pending_space <- FALSE
     }
   }
-  lines <- wrap_lines(label, wrap_chars)
-  wrapped_text <- paste(lines, collapse = "\n")
-
-  # OUTER rounded border
-  rr <- roundrectGrob(
-    x = unit(0.5, "npc"), y = unit(0.5, "npc"),
-    width = unit(1, "npc"), height = unit(1, "npc"),
-    r = box_r,
-    gp = gpar(col = box_border_col, fill = box_fill, lwd = box_border_lwd)
-  )
-  # Text placed with INNER padding
-  txt_g <- textGrob(
-    wrapped_text,
-    x = unit(0, "npc") + text_pad[4],
-    y = unit(1, "npc") - text_pad[1],
-    just = c("left","top"),
-    gp = gp
-  )
-  grobTree(rr, txt_g, vp = inner_vp)
+  tok
 }
 
-#' Internal: subtitle cell with gradient and rounded corners
-#'
-#' @keywords internal
-.subtitle_cell <- function(
-    label,
-    cell_bg_cols    = c("#2f6cab", "#173052"),
-    cell_bg_stops   = NULL,
-    cell_bg_dir     = "lr",
-    box_r           = unit(10, "pt"),
-    box_border_col  = NA,
-    box_border_lwd  = 1,
-    text_gp         = gpar(col = "white", fontsize = 16, fontfamily = "sans", fontface = "bold"),
-    text_pad        = unit(c(10, 14, 10, 14), "pt"),
-    box_margin      = unit(c(6, 6, 6, 6), "pt"),
-    text_hjust      = "left",
-    margin_fill     = NA
-) {
-  if (is.null(label)) label <- ""
-  if (length(label) > 1) label <- paste(label, collapse = "\n")
+#' @noRd
+.link_layout <- function(x, width, rs, gp, align, link_color) {
+  tok <- .link_tokens(x, rs$case)
+  n <- length(tok)
+  lh <- .line_h_in(rs)
+  if (!n) return(list(height = 0, grob = nullGrob()))
+  txt <- vapply(tok, `[[`, character(1), "txt")
+  w <- numeric(n)
+  real <- nzchar(txt)
+  w[real] <- .text_w_in(txt[real], gp)
+  space_w <- with_measure_device(
+    convertWidth(grobWidth(textGrob("a a", gp = gp)) - grobWidth(textGrob("aa", gp = gp)), "in", valueOnly = TRUE)
+  )
+  grp <- vapply(tok, `[[`, integer(1), "group")
+  group_w <- tapply(w, grp, sum)
 
-  top_m    <- box_margin[1]; right_m <- box_margin[2]
-  bot_m    <- box_margin[3]; left_m  <- box_margin[4]
-
-  x <- unit(0, "npc") + left_m
-  y <- unit(1, "npc") - top_m
-  w <- unit(1, "npc") - (left_m + right_m)
-  h <- unit(1, "npc") - (top_m  + bot_m)
-
-  fill <- .gradient_fill(cell_bg_cols, cell_bg_stops, cell_bg_dir)
-
-  border_col <- box_border_col
-  border_lwd <- box_border_lwd
-  if (is.null(border_col) || is.na(border_col)) {
-    border_col <- fill
-    border_lwd <- 0
+  line <- 1L; xpos <- 0
+  tline <- integer(n); tx <- numeric(n)
+  for (i in seq_len(n)) {
+    if (tok[[i]]$brk) { line <- line + 1L; xpos <- 0; tline[i] <- line; next }
+    gap <- if (tok[[i]]$space && xpos > 0) space_w else 0
+    first_of_group <- grp[i] > 0 && (i == 1 || grp[i - 1] != grp[i])
+    need <- if (first_of_group && group_w[[as.character(grp[i])]] <= width) group_w[[as.character(grp[i])]] else w[i]
+    if (xpos > 0 && xpos + gap + need > width + 1e-9) { line <- line + 1L; xpos <- 0; gap <- 0 }
+    tline[i] <- line; tx[i] <- xpos + gap
+    xpos <- xpos + gap + w[i]
   }
+  n_lines <- line
+  height <- (n_lines - 1) * lh + rs$size * 1.15 / 72
 
-  bg_roundrect <- roundrectGrob(
-    x = x, y = y, width = w, height = h,
-    just = c("left","top"),
-    r = box_r,
-    gp = gpar(fill = fill, col = border_col, lwd = border_lwd)
-  )
-
-  hjust_val <- switch(text_hjust, left = 0, center = 0.5, right = 1, 0)
-  content_vp <- viewport(
-    x = x, y = y,
-    width = w, height = h,
-    just = c("left","top"),
-    clip = "on"
-  )
-
-  margin_bg <- NULL
-  if (!is.null(margin_fill) && !is.na(margin_fill)) {
-    margin_bg <- rectGrob(
-      x = unit(0.5, "npc"), y = unit(0.5, "npc"),
-      width = unit(1, "npc"), height = unit(1, "npc"),
-      just = c("center","center"),
-      gp = gpar(fill = margin_fill, col = NA)
-    )
+  is_link <- vapply(tok, `[[`, logical(1), "link")
+  keep <- !vapply(tok, `[[`, logical(1), "brk")
+  run <- cumsum(c(TRUE, diff(tline) != 0 | diff(is_link) != 0 | diff(grp) != 0))
+  line_end <- tapply(ifelse(keep, tx + w, 0), tline, max)
+  offset <- function(l) {
+    free <- width - line_end[[as.character(l)]]
+    switch(align, right = free, center = free / 2, 0)
   }
-
-  txt <- textbox_grob(
-    label,
-    x = unit(hjust_val, "npc"),
-    y = unit(1, "npc"),
-    width  = unit(1, "npc"),
-    height = unit(1, "npc"),
-    hjust = hjust_val, vjust = 1,
-    halign = hjust_val,
-    gp = text_gp,
-    padding = text_pad,
-    margin  = unit(c(0,0,0,0), "pt"),
-    r = unit(0, "pt"),
-    box_gp = gpar(col = NA, fill = NA),
-    vp = content_vp
-  )
-
-  grobTree(margin_bg, bg_roundrect, txt)
-}
-
-#' Internal: gradient fill helper
-#'
-#' @keywords internal
-.gradient_fill <- function(cols, stops = NULL, dir = "lr") {
-  has_grad <- "linearGradient" %in% getNamespaceExports("grid")
-  if (!has_grad || length(cols) < 2) return(cols[1])
-  if (is.null(stops)) stops <- seq(0, 1, length.out = length(cols))
-  xy <- switch(
-    dir,
-    lr   = list(x1=0, y1=0.5, x2=1, y2=0.5),
-    rl   = list(x1=1, y1=0.5, x2=0, y2=0.5),
-    tb   = list(x1=0.5, y1=1,   x2=0.5, y2=0),
-    bt   = list(x1=0.5, y1=0,   x2=0.5, y2=1),
-    tlbr = list(x1=0, y1=1,     x2=1,   y2=0),
-    bltr = list(x1=0, y1=0,     x2=1,   y2=1),
-    trbl = list(x1=1, y1=1,     x2=0,   y2=0),
-    brtl = list(x1=1, y1=0,     x2=0,   y2=1),
-    list(x1=0, y1=0.5, x2=1, y2=0.5)
-  )
-  linear_grad <- getFromNamespace("linearGradient", "grid")
-  linear_grad(
-    colours = cols, stops = stops,
-    x1 = unit(xy$x1, "npc"), y1 = unit(xy$y1, "npc"),
-    x2 = unit(xy$x2, "npc"), y2 = unit(xy$y2, "npc")
-  )
+  ascent <- rs$size * 0.64 / 72
+  lc <- .col(link_color %||% rs$color)
+  kids <- gList()
+  for (r in unique(run[keep])) {
+    idx <- which(run == r & keep)
+    if (!length(idx)) next
+    label <- paste0(ifelse(seq_along(idx) > 1 & vapply(tok[idx], `[[`, logical(1), "space"), " ", ""),
+                    txt[idx], collapse = "")
+    l <- tline[idx[1]]
+    x0 <- tx[idx[1]] + offset(l)
+    base_y <- unit(1, "npc") - unit((l - 1) * lh + ascent, "in")
+    run_gp <- gp
+    if (is_link[idx[1]]) run_gp$col <- lc
+    kids <- gList(kids, textGrob(label, x = unit(x0, "in"), y = base_y, just = c("left", "bottom"), gp = run_gp))
+    if (is_link[idx[1]]) {
+      x1 <- tx[idx[length(idx)]] + w[idx[length(idx)]] + offset(l)
+      uy <- base_y - unit(rs$size * 0.12 / 72, "in")
+      kids <- gList(kids, segmentsGrob(unit(x0, "in"), uy, unit(x1, "in"), uy,
+                                       gp = gpar(col = lc, lwd = max(0.5, rs$size / 15), lineend = "butt")))
+    }
+  }
+  list(height = height, grob = gTree(children = kids), lines = n_lines)
 }
