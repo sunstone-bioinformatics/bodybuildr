@@ -11,3 +11,5 @@
 ^Rplots\.pdf$
 ^\.office-hours.*\.md$
 ^\.claude$
+^tutorial$
+^bodybuildr-tutorial$

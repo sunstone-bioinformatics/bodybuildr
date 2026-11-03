@@ -39,6 +39,7 @@ Imports:
 Suggests:
     commonmark,
     knitr,
+    pdftools,
     qpdf,
     rmarkdown,
     testthat (>= 3.0.0)
