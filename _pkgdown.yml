@@ -1,6 +1,28 @@
 url: https://sunstone-bioinformatics.github.io/bodybuildr/
 template:
   bootstrap: 5
+
+navbar:
+  structure:
+    left: [tutorial, reference, articles]
+    right: [search, github]
+  components:
+    tutorial:
+      text: Tutorial
+      href: articles/learn-bodybuildr.html
+
+articles:
+- title: Tutorial
+  navbar: ~
+  desc: Start here. One idea at a time, from a single block to a full report.
+  contents: [learn-bodybuildr]
+- title: Concepts
+  navbar: Concepts
+  contents: [layout-model]
+- title: Examples
+  navbar: Examples
+  contents: [showcase]
+
 reference:
 - title: Pages and export
   contents: [page_template, bb_page, bb_document, page_layout, export_pdf]

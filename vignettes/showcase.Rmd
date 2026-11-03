@@ -526,7 +526,7 @@ ops_page2 <- bb_page(
 )
 ```
 
-```{r ops-show, out.width = "100%", echo = FALSE}
+```{r ops-show, out.width = "100%", echo = FALSE, fig.alt = "The two pages of the HALCYON-7 dark telemetry dashboard."}
 show_pdf(bb_document(ops_page1, ops_page2), "halcyon-7")
 ```
 
@@ -785,7 +785,7 @@ alm_page2 <- bb_page(
 )
 ```
 
-```{r alm-show, out.width = "100%", echo = FALSE}
+```{r alm-show, out.width = "100%", echo = FALSE, fig.alt = "The two pages of The Fermentation Almanac magazine."}
 show_pdf(bb_document(alm_page1, alm_page2), "almanac")
 ```
 
@@ -889,7 +889,7 @@ make_pass <- function(i) {
 fest_pages <- lapply(seq_len(nrow(passes)), make_pass)
 ```
 
-```{r fest-show, out.width = "32%", echo = FALSE}
+```{r fest-show, out.width = "32%", echo = FALSE, fig.alt = "Three Nightjar festival passes, one per attendee."}
 show_pdf(bb_document(.list = fest_pages), "nightjar")
 ```
 

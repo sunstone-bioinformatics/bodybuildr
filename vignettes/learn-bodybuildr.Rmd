@@ -1,9 +1,6 @@
 ---
 title: "Learn bodybuildr: from one block to a full report"
-output:
-  rmarkdown::html_vignette:
-    toc: true
-    toc_depth: 2
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Learn bodybuildr: from one block to a full report}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +8,8 @@ vignette: >
 ---
 
 ```{r knitr-setup, include = FALSE, purl = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE,
+                      fig.alt = "The PDF produced by the code above, shown as an image.")
 ```
 
 This tutorial starts with a single word on a page and ends with a multi-page
@@ -23,7 +21,30 @@ You can read this as a web page, or run the companion script
 `tutorial/learn-bodybuildr.R` line by line in Positron or RStudio. The script
 has the same code, with this text as comments.
 
-# Part 0: Getting set up
+# Contents {#contents}
+
+Work through the parts in order the first time; each one builds on the
+last. Later, jump straight to the part you need. Every part ends with links
+to the previous part, this list, and the next part.
+
+| Part | What you'll learn |
+|---|---|
+| [Part 0: Getting set up](#part-0) | Load the packages and a small helper for looking at your work |
+| [Part 1: Your first block](#part-1) | What a block is, how it measures itself, flexible blocks, `as_block()` |
+| [Part 2: Putting blocks together](#part-2) | `bb_stack()`, `bb_cols()`, column widths, alignment, nesting |
+| [Part 3: Making text look right](#part-3) | Text roles, `text_style()`, `span()` and `link()`, Markdown and HTML |
+| [Part 4: Boxes, fills and spacing](#part-4) | `bb_box()`, `line_style()`, gradients and stripes, the three kinds of spacing |
+| [Part 5: Tables](#part-5) | `bb_table()`, `cell()`, table styles, data frames, `sync_rows` |
+| [Part 6: Status marks, dots and legends](#part-6) | `bb_status()`, `bb_dot()`, `bb_legend()` |
+| [Part 7: Plots, images and grobs](#part-7) | ggplots, fixed vs flexible heights, `bb_image()`, `bb_grob()` |
+| [Part 8: Pages](#part-8) | `bb_page()`, `page_template()`, headers, footers, tokens, banners, `page_layout()` |
+| [Part 9: Documents](#part-9) | `bb_document()`, optional pages, page-aware headers, `export_pdf()` |
+| [Part 10: Themes](#part-10) | `bb_theme()`, custom colours and roles, three ways to apply a theme |
+| [Part 11: Writing your own block](#part-11) | `new_block()`, drawing with the theme, using your block anywhere |
+| [Part 12: Debugging layouts](#part-12) | `export_pdf(debug = TRUE)` |
+| [Cheat sheet](#cheat-sheet) | Which function to reach for, by task |
+
+# Part 0: Getting set up {#part-0}
 
 ```{r setup}
 library(bodybuildr)   # the package itself
@@ -90,7 +111,12 @@ preview <- function(x, width = 6, height = NULL, theme = NULL) {
 }
 ```
 
-# Part 1: Your first block
+---
+
+[Contents](#contents) &nbsp;|&nbsp; [Part 1: Your first block →](#part-1)
+
+
+# Part 1: Your first block {#part-1}
 
 ## 1.1 Hello, block
 
@@ -182,7 +208,12 @@ as_block(NULL)
 So `bb_stack("a", "b")` (next part) is the same as
 `bb_stack(bb_text("a"), bb_text("b"))`.
 
-# Part 2: Putting blocks together
+---
+
+[← Part 0](#part-0) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 2: Putting blocks together →](#part-2)
+
+
+# Part 2: Putting blocks together {#part-2}
 
 A page is a few blocks arranged in two directions: top to bottom
 (`bb_stack()`) and side by side (`bb_cols()`). Those two functions, nested
@@ -292,7 +323,12 @@ nested <- bb_cols(
 preview(nested)
 ```
 
-# Part 3: Making text look right
+---
+
+[← Part 1](#part-1) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 3: Making text look right →](#part-3)
+
+
+# Part 3: Making text look right {#part-3}
 
 ## 3.1 Text roles
 
@@ -405,7 +441,12 @@ text_width("How wide am I?")
 text_width("How wide am I?", style = text_style(size = 18, weight = 700))
 ```
 
-# Part 4: Boxes, fills and spacing
+---
+
+[← Part 2](#part-2) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 4: Boxes, fills and spacing →](#part-4)
+
+
+# Part 4: Boxes, fills and spacing {#part-4}
 
 ## 4.1 Putting a box around something
 
@@ -497,7 +538,12 @@ bodybuildr keeps three kinds of spacing separate so they never interfere:
 When something looks too spaced out, ask which of the three it is and change
 it there. Components never add page-level spacing on their own.
 
-# Part 5: Tables
+---
+
+[← Part 3](#part-3) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 5: Tables →](#part-5)
+
+
+# Part 5: Tables {#part-5}
 
 ## 5.1 The simplest table
 
@@ -608,7 +654,12 @@ preview(bb_stack(
 ))
 ```
 
-# Part 6: Status marks, dots and legends
+---
+
+[← Part 4](#part-4) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 6: Status marks, dots and legends →](#part-6)
+
+
+# Part 6: Status marks, dots and legends {#part-6}
 
 ## 6.1 Status icons
 
@@ -671,7 +722,12 @@ measure_block(legend, 2.5)
 preview(legend, width = 2.9)
 ```
 
-# Part 7: Plots, images and grobs
+---
+
+[← Part 5](#part-5) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 7: Plots, images and grobs →](#part-7)
+
+
+# Part 7: Plots, images and grobs {#part-7}
 
 ## 7.1 A ggplot is a flexible block
 
@@ -734,7 +790,12 @@ preview(bb_cols(
 preview(bb_grob(circleGrob(r = 0.4, gp = gpar(fill = "#E5782A", col = NA)), height = 0.6))
 ```
 
-# Part 8: Pages
+---
+
+[← Part 6](#part-6) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 8: Pages →](#part-8)
+
+
+# Part 8: Pages {#part-8}
 
 So far every preview has been a loose block on a page cut to fit. Real
 reports use real pages.
@@ -876,7 +937,12 @@ preview(bb_cols(
 ))
 ```
 
-# Part 9: Documents
+---
+
+[← Part 7](#part-7) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 9: Documents →](#part-9)
+
+
+# Part 9: Documents {#part-9}
 
 ## 9.1 Several pages in one PDF
 
@@ -935,7 +1001,12 @@ export_pdf(doc, "my-report.pdf")
 `export_pdf()` uses the Cairo PDF device when available, for full Unicode
 and proper font weights. Every page in one export must have the same size.
 
-# Part 10: Themes
+---
+
+[← Part 8](#part-8) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 10: Themes →](#part-10)
+
+
+# Part 10: Themes {#part-10}
 
 ## 10.1 What a theme holds
 
@@ -1006,7 +1077,12 @@ One caveat: a **custom role** like `callout` only exists in the theme that
 defines it. A block that uses `style = "callout"` will fail with an "Unknown
 text role" error under any other theme.
 
-# Part 11: Writing your own block
+---
+
+[← Part 9](#part-9) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 11: Writing your own block →](#part-11)
+
+
+# Part 11: Writing your own block {#part-11}
 
 When nothing built in draws what you need, write a block. A block needs just
 two functions:
@@ -1117,7 +1193,12 @@ One rule: if you measure text or grobs yourself with grid (for example
 use the same kind of device as the export, and no stray `Rplots.pdf` gets
 created.
 
-# Part 12: Debugging layouts
+---
+
+[← Part 10](#part-10) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Part 12: Debugging layouts →](#part-12)
+
+
+# Part 12: Debugging layouts {#part-12}
 
 When the spacing looks off, export with `debug = TRUE`. Every block's box is
 outlined with a dashed line, so you can see which gap, padding or margin is
@@ -1134,7 +1215,12 @@ if (isTRUE(getOption("knitr.in.progress")) && requireNamespace("pdftools", quiet
 }
 ```
 
-# Cheat sheet
+---
+
+[← Part 11](#part-11) &nbsp;|&nbsp; [Contents](#contents) &nbsp;|&nbsp; [Cheat sheet →](#cheat-sheet)
+
+
+# Cheat sheet {#cheat-sheet}
 
 | I want to... | Use |
 |---|---|
@@ -1157,3 +1243,8 @@ if (isTRUE(getOption("knitr.in.progress")) && requireNamespace("pdftools", quiet
 | write the PDF | `export_pdf(x, file, debug =)` |
 | change the whole look | `bb_theme()` on `page_template(theme =)` |
 | draw something new | `new_block(measure =, render =)`, `text_gpar()` |
+
+---
+
+[← Part 12](#part-12) &nbsp;|&nbsp; [Contents](#contents)
+
