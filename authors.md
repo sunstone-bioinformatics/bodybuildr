@@ -9,7 +9,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/sunstone-bioinformatics/bodybuildr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/sunstone-bioinformatics/bodybuildr/blob/v0.5.2/DESCRIPTION)
 
 Leon R, Alvarez D (2026). *bodybuildr: Build Infographic PDF Pages from
 Self-Sizing Blocks*. R package version 0.5.2,
